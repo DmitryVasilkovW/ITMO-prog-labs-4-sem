@@ -11,7 +11,7 @@ public class FoodItem extends GenericItemBase implements Cloneable
     private Date _dateOfIncome;
     private short _expires;
 
-    FoodItem(int productid, String name, double price, Category category, Date dateOfIncome, short expires)
+    public FoodItem(int productid, String name, double price, Category category, Date dateOfIncome, short expires)
     {
         super(productid, name, price, category);
         _dateOfIncome = dateOfIncome;
