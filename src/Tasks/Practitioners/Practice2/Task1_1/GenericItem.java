@@ -17,17 +17,9 @@ public class GenericItem
         _price = price;
     }
 
-    GenericItem(int productid, String name, double price, List<IAnalog> listOfAnalogs)
-    {
-        _productid = productid;
-        _name = name;
-        _price = price;
-        _listOfAnalogs = listOfAnalogs;
-    }
-
     public void PrintAll()
     {
-        System.out.printf("ID: %d , Name: %-3s , price:%5.2f \n", _productid, _name, _price);
+        System.out.printf("ID: %d, Name: %-3s, price:%5.2f \n", _productid, _name, _price);
     }
 
     public void AddNewAnalog(IAnalog analog)

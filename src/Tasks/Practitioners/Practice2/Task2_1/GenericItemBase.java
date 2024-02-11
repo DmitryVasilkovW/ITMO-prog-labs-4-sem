@@ -1,18 +1,19 @@
-package Tasks.Practitioners.Practice2.Task1_2;
+package Tasks.Practitioners.Practice2.Task2_1;
 
 import Tasks.Practitioners.Practice2.Task1_1.IAnalog;
+import Tasks.Practitioners.Practice2.Task1_2.Category;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenericItem
+public abstract class GenericItemBase
 {
-    private int _productid;
-    private String _name;
-    private double _price;
-    private List<IAnalog> _listOfAnalogs = new ArrayList<>();
-    private Category _category;
+    protected int _productid;
+    protected String _name;
+    protected double _price;
+    protected List<IAnalog> _listOfAnalogs = new ArrayList<>();
+    protected Category _category;
 
-    GenericItem(int productid, String name, double price, Category category)
+    GenericItemBase(int productid, String name, double price, Category category)
     {
         _productid = productid;
         _name = name;
@@ -20,12 +21,12 @@ public class GenericItem
         _category = category;
     }
 
-    public void PrintAll()
+    protected  void PrintAll()
     {
         System.out.printf("ID: %d, Name: %-3s, price:%5.2f \n", _productid, _name, _price);
     }
 
-    public void AddNewAnalog(IAnalog analog)
+    protected void AddNewAnalog(IAnalog analog)
     {
         if (!_listOfAnalogs.contains(analog))
         {
@@ -33,12 +34,12 @@ public class GenericItem
         }
     }
 
-    public void PrintCategory()
+    protected void PrintCategory()
     {
         System.out.println("Category is " + _category);
     }
 
-    public void PrintAnalogs()
+    protected void PrintAnalogs()
     {
         System.out.println();
 
