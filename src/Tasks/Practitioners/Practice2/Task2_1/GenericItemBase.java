@@ -21,6 +21,18 @@ public abstract class GenericItemBase
         _category = category;
     }
 
+    public GenericItemBase(String name, float price, List<IAnalog> analogs)
+    {
+        _name = name;
+        _price = price;
+        _listOfAnalogs = analogs;
+    }
+
+    public GenericItemBase(String name)
+    {
+        _name = name;
+    }
+
     protected  void PrintAll()
     {
         System.out.printf("ID: %d, Name: %-3s, price:%5.2f \n", _productid, _name, _price);
