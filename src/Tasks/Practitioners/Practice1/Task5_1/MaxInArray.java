@@ -4,7 +4,7 @@ public class MaxInArray
 {
     public static int Max(int[] array)
     {
-        int max = -239;
+        int max = Integer.MIN_VALUE;
 
         for (int num : array)
         {
