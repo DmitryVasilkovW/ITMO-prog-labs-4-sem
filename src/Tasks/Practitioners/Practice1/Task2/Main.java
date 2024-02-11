@@ -1,4 +1,4 @@
-package Tasks.Task2;
+package Tasks.Practitioners.Practice1.Task2;
 
 public  class Main
 {
