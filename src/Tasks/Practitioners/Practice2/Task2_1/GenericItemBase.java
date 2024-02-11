@@ -13,7 +13,7 @@ public abstract class GenericItemBase
     protected List<IAnalog> _listOfAnalogs = new ArrayList<>();
     protected Category _category;
 
-    GenericItemBase(int productid, String name, double price, Category category)
+    public GenericItemBase(int productid, String name, double price, Category category)
     {
         _productid = productid;
         _name = name;
@@ -33,6 +33,23 @@ public abstract class GenericItemBase
             _listOfAnalogs.add(analog);
         }
     }
+
+    @Override
+    public GenericItemBase clone()
+    {
+        try
+        {
+            GenericItemBase cloned = (GenericItemBase) super.clone();
+            cloned._listOfAnalogs = new ArrayList<>(this._listOfAnalogs);
+            return cloned;
+        }
+        catch (CloneNotSupportedException e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
     protected void PrintCategory()
     {
