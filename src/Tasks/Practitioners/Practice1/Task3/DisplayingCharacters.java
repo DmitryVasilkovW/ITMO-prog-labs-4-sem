@@ -1,4 +1,4 @@
-package Tasks.Task3;
+package Tasks.Practitioners.Practice1.Task3;
 
 public class DisplayingCharacters
 {

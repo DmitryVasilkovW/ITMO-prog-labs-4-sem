@@ -1,4 +1,4 @@
-package Tasks.Task5_2;
+package Tasks.Practitioners.Practice1.Task5_2;
 import java.util.*;
 
 public class Main
