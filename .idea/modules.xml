@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ITMO-prog-labs-4-sem.iml" filepath="$PROJECT_DIR$/.idea/ITMO-prog-labs-4-sem.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Practitioners/Practice5/Practice5.iml" filepath="$PROJECT_DIR$/Practitioners/Practice5/Practice5.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Practitioners/Practitioners.iml" filepath="$PROJECT_DIR$/Practitioners/Practitioners.iml" />
     </modules>
   </component>
 </project>
