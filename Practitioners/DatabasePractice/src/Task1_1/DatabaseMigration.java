@@ -1,4 +1,4 @@
-package Task1;
+package Task1_1;
 
 import org.flywaydb.core.Flyway;
 
