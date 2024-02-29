@@ -5,7 +5,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class JDBCOracle
+public class JDBCPostgresql
 {
     public static void main(String[] args)
     {
@@ -27,7 +27,8 @@ public class JDBCOracle
                 System.out.println("Product version: " + meta.getDatabaseProductVersion());
             }
         }
-        catch (ClassNotFoundException | SQLException e) {
+        catch (ClassNotFoundException | SQLException e)
+        {
             e.printStackTrace();
         }
     }

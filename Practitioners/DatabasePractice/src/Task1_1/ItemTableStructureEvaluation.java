@@ -22,7 +22,7 @@ public class ItemTableStructureEvaluation
 
             ResultSet rs = stmt.executeQuery(
                     "SELECT column_name, data_type, character_maximum_length " +
-                            "FROM INFORMATION_SCHEMA.COLUMNS"
+                            "FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = 'item'"
             );
 
             while (rs.next())
