@@ -3,7 +3,8 @@ package Task1_3;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Item {
+public class Item
+{
     private int _id;
     private String _title;
     private String _artist;
@@ -11,7 +12,8 @@ public class Item {
     private BigDecimal _prise;
     private double _version;
 
-    public Item(int id, String title, String artist, Date releaseDate, BigDecimal prise, double version) {
+    public Item(int id, String title, String artist, Date releaseDate, BigDecimal prise, double version)
+    {
         _id = id;
         _title = title;
         _artist = artist;
@@ -20,7 +22,8 @@ public class Item {
         _version = version;
     }
 
-    public Item(int id, String title, String artist, Date releaseDate, double version) {
+    public Item(int id, String title, String artist, Date releaseDate, double version)
+    {
         _id = id;
         _title = title;
         _artist = artist;
@@ -40,10 +43,7 @@ public class Item {
         _id = id;
     }
 
-    public String getTitle()
-    {
-        return _title;
-    }
+    public String getTitle() { return _title; }
 
     public void setTitle(String title)
     {

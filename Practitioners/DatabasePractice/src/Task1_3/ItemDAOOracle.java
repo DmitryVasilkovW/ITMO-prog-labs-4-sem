@@ -23,7 +23,7 @@ public class ItemDAOOracle
 
             if (rs.next())
             {
-                item = new Item(rs.getInt("id"), rs.getString("title"), "239", rs.getDate("reldate"), 2.0);
+                item = new Item(rs.getInt("item_id"), rs.getString("title"), "239", rs.getDate("reldate"), 2.0);
             }
         }
         catch (SQLException e)
