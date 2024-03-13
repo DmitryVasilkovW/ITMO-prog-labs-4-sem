@@ -1,5 +1,6 @@
 package Users.Services.Builder;
 
+import MyExceptions.ThePassedArgumentIsNullException;
 import Users.Entites.User;
 import Users.Models.Address;
 import Users.Models.PassportDetails;
@@ -10,16 +11,18 @@ public class UserBuilder implements
         IWithAddress,
         IWithSurname,
         IWithName,
-        IWithPassportDetails
+        IWithPassportDetails,
+        IWithSurnameAndWithoutOtherParameters
 {
     private @Nullable String _name;
     private @Nullable String _surname;
     private @Nullable Address _address;
     private @Nullable PassportDetails _passportDetails;
 
-    public User Build()
+    public User Build() throws ThePassedArgumentIsNullException
     {
-        return new User(_name, _surname, _address, _passportDetails);
+        if (_name != null && _surname != null) return new User(_name, _surname, _address, _passportDetails);
+        throw new ThePassedArgumentIsNullException();
     }
 
     @Override
@@ -50,6 +53,14 @@ public class UserBuilder implements
     public IUserBuilder WithPassportDetails(PassportDetails passportDetails)
     {
         _passportDetails = passportDetails;
+
+        return this;
+    }
+
+    @Override
+    public IUserBuilder WithSurnameAndWithoutOtherParameters(String surname)
+    {
+        _surname = surname;
 
         return this;
     }
