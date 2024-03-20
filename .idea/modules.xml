@@ -4,12 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Practitioners/DatabasePractice/DatabasePractice.iml" filepath="$PROJECT_DIR$/Practitioners/DatabasePractice/DatabasePractice.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ITMO-prog-labs-4-sem.iml" filepath="$PROJECT_DIR$/.idea/ITMO-prog-labs-4-sem.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tmp/src/main/java/Lab2/Lab2.iml" filepath="$PROJECT_DIR$/tmp/src/main/java/Lab2/Lab2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tmp/src/main/java/Lab3/Lab3.iml" filepath="$PROJECT_DIR$/tmp/src/main/java/Lab3/Lab3.iml" />
       <module fileurl="file://$PROJECT_DIR$/Labs/Labs.iml" filepath="$PROJECT_DIR$/Labs/Labs.iml" />
       <module fileurl="file://$PROJECT_DIR$/Practitioners/Practice5/Practice5.iml" filepath="$PROJECT_DIR$/Practitioners/Practice5/Practice5.iml" />
       <module fileurl="file://$PROJECT_DIR$/Practitioners/Practitioners.iml" filepath="$PROJECT_DIR$/Practitioners/Practitioners.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tmp/src/main/java/t/t.iml" filepath="$PROJECT_DIR$/tmp/src/main/java/t/t.iml" />
     </modules>
   </component>
 </project>
