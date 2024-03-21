@@ -6,13 +6,13 @@ import java.sql.Statement;
 
 public class DatabaseTableCreator
 {
-    private DatabaseSingleton _databaseSingleton;
+    private DatabaseLocalHostSingleton _databaseSingleton;
 
     public DatabaseTableCreator()
     {
         try
         {
-            this._databaseSingleton = DatabaseSingleton.getInstance();
+            this._databaseSingleton = DatabaseLocalHostSingleton.getInstance();
         }
         catch (SQLException e)
         {
@@ -25,12 +25,14 @@ public class DatabaseTableCreator
         String createTablesSQL =
                 "CREATE TABLE "
                 + "users" + "("
-                + "Id INT PRIMARY KEY NOT NULL,"
-                + "Name TEXT NOT NULL);"
+                + "Id SERIAL PRIMARY KEY NOT NULL,"
+                + "Name TEXT NOT NULL,"
+                + "Surname TEXT NOT NULL,"
+                + "Password INT NOT NULL);"
 
                 + "CREATE TABLE "
                 + "address" + "("
-                + "Id INT PRIMARY KEY NOT NULL,"
+                + "Id SERIAL PRIMARY KEY NOT NULL,"
                 + "UserId INT,"
                 + "FOREIGN KEY (UserId) REFERENCES users(Id),"
                 + "Street TEXT NOT NULL,"
@@ -40,7 +42,7 @@ public class DatabaseTableCreator
 
                 + "CREATE TABLE "
                 + "PassportDetails" + "("
-                + "Id INT PRIMARY KEY NOT NULL,"
+                + "Id SERIAL PRIMARY KEY NOT NULL,"
                 + "UserId INT,"
                 + "FOREIGN KEY (UserId) REFERENCES users(Id),"
                 + "Series INT NOT NULL ,"
