@@ -7,14 +7,14 @@ import java.math.BigDecimal;
 
 public class CreditAccount extends AccountBase
 {
-    private BigDecimal creditLimit;
-    private BigDecimal commission;
+    private BigDecimal _creditLimit;
+    private BigDecimal _commission;
 
     public CreditAccount(BigDecimal _balance, BigDecimal creditLimit, BigDecimal commission)
     {
         super(_balance);
-        this.creditLimit = creditLimit;
-        this.commission = commission;
+        this._creditLimit = creditLimit;
+        this._commission = commission;
     }
 
     @Override
@@ -27,13 +27,13 @@ public class CreditAccount extends AccountBase
     public BigDecimal Withdrawal(BigDecimal amount) throws ShortageOfFundsException
     {
         BigDecimal newBalance = this._balance.subtract(amount);
-        if (newBalance.compareTo(this.creditLimit.negate()) < 0)
+        if (newBalance.compareTo(this._creditLimit.negate()) < 0)
         {
             throw new ShortageOfFundsException("Credit limit exceeded");
         }
         if (newBalance.compareTo(BigDecimal.ZERO) < 0)
         {
-            this._balance = newBalance.subtract(this.commission);
+            this._balance = newBalance.subtract(_commission);
         }
         else
         {
@@ -41,5 +41,14 @@ public class CreditAccount extends AccountBase
         }
         return amount;
     }
+
+    public void applyCommission()
+    {
+        if (this._balance.compareTo(BigDecimal.ZERO) < 0)
+        {
+            this._balance = this._balance.subtract(_commission);
+        }
+    }
+
 }
 
