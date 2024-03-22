@@ -13,20 +13,7 @@ public abstract class AccountBase
         this._balance = _balance;
     }
 
-    public void ReplenishmentOfFunds(BigDecimal amount)
-    {
-        _balance = _balance.add(amount);
-    }
+    public abstract void ReplenishmentOfFunds(BigDecimal amount);
 
-    public BigDecimal Withdrawal(BigDecimal amount) throws ShortageOfFundsException
-    {
-        if (_balance.subtract(amount).compareTo(BigDecimal.ZERO) >= 0)
-        {
-            _balance = _balance.subtract(amount);
-
-            return amount;
-        }
-
-        throw new ShortageOfFundsException();
-    }
+    public abstract BigDecimal Withdrawal(BigDecimal amount) throws ShortageOfFundsException;
 }
