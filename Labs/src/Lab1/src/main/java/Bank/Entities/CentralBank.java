@@ -17,7 +17,7 @@ public class CentralBank
 
     public void registerBank(Bank bank)
     {
-        banks.put(bank.getName(), bank);
+        banks.put(bank.get_name(), bank);
     }
 
     public void transferFunds(String fromBankName, String toBankName, BigDecimal amount) throws ShortageOfFundsException

@@ -8,7 +8,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 @Configuration
 public class AppConfig
 {
-
     @Bean
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate()
     {
