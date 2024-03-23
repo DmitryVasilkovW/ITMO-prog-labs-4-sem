@@ -2,17 +2,20 @@ package Accounts.Entities;
 
 import Accounts.Models.AccountBase;
 import MyExceptions.ShortageOfFundsException;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 
 public class CreditAccount extends AccountBase
 {
+    @Getter
     private BigDecimal _creditLimit;
+    @Getter
     private BigDecimal _commission;
 
-    public CreditAccount(BigDecimal _balance, BigDecimal creditLimit, BigDecimal commission)
+    public CreditAccount(Integer id, BigDecimal _balance, BigDecimal creditLimit, BigDecimal commission)
     {
-        super(_balance);
+        super(id, _balance);
         this._creditLimit = creditLimit;
         this._commission = commission;
     }

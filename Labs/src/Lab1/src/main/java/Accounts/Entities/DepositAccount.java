@@ -2,6 +2,7 @@ package Accounts.Entities;
 
 import Accounts.Models.AccountBase;
 import MyExceptions.ShortageOfFundsException;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,12 +10,14 @@ import java.time.temporal.ChronoUnit;
 
 public class DepositAccount extends AccountBase
 {
+    @Getter
     private LocalDate _depositEndDate;
+    @Getter
     private BigDecimal _interestRate;
 
-    public DepositAccount(BigDecimal _balance, LocalDate depositEndDate, BigDecimal interestRate)
+    public DepositAccount(Integer id, BigDecimal _balance, LocalDate depositEndDate, BigDecimal interestRate)
     {
-        super(_balance);
+        super(id, _balance);
         _depositEndDate = depositEndDate;
         _interestRate = interestRate;
     }

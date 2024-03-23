@@ -2,6 +2,7 @@ package Accounts.Entities;
 
 import Accounts.Models.AccountBase;
 import MyExceptions.ShortageOfFundsException;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.util.Timer;
@@ -9,12 +10,14 @@ import java.util.TimerTask;
 
 public class DebitAccount extends AccountBase
 {
+    @Getter
     private BigDecimal _interestRate;
+    @Getter
     private Timer _interestTimer;
 
-    public DebitAccount(BigDecimal _balance, BigDecimal interestRate)
+    public DebitAccount(Integer id, BigDecimal _balance, BigDecimal interestRate)
     {
-        super(_balance);
+        super(id, _balance);
         _interestRate = interestRate;
         _interestTimer = new Timer();
         _interestTimer.schedule(new InterestTask(), 0, 60000);
