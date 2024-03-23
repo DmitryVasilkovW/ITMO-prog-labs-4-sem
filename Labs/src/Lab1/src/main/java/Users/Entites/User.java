@@ -5,10 +5,11 @@ import Users.Models.PassportDetails;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 
-@Getter
 public class User
 {
+    @Getter
     private String _name;
+    @Getter
     private String _surname;
     private @Nullable Address _address;
     private @Nullable PassportDetails _passportDetails;

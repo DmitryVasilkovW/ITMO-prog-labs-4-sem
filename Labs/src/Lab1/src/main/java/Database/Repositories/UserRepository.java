@@ -30,6 +30,7 @@ public class UserRepository
         String sql = "SELECT Id FROM Users WHERE password = :password";
 
         var params = new MapSqlParameterSource();
+
         params.addValue("password", password);
 
         return _jdbcTemplate.queryForObject(sql, params, Integer.class);
@@ -41,6 +42,7 @@ public class UserRepository
         String sql = "INSERT INTO Users (name, surname, password) VALUES (:name, :surname, :password)";
 
         var params = new MapSqlParameterSource();
+
         params.addValue("name", name);
         params.addValue("surname", surname);
         params.addValue("password", password);
@@ -64,6 +66,7 @@ public class UserRepository
                     " VALUES (:userId, :street, :house, :flore, :numberOfApartment)";
 
             var paramsForAddress = new MapSqlParameterSource();
+
             paramsForAddress.addValue("userId", userId);
             paramsForAddress.addValue("street", street);
             paramsForAddress.addValue("house", house);
@@ -89,6 +92,7 @@ public class UserRepository
                     "VALUES (:userId, :series, :number)";
 
             var paramsForPassportDetails = new MapSqlParameterSource();
+
             paramsForPassportDetails.addValue("userId", userId);
             paramsForPassportDetails.addValue("series", series);
             paramsForPassportDetails.addValue("number", number);
@@ -113,6 +117,7 @@ public class UserRepository
             var sqlForPassportDetails = "SELECT * FROM PassportDetails WHERE UserId = :userId";
 
             var params = new MapSqlParameterSource();
+
             params.addValue("userId", userId);
 
             User user = _jdbcTemplate.queryForObject(sqlForUser, params, new UserRowMapper());
