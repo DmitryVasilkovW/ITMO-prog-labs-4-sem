@@ -1,38 +1,102 @@
 package Bank.Entities;
 
+import Accounts.Models.AccountBase;
+import Accounts.Models.IInterestBearingAccount;
 import MyExceptions.ShortageOfFundsException;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class CentralBank
 {
-    private Map<String, Bank> banks;
+    private Map<String, Bank> _banks;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
     public CentralBank()
     {
-        this.banks = new HashMap<>();
+        _banks = new HashMap<>();
+        startInterestAccrual();
     }
 
-    public void registerBank(Bank bank)
+    private void startInterestAccrual()
     {
-        banks.put(bank.get_name(), bank);
+        scheduler.scheduleAtFixedRate(this::applyDailyInterestToAllAccounts, 0, 5, TimeUnit.MINUTES);
     }
 
-    public void transferFunds(String fromBankName, String toBankName, BigDecimal amount) throws ShortageOfFundsException
+    private void applyDailyInterestToAllAccounts()
     {
-        Bank fromBank = banks.get(fromBankName);
-        Bank toBank = banks.get(toBankName);
-        fromBank.withdraw("tmp", amount);
-        toBank.deposit("tmp", amount);
-    }
-
-    public void notifyBanks()
-    {
-        for (Bank bank : banks.values())
+        for (Bank bank : _banks.values())
         {
-            bank.applyInterestOrCommission();
+            for (Integer accountId : bank.GetAllAccountIds())
+            {
+                ApplyDailyInterest(bank.get_name(), accountId);
+            }
+        }
+    }
+
+    public void ApplyDailyInterest(String bankName, Integer accountId)
+    {
+        Bank bank = _banks.get(bankName);
+        AccountBase account = bank.get_accounts().get(accountId);
+
+        BigDecimal currentBalance = account.get_balance();
+        BigDecimal dailyInterest = currentBalance.multiply(bank.get_interestRate());
+
+        if (account instanceof IInterestBearingAccount)
+        {
+            ((IInterestBearingAccount) account).ApplyInterest(dailyInterest);
+        }
+    }
+
+    public void AddBank(Bank bank)
+    {
+        _banks.put(bank.get_name(), bank);
+    }
+
+    public void RegistrationNewBank(String name, BigDecimal interestRate, BigDecimal commission)
+    {
+        var newBank = new Bank(name, interestRate, commission);
+
+        AddBank(newBank);
+    }
+
+    public void TransferFunds(
+            String fromBankName,
+            Integer fromAccountId,
+            String toBankName,
+            Integer toAccountId,
+            BigDecimal amount) throws ShortageOfFundsException
+    {
+        Bank fromBank = _banks.get(fromBankName);
+        Bank toBank = _banks.get(toBankName);
+
+        amount = fromBank.Withdraw(fromAccountId, amount);
+        toBank.Deposit(toAccountId, amount);
+    }
+
+    public BigDecimal Withdraw(String bankName, Integer accountId, BigDecimal amount) throws ShortageOfFundsException
+    {
+        Bank bank = _banks.get(bankName);
+
+        return bank.Withdraw(accountId, amount);
+    }
+
+    public void Deposit(String bankName, Integer accountId, BigDecimal amount)
+    {
+        Bank bank = _banks.get(bankName);
+
+        bank.Deposit(accountId, amount);
+    }
+
+    public void NotifyBanks()
+    {
+        for (Bank bank : _banks.values())
+        {
+            bank.ApplyInterestOrCommission();
         }
     }
 }

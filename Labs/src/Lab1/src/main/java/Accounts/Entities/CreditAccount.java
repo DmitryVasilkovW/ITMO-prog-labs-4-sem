@@ -45,11 +45,11 @@ public class CreditAccount extends AccountBase
         return amount;
     }
 
-    public void applyCommission()
+    public void applyCommission(BigDecimal bankCommission)
     {
         if (this._balance.compareTo(BigDecimal.ZERO) < 0)
         {
-            this._balance = this._balance.subtract(_commission);
+            this._balance = this._balance.subtract(bankCommission);
         }
     }
 

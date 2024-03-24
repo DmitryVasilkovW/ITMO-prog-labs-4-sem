@@ -59,7 +59,6 @@ public class Initial
                 + "Type TEXT NOT NULL,"
                 + "creditLimit NUMERIC, "
                 + "commission NUMERIC,"
-                + "interestRate NUMERIC,"
                 + "depositEndDate DATE,"
                 + "FOREIGN KEY (UserId) REFERENCES users(Id),"
                 + "balance NUMERIC NOT NULL DEFAULT 0);";

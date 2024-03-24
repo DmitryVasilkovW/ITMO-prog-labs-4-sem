@@ -1,6 +1,7 @@
 package Accounts.Entities;
 
 import Accounts.Models.AccountBase;
+import Accounts.Models.IInterestBearingAccount;
 import MyExceptions.ShortageOfFundsException;
 import lombok.Getter;
 
@@ -8,18 +9,15 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class DepositAccount extends AccountBase
+public class DepositAccount extends AccountBase implements IInterestBearingAccount
 {
     @Getter
     private LocalDate _depositEndDate;
-    @Getter
-    private BigDecimal _interestRate;
 
-    public DepositAccount(Integer id, BigDecimal _balance, LocalDate depositEndDate, BigDecimal interestRate)
+    public DepositAccount(Integer id, BigDecimal _balance, LocalDate depositEndDate)
     {
         super(id, _balance);
         _depositEndDate = depositEndDate;
-        _interestRate = interestRate;
     }
 
     @Override
@@ -44,11 +42,11 @@ public class DepositAccount extends AccountBase
         return amount;
     }
 
-    public void applyInterest()
+    public void ApplyInterest(BigDecimal bankInterestRate)
     {
         if (ChronoUnit.DAYS.between(LocalDate.now(), _depositEndDate) <= 0)
         {
-            BigDecimal interest = _balance.multiply(_interestRate);
+            BigDecimal interest = _balance.multiply(bankInterestRate);
             _balance = _balance.add(interest);
         }
     }

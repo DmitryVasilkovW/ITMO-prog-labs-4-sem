@@ -21,16 +21,14 @@ public class AccountBaseRowMapper implements RowMapper<AccountBase>
         {
             return new DebitAccount(
                     rs.getInt("id"),
-                    rs.getBigDecimal("balance"),
-                    rs.getBigDecimal("interestRate"));
+                    rs.getBigDecimal("balance"));
         }
         else if (rs.getString("type").equals(DepositAccount.class.getSimpleName()))
         {
             return new DepositAccount(
                     rs.getInt("id"),
                     rs.getBigDecimal("balance"),
-                    rs.getDate("depositEndDate").toLocalDate(),
-                    rs.getBigDecimal("interestRate"));
+                    rs.getDate("depositEndDate").toLocalDate());
         }
         else if (rs.getString("type").equals(CreditAccount.class.getSimpleName()))
         {

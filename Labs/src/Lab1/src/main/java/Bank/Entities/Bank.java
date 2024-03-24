@@ -1,55 +1,79 @@
 package Bank.Entities;
 
 import Accounts.Entities.CreditAccount;
+import Accounts.Entities.DebitAccount;
 import Accounts.Entities.DepositAccount;
 import Accounts.Models.AccountBase;
+import Accounts.Models.IInterestBearingAccount;
 import MyExceptions.ShortageOfFundsException;
 import lombok.Getter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Bank
 {
     @Getter
     private String _name;
-    private Map<String, AccountBase> _accounts;
+    @Getter
+    private BigDecimal _interestRate;
+    @Getter
+    private BigDecimal _commission;
+    @Getter
+    private Map<Integer, AccountBase> _accounts;
 
-    public Bank(String name)
+    public Bank(String name, BigDecimal interestRate, BigDecimal commission)
     {
+        _commission = commission;
+        _interestRate = interestRate;
         _name = name;
         _accounts = new HashMap<>();
     }
 
-    public void createAccount(String accountId, AccountBase account)
+    public List<Integer> GetAllAccountIds()
+    {
+        var ids = new ArrayList<Integer>();
+
+        for (AccountBase account : _accounts.values())
+        {
+            ids.add(account.get_id());
+        }
+
+        return ids;
+    }
+
+    public void AddAccount(Integer accountId, AccountBase account)
     {
         _accounts.put(accountId, account);
     }
 
-    public void deposit(String accountId, BigDecimal amount)
+    public void Deposit(Integer accountId, BigDecimal amount)
     {
         AccountBase account = _accounts.get(accountId);
         account.ReplenishmentOfFunds(amount);
     }
 
-    public void withdraw(String accountId, BigDecimal amount) throws ShortageOfFundsException
+    public BigDecimal Withdraw(Integer accountId, BigDecimal amount) throws ShortageOfFundsException
     {
         AccountBase account = _accounts.get(accountId);
-        account.Withdrawal(amount);
+
+        return account.Withdrawal(amount);
     }
 
-    public void applyInterestOrCommission()
+    public void ApplyInterestOrCommission()
     {
         for (AccountBase account : _accounts.values())
         {
-            if (account instanceof DepositAccount)
+            if (account instanceof DepositAccount || account instanceof DebitAccount)
             {
-                ((DepositAccount) account).applyInterest();
+                ((IInterestBearingAccount) account).ApplyInterest(_interestRate);
             }
             else if (account instanceof CreditAccount)
             {
-                ((CreditAccount) account).applyCommission();
+                ((CreditAccount) account).applyCommission(_commission);
             }
         }
     }
