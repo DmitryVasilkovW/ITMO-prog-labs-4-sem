@@ -12,6 +12,11 @@ module com.menu.interactivemenu
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
 
+    requires Lab1;
+
     opens com.menu.interactivemenu to javafx.fxml;
     exports com.menu.interactivemenu;
+    opens Scenarios to javafx.fxml;
+    exports Scenarios;
 }
+
