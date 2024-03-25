@@ -2,7 +2,9 @@ package Bank.Entities;
 
 import Accounts.Models.AccountBase;
 import Accounts.Models.IInterestBearingAccount;
+import Database.Repositories.AccountRepository;
 import MyExceptions.ShortageOfFundsException;
+import Users.Entites.User;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -11,7 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class CentralBank
+public class CentralBank implements AutoCloseable
 {
     private Map<String, Bank> _banks;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -57,9 +59,14 @@ public class CentralBank
         _banks.put(bank.get_name(), bank);
     }
 
-    public void RegistrationNewBank(String name, BigDecimal interestRate, BigDecimal commission)
+    public void RegistrationNewBank(
+            String name,
+            BigDecimal interestRate,
+            BigDecimal commission,
+            AccountRepository repository,
+            Map<String, User> users)
     {
-        var newBank = new Bank(name, interestRate, commission);
+        var newBank = new Bank(name, interestRate, commission, users, repository);
 
         AddBank(newBank);
     }
@@ -97,6 +104,15 @@ public class CentralBank
         for (Bank bank : _banks.values())
         {
             bank.ApplyInterestOrCommission();
+        }
+    }
+
+    @Override
+    public void close()
+    {
+        for (Bank bank : _banks.values())
+        {
+            bank.close();
         }
     }
 }

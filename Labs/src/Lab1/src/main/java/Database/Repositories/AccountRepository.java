@@ -103,11 +103,12 @@ public class AccountRepository
     }
 
     @Transactional
-    public List<AccountBase> GetAccounts(@NotNull User user, String password)
+    public List<AccountBase> GetAccountsByUser(@NotNull User user, String password)
     {
         var userId = GetUserIdByPassword(password, user.get_name(), user.get_surname());
         String sql = "SELECT * FROM accounts WHERE userid = :userId";
         var params = new MapSqlParameterSource();
+
         params.addValue("userId", userId);
 
         return _jdbcTemplate.query(sql, params, new AccountBaseRowMapper());
@@ -139,7 +140,7 @@ public class AccountRepository
     @Transactional
     public void AddCreditAccount(Integer id, BigDecimal balance, BigDecimal creditLimit, BigDecimal commission)
     {
-        String sql = "INSERT INTO accounts (id, balance, creditLimit, commission, type) VALUES (:id, :balance, :creditLimit, :commission, :type)";
+        String sql = "INSERT INTO accounts (userid, balance, creditLimit, commission, type) VALUES (:id, :balance, :creditLimit, :commission, :type)";
         var params = new MapSqlParameterSource();
         params.addValue("id", id);
         params.addValue("balance", balance);
@@ -151,29 +152,27 @@ public class AccountRepository
     }
 
     @Transactional
-    public void AddDebitAccount(Integer id, BigDecimal balance, BigDecimal interestRate)
+    public void AddDebitAccount(Integer id, BigDecimal balance)
     {
 
-        String sql = "INSERT INTO accounts (id, balance, interestRate, type) VALUES (:id, :balance, :interestRate, :type)";
+        String sql = "INSERT INTO accounts (id, balance, type) VALUES (:id, :balance, :type)";
         var params = new MapSqlParameterSource();
         params.addValue("id", id);
         params.addValue("balance", balance);
-        params.addValue("interestRate", interestRate);
         params.addValue("type", "DebitAccount");
 
         _jdbcTemplate.update(sql, params);
     }
 
     @Transactional
-    public void AddDepositAccount(Integer id, BigDecimal balance, LocalDate depositEndDate, BigDecimal interestRate)
+    public void AddDepositAccount(Integer id, BigDecimal balance, LocalDate depositEndDate)
     {
 
-        String sql = "INSERT INTO accounts (id, balance, depositEndDate, interestRate, type) VALUES (:id, :balance, :depositEndDate, :interestRate, :type)";
+        String sql = "INSERT INTO accounts (id, balance, depositEndDate, type) VALUES (:id, :balance, :depositEndDate, :type)";
         var params = new MapSqlParameterSource();
         params.addValue("id", id);
         params.addValue("balance", balance);
         params.addValue("depositEndDate", depositEndDate);
-        params.addValue("interestRate", interestRate);
         params.addValue("type", "DepositAccount");
 
         _jdbcTemplate.update(sql, params);

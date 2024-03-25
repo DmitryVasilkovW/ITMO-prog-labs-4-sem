@@ -5,7 +5,9 @@ import Accounts.Entities.DebitAccount;
 import Accounts.Entities.DepositAccount;
 import Accounts.Models.AccountBase;
 import Accounts.Models.IInterestBearingAccount;
+import Database.Repositories.AccountRepository;
 import MyExceptions.ShortageOfFundsException;
+import Users.Entites.User;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -14,8 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Bank
+
+public class Bank implements AutoCloseable
 {
+    private final AccountRepository _accountRepository;
     @Getter
     private String _name;
     @Getter
@@ -25,12 +29,32 @@ public class Bank
     @Getter
     private Map<Integer, AccountBase> _accounts;
 
-    public Bank(String name, BigDecimal interestRate, BigDecimal commission)
+    public Bank(String name, BigDecimal interestRate, BigDecimal commission, Map<String, User> users, AccountRepository accountRepository)
     {
         _commission = commission;
         _interestRate = interestRate;
         _name = name;
+        _accountRepository = accountRepository;
         _accounts = new HashMap<>();
+
+        for (Map.Entry<String, User> entry : users.entrySet())
+        {
+            String password = entry.getKey();
+            User user = entry.getValue();
+
+            AccountBase account = _accountRepository.GetAccount(user, password);
+
+            _accounts.put(account.get_id(), account);
+        }
+    }
+
+    @Override
+    public void close()
+    {
+        for (AccountBase account : _accounts.values())
+        {
+            _accountRepository.SaveAccountBalance(account);
+        }
     }
 
     public List<Integer> GetAllAccountIds()

@@ -1,4 +1,5 @@
-module com.menu.interactivemenu {
+module com.menu.interactivemenu
+{
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;

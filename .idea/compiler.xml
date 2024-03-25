@@ -11,10 +11,10 @@
         <module name="InteractiveMenu" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="interactivemenu" target="17" />
-      <module name="Labss" target="11" />
-      <module name="Tmp" target="11" />
-    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="InteractiveMenu" options="" />
+    </option>
   </component>
 </project>

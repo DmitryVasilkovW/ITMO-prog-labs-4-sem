@@ -32,7 +32,7 @@ public class Initial
                 + "Id SERIAL PRIMARY KEY NOT NULL,"
                 + "Name TEXT NOT NULL,"
                 + "Surname TEXT NOT NULL,"
-                + "Password INT NOT NULL);"
+                + "Password TEXT NOT NULL);"
 
                 + "CREATE TABLE "
                 + "address" + "("

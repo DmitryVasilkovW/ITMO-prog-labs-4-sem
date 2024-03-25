@@ -7,8 +7,8 @@
         <option value="$PROJECT_DIR$/Labs/pom.xml" />
         <option value="$PROJECT_DIR$/Labs/Lab1/pom.xml" />
         <option value="$PROJECT_DIR$/Labs/src/Lab1/pom.xml" />
-        <option value="$PROJECT_DIR$/Labs/src/Lab1/InteractiveMenu/pom.xml" />
         <option value="$PROJECT_DIR$/Labs/src/Lab1/interactivemenu/pom.xml" />
+        <option value="$PROJECT_DIR$/Labs/InteractiveMenu/pom.xml" />
       </list>
     </option>
   </component>
