@@ -1,0 +1,11 @@
+.root {
+    -fx-base: rgba(0, 0, 0, 0.2);
+    -fx-background: rgba(0, 0, 0, 0.35);
+    -fx-control-inner-background: rgba(0, 0, 0, 0.36);
+    -fx-accent: white;
+    -fx-default-button: -fx-focus-color;
+    -fx-focus-color: white;
+    -fx-highlight-fill: white;
+    -fx-highlight-text-fill: rgba(0, 0, 0, 0.35);
+    -fx-text-fill: white;
+}
