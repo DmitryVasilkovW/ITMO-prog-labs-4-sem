@@ -5,7 +5,6 @@ import Accounts.Entities.DebitAccount;
 import Accounts.Entities.DepositAccount;
 import Accounts.Models.AccountBase;
 import MyExceptions.IncorrectArgumentException;
-import lombok.SneakyThrows;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -13,7 +12,6 @@ import java.sql.SQLException;
 
 public class AccountBaseRowMapper implements RowMapper<AccountBase>
 {
-    @SneakyThrows
     @Override
     public AccountBase mapRow(ResultSet rs, int rowNum) throws SQLException
     {
@@ -39,6 +37,12 @@ public class AccountBaseRowMapper implements RowMapper<AccountBase>
                     rs.getBigDecimal("commission"));
         }
 
-        throw new IncorrectArgumentException();
+        try
+        {
+            throw new IncorrectArgumentException();
+        } catch (IncorrectArgumentException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -59,13 +59,13 @@ public class Main
         context.refresh();
 
         var rep = context.getBean(UserRepository.class);
-        var repp = context.getBean(AccountRepository.class);
+        var repository = context.getBean(AccountRepository.class);
 
         var user = rep.GetUserByPassword("2392281488");
 
-        repp.Withdrawal(new BigDecimal("1"), 1);
+        repository.Withdrawal(new BigDecimal("1"), 1);
 
-        var acc = repp.GetAccount(user, "2392281488");
+        var acc = repository.GetAccount(user, "2392281488");
 
         System.out.println(acc.get_balance() + " " + acc.get_id());
     }

@@ -126,6 +126,16 @@ public class AccountRepository
     }
 
     @Transactional
+    public BigDecimal GetAccountBalance(Integer accountId)
+    {
+        String sql = "SELECT balance FROM accounts WHERE id = :accountId";
+        var params = new MapSqlParameterSource();
+        params.addValue("accountId", accountId);
+
+        return _jdbcTemplate.queryForObject(sql, params, BigDecimal.class);
+    }
+
+    @Transactional
     public void SaveAccountBalance(@NotNull AccountBase account)
     {
         String sql = "update accounts set balance = :balance where id = :id";
