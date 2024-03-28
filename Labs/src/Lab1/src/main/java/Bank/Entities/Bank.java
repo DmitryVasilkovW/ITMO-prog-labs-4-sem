@@ -33,6 +33,8 @@ public class Bank implements AutoCloseable
     private BigDecimal _commission;
     @Getter
     private HashMap<Integer, AccountBase> _accounts;
+    @Nullable
+    public HashMap<String, User> _users;
 
     public Bank(Integer id, String name, BigDecimal interestRate, BigDecimal commission, @Nullable HashMap<String, User> users)
     {
@@ -51,8 +53,35 @@ public class Bank implements AutoCloseable
         _accountRepository = context.getBean(AccountRepository.class);
     }
 
+    public User GetUserByPasswordAndFullName(String name, String surname, String password)
+    {
+        assert _users != null;
+        User user = _users.get(password);
+
+        if (user != null)
+        {
+            if (user.get_name().equals(name) && user.get_surname().equals(surname))
+            {
+                return user;
+            }
+            else
+            {
+                for (User tempuser : _users.values())
+                {
+                    if (tempuser.get_name().equals(name) && tempuser.get_surname().equals(surname))
+                    {
+                        return tempuser;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
     public void ActivateBank(HashMap<String, User> users)
     {
+        _users = users;
 
         for (Map.Entry<String, User> entry : users.entrySet())
         {

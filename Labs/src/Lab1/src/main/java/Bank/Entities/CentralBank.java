@@ -3,6 +3,7 @@ package Bank.Entities;
 import Accounts.Models.AccountBase;
 import Accounts.Models.IInterestBearingAccount;
 import MyExceptions.ShortageOfFundsException;
+import Users.Entites.User;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -36,6 +37,19 @@ public class CentralBank implements AutoCloseable
                 ApplyDailyInterest(bank.get_name(), accountId);
             }
         }
+    }
+
+    public User GetUserByPasswordAndFullName(String name, String surname, String password)
+    {
+        for (Bank bank : _banks.values())
+        {
+            if (bank.GetUserByPasswordAndFullName(name, surname, password) != null)
+            {
+                return bank.GetUserByPasswordAndFullName(name, surname, password);
+            }
+        }
+
+        return null;
     }
 
     public void ApplyDailyInterest(String bankName, Integer accountId)

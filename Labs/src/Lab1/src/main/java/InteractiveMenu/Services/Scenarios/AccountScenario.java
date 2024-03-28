@@ -74,7 +74,7 @@ public class AccountScenario
 
             else if (accounts.get(i) instanceof DebitAccount)
             {
-                list.add("Interest timer: " + ((DebitAccount)accounts.get(i)).get_interestTimer().toString());
+                list.add("Interest timer: " + ((DebitAccount)accounts.get(i)).get_interestTimer() != null ? "Timer is active" : "Timer is not active");
             }
 
             else if (accounts.get(i) instanceof DepositAccount)

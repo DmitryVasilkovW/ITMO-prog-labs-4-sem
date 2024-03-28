@@ -6,6 +6,7 @@ import Database.AppConfig;
 import Database.Repositories.BankRepository;
 import Database.Repositories.UserRepository;
 import MyExceptions.ShortageOfFundsException;
+import Users.Entites.User;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import javax.swing.*;
@@ -45,6 +46,37 @@ public class UserSubmenu
         _userRepository = context.getBean(UserRepository.class);
         _bankRepository = context.getBean(BankRepository.class);
     }
+
+    public void displayUserInfo()
+    {
+        User user = _centralBank.GetUserByPasswordAndFullName(_username, _surname, _password);
+
+        assert user != null;
+        String info = "Name: " + user.get_name() + "\n"
+                + "Surname: " + user.get_surname() + "\n";
+
+        if (user.GetAddress() != null)
+        {
+            info += "Street: " + user.GetAddress()._street() + "\n"
+                    + "House: " + user.GetAddress()._house() + "\n"
+                    + "Flore: " + user.GetAddress()._flore() + "\n"
+                    + "Number of apartment: " + user.GetAddress()._numberOfApartment() + "\n";
+        }
+
+        if (user.GetPassportDetails() != null)
+        {
+            info += "Series of passport: " + user.GetPassportDetails()._series() + "\n"
+                    + "Number of passport: " + user.GetPassportDetails()._number();
+        }
+
+        JOptionPane.showMessageDialog(_frame, info);
+    }
+
+    public void ShowPassword()
+    {
+        PasswordInfoDialog.showDialog(_password);
+    }
+
 
     public BigDecimal Withdrawal()
     {
@@ -157,6 +189,26 @@ public class UserSubmenu
                 }
             });
 
+            var passwordButton = new JButton("Show password");
+            passwordButton.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    ShowPassword();
+                }
+            });
+
+            var userInfoButton = new JButton("Show info about user");
+            userInfoButton.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    displayUserInfo();
+                }
+            });
+
             var transferFundsButton = new JButton("Transfer funds");
             transferFundsButton.addActionListener(new ActionListener()
             {
@@ -186,6 +238,8 @@ public class UserSubmenu
             panel.add(withdrawalButton);
             panel.add(depositButton);
             panel.add(transferFundsButton);
+            panel.add(userInfoButton);
+            panel.add(passwordButton);
             panel.add(closeButton);
             postRegistrationFrame.add(panel, BorderLayout.CENTER);
 

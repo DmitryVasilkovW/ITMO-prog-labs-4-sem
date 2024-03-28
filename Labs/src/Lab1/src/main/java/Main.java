@@ -1,21 +1,35 @@
+import Bank.Entities.Bank;
 import Bank.Entities.CentralBank;
+import Database.AppConfig;
+import Database.Repositories.BankRepository;
+import Database.Repositories.UserRepository;
 import MyExceptions.ShortageOfFundsException;
-import Users.Entites.User;
-
-import java.math.BigDecimal;
-import java.util.HashMap;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Main
 {
 
     public static void main(String[] args) throws ShortageOfFundsException
     {
-        var centralBank = new CentralBank();
-        var user = new User("tmp", "tmp", null, null);
-        var users = new HashMap<String, User>();
+        var context = new AnnotationConfigApplicationContext();
 
-        users.put("2392281488", user);
+        context.register(UserRepository.class);
+        context.register(BankRepository.class);
+        context.register(AppConfig.class);
+        context.refresh();
 
-        centralBank.Withdraw("Pablo bank", 1, new BigDecimal("1"));
+        var _bankRepository = context.getBean(BankRepository.class);
+
+        var _centralBank = new CentralBank();
+
+        var banks = _bankRepository.GetAllBanks();
+
+        for (Bank bank : banks)
+        {
+            _centralBank.AddBank(bank);
+        }
+
+        assert _centralBank.GetUserByPasswordAndFullName("Pablo", "Git", "2392281488") != null;
+        System.out.println(_centralBank.GetUserByPasswordAndFullName("Pablo", "Git", "2392281488"));
     }
 }
