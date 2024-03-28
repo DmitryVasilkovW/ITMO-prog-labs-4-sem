@@ -1,0 +1,197 @@
+package InteractiveMenu.Models.Submenus;
+
+import Bank.Entities.Bank;
+import Bank.Entities.CentralBank;
+import Database.AppConfig;
+import Database.Repositories.BankRepository;
+import Database.Repositories.UserRepository;
+import MyExceptions.ShortageOfFundsException;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+
+public class UserSubmenu
+{
+    private static Map<String, String> _userPasswords = new HashMap<>();
+    private UserRepository _userRepository;
+    private BankRepository _bankRepository;
+    private JFrame _frame;
+    private CentralBank _centralBank;
+    private String _username;
+    private String _password;
+    private String _surname;
+
+    public UserSubmenu()
+    {
+        _frame = new JFrame("Simple Menu");
+
+        _frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        _frame.setSize(600, 400);
+        _frame.setLayout(new BorderLayout());
+
+        var context = new AnnotationConfigApplicationContext();
+
+        context.register(UserRepository.class);
+        context.register(BankRepository.class);
+        context.register(AppConfig.class);
+        context.refresh();
+
+        _userRepository = context.getBean(UserRepository.class);
+        _bankRepository = context.getBean(BankRepository.class);
+    }
+
+    public BigDecimal Withdrawal()
+    {
+        String bankName = JOptionPane.showInputDialog(_frame, "Enter bank");
+        String accountIdStr = JOptionPane.showInputDialog(_frame, "Enter account id");
+        String amountStr = JOptionPane.showInputDialog(_frame, "Enter amount to withdrawal");
+        Integer accountId = Integer.parseInt(accountIdStr);
+        var amount = new BigDecimal(amountStr);
+
+        try
+        {
+            _centralBank.Withdraw(bankName, accountId, amount);
+        }
+        catch (ShortageOfFundsException ex)
+        {
+            throw new RuntimeException(ex);
+        }
+
+        JOptionPane.showMessageDialog(_frame, "Balance: " + _centralBank.GetBalance(bankName, accountId).toString());
+
+        return null;
+    }
+
+    public void Deposit()
+    {
+        String bankName = JOptionPane.showInputDialog(_frame, "Enter bank");
+        String accountIdStr = JOptionPane.showInputDialog(_frame, "Enter account id");
+        String amountStr = JOptionPane.showInputDialog(_frame, "Enter amount to deposit");
+        Integer accountId = Integer.parseInt(accountIdStr);
+        var amount = new BigDecimal(amountStr);
+
+        _centralBank.Deposit(bankName, accountId, amount);
+        JOptionPane.showMessageDialog(_frame, "Balance: " + _centralBank.GetBalance(bankName, accountId).toString());
+    }
+
+    public void TransferFunds() throws ShortageOfFundsException
+    {
+        String fromBankName = JOptionPane.showInputDialog(_frame, "Enter name of the bank from which to transfer");
+        String fromAccountIdStr = JOptionPane.showInputDialog(_frame, "Enter account id from which to transfer");
+        String toBankName = JOptionPane.showInputDialog(_frame, "Enter name of the bank to which to deposit");
+        String toAccountIdStr = JOptionPane.showInputDialog(_frame, "Enter account id to which to deposit");
+        String amountStr = JOptionPane.showInputDialog(_frame, "Enter amount to transfer");
+        Integer fromAccountId = Integer.parseInt(fromAccountIdStr);
+        Integer toAccountId = Integer.parseInt(toAccountIdStr);
+        var amount = new BigDecimal(amountStr);
+
+        _centralBank.TransferFunds(fromBankName, fromAccountId, toBankName, toAccountId, amount);
+        JOptionPane.showMessageDialog(
+                _frame, "Bank: " + fromBankName
+                        + "\nAccount ID: " + fromAccountId
+                        + "\nCharge card balance: "
+                        + _centralBank.GetBalance(fromBankName, fromAccountId).toString()
+                        + "\n\nBank: " + toBankName
+                        + "\nAccount ID: " + toAccountId
+                        + "\nRecharge card balance: "
+                        + _centralBank.GetBalance(toBankName, toAccountId).toString());
+    }
+
+
+    public void RegisterUser()
+    {
+        _username = JOptionPane.showInputDialog(_frame, "Enter your username");
+        _surname = JOptionPane.showInputDialog(_frame, "Enter your surname");
+        _password = JOptionPane.showInputDialog(_frame, "Enter your password");
+        _centralBank = new CentralBank();
+
+        var banks = _bankRepository.GetAllBanks();
+
+        for (Bank bank : banks)
+        {
+            _centralBank.AddBank(bank);
+        }
+
+
+        _userPasswords.put(_username, _password);
+        JOptionPane.showMessageDialog(_frame, "User registered successfully!");
+    }
+
+    public JButton GetUserSubmenu()
+    {
+        var userRegistrationButton = new JButton("Register as User");
+
+        userRegistrationButton.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+        userRegistrationButton.addActionListener(e ->
+        {
+            RegisterUser();
+
+            var postRegistrationFrame = new JFrame("User Menu");
+            postRegistrationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            postRegistrationFrame.setSize(600, 400);
+            postRegistrationFrame.setLayout(new BorderLayout());
+
+            var withdrawalButton = new JButton("Withdrawal");
+            withdrawalButton.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    Withdrawal();
+                }
+            });
+
+            var depositButton = new JButton("Deposit");
+            depositButton.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    Deposit();
+                }
+            });
+
+            var transferFundsButton = new JButton("Transfer funds");
+            transferFundsButton.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    try
+                    {
+                        TransferFunds();
+                    }
+                    catch (ShortageOfFundsException ex)
+                    {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            });
+
+            var closeButton = new JButton("Close Menu");
+            closeButton.addActionListener(e1 ->
+            {
+                _centralBank.close();
+                postRegistrationFrame.dispose();
+            });
+
+
+            var panel = new JPanel();
+            panel.add(withdrawalButton);
+            panel.add(depositButton);
+            panel.add(transferFundsButton);
+            panel.add(closeButton);
+            postRegistrationFrame.add(panel, BorderLayout.CENTER);
+
+            postRegistrationFrame.setVisible(true);
+        });
+
+        return userRegistrationButton;
+    }
+}
