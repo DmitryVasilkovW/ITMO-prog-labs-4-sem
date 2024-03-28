@@ -2,9 +2,7 @@ package Bank.Entities;
 
 import Accounts.Models.AccountBase;
 import Accounts.Models.IInterestBearingAccount;
-import Database.Repositories.AccountRepository;
 import MyExceptions.ShortageOfFundsException;
-import Users.Entites.User;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -59,16 +57,9 @@ public class CentralBank implements AutoCloseable
         _banks.put(bank.get_name(), bank);
     }
 
-    public void RegistrationNewBank(
-            String name,
-            BigDecimal interestRate,
-            BigDecimal commission,
-            AccountRepository repository,
-            Map<String, User> users)
+    public BigDecimal GetBalance(String bankName , Integer id)
     {
-        var newBank = new Bank(name, interestRate, commission, users, repository);
-
-        AddBank(newBank);
+        return _banks.get(bankName).GetBalance(id);
     }
 
     public void TransferFunds(

@@ -28,8 +28,17 @@ public class Initial
     {
         String createTablesSQL =
                 "CREATE TABLE "
+                + "banks" + "("
+                + "Id SERIAL PRIMARY KEY NOT NULL,"
+                + "Name TEXT NOT NULL,"
+                + "ReserveFund NUMERIC,"
+                + "Commission NUMERIC);"
+
+                + "CREATE TABLE "
                 + "users" + "("
                 + "Id SERIAL PRIMARY KEY NOT NULL,"
+                + "BankId INT,"
+                + "FOREIGN KEY (BankId) REFERENCES banks(Id),"
                 + "Name TEXT NOT NULL,"
                 + "Surname TEXT NOT NULL,"
                 + "Password TEXT NOT NULL);"
@@ -82,7 +91,8 @@ public class Initial
                 "drop table if exists accounts;" +
                 "drop table if exists address;" +
                 "drop table if exists PassportDetails;" +
-                "drop table if exists users";
+                "drop table if exists users;" +
+                "drop table if exists banks";
 
         try
         {

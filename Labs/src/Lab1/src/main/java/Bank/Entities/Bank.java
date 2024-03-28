@@ -5,10 +5,13 @@ import Accounts.Entities.DebitAccount;
 import Accounts.Entities.DepositAccount;
 import Accounts.Models.AccountBase;
 import Accounts.Models.IInterestBearingAccount;
+import Database.AppConfig;
 import Database.Repositories.AccountRepository;
 import MyExceptions.ShortageOfFundsException;
 import Users.Entites.User;
 import lombok.Getter;
+import org.jetbrains.annotations.Nullable;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -23,29 +26,50 @@ public class Bank implements AutoCloseable
     @Getter
     private String _name;
     @Getter
+    private Integer _id;
+    @Getter
     private BigDecimal _interestRate;
     @Getter
     private BigDecimal _commission;
     @Getter
-    private Map<Integer, AccountBase> _accounts;
+    private HashMap<Integer, AccountBase> _accounts;
 
-    public Bank(String name, BigDecimal interestRate, BigDecimal commission, Map<String, User> users, AccountRepository accountRepository)
+    public Bank(Integer id, String name, BigDecimal interestRate, BigDecimal commission, @Nullable HashMap<String, User> users)
     {
         _commission = commission;
         _interestRate = interestRate;
         _name = name;
-        _accountRepository = accountRepository;
+        _id = id;
         _accounts = new HashMap<>();
+
+        var context = new AnnotationConfigApplicationContext();
+
+        context.register(AccountRepository.class);
+        context.register(AppConfig.class);
+        context.refresh();
+
+        _accountRepository = context.getBean(AccountRepository.class);
+    }
+
+    public void ActivateBank(HashMap<String, User> users)
+    {
 
         for (Map.Entry<String, User> entry : users.entrySet())
         {
             String password = entry.getKey();
             User user = entry.getValue();
+            var accounts = _accountRepository.GetAccountsByUser(user, password);
 
-            AccountBase account = _accountRepository.GetAccount(user, password);
-
-            _accounts.put(account.get_id(), account);
+            for (AccountBase acc : accounts)
+            {
+                _accounts.put(acc.get_id(), acc);
+            }
         }
+    }
+
+    public BigDecimal GetBalance(Integer id)
+    {
+        return _accounts.get(id).get_balance();
     }
 
     @Override

@@ -2,12 +2,9 @@ package Bank.Services;
 
 import Bank.Entities.Bank;
 import Bank.Entities.CentralBank;
-import Database.Repositories.AccountRepository;
 import MyExceptions.ShortageOfFundsException;
-import Users.Entites.User;
 
 import java.math.BigDecimal;
-import java.util.Map;
 
 public class CentralBankService implements AutoCloseable
 {
@@ -27,16 +24,6 @@ public class CentralBankService implements AutoCloseable
     public void AddBank(Bank bank)
     {
         _bank.AddBank(bank);
-    }
-
-    public void RegistrationNewBank(
-            String name,
-            BigDecimal interestRate,
-            BigDecimal commission,
-            AccountRepository repository,
-            Map<String, User> users)
-    {
-        _bank.RegistrationNewBank(name, interestRate, commission, repository, users);
     }
 
     public void TransferFunds(

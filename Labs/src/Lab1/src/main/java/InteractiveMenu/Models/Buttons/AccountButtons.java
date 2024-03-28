@@ -28,7 +28,7 @@ public class AccountButtons
     {
         var withdrawalButton = new JMenuItem("Withdrawal");
 
-        withdrawalButton.setFont(new Font("Arial", Font.PLAIN, 15));
+        withdrawalButton.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 
         withdrawalButton.addActionListener(new ActionListener()
         {
@@ -63,7 +63,7 @@ public class AccountButtons
     {
         var checkBalanceButton = new JMenuItem("Check balance");
 
-        checkBalanceButton.setFont(new Font("Arial", Font.PLAIN, 15));
+        checkBalanceButton.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 
         checkBalanceButton.addActionListener(new ActionListener()
         {
@@ -86,7 +86,7 @@ public class AccountButtons
     {
         var depositButton = new JMenuItem("Deposit");
 
-        depositButton.setFont(new Font("Arial", Font.PLAIN, 15));
+        depositButton.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 
         depositButton.addActionListener(new ActionListener()
         {
@@ -114,7 +114,7 @@ public class AccountButtons
     {
         var depositButton = new JMenuItem("Show info about all accounts");
 
-        depositButton.setFont(new Font("Arial", Font.PLAIN, 15));
+        depositButton.setFont(new Font("Times New Roman", Font.PLAIN, 15));
 
         depositButton.addActionListener(new ActionListener()
         {
