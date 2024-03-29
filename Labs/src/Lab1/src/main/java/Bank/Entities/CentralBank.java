@@ -93,7 +93,7 @@ public class CentralBank implements AutoCloseable
             Integer fromAccountId,
             String toBankName,
             Integer toAccountId,
-            BigDecimal amount) throws ShortageOfFundsException
+            BigDecimal amount) throws ShortageOfFundsException, RuntimeException
     {
         Bank fromBank = _banks.get(fromBankName);
         Bank toBank = _banks.get(toBankName);

@@ -77,7 +77,15 @@ public class Initial
                 + "depositEndDate DATE,"
                 + "FOREIGN KEY (UserId) REFERENCES users(Id),"
                 + "FOREIGN KEY (BankId) REFERENCES banks(Id),"
-                + "balance NUMERIC NOT NULL DEFAULT 0);";
+                + "balance NUMERIC NOT NULL DEFAULT 0);"
+
+                + "CREATE TABLE "
+                + "admins" + "("
+                + "Id SERIAL PRIMARY KEY NOT NULL,"
+                + "Name TEXT NOT NULL,"
+                + "Password TEXT NOT NULL);"
+
+                + "insert into admins (name, password) VALUES ('Pablo', '239')";
 
         try
         {
@@ -100,7 +108,8 @@ public class Initial
                 "drop table if exists PassportDetails;" +
                 "drop table if exists bank_clients;" +
                 "drop table if exists users;" +
-                "drop table if exists banks;";
+                "drop table if exists banks;" +
+                "drop table if exists admins;";
 
         try
         {

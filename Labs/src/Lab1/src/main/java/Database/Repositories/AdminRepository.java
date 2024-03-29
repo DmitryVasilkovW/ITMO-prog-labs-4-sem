@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public class AdminRepository
@@ -21,13 +22,35 @@ public class AdminRepository
     }
 
     @Transactional
-    public void AddPassportDetails(int series, int number, Integer userId)
+    public void AddPassportDetails(int series, int number, Integer userId) throws IllegalArgumentException
     {
+        String checkSql = "SELECT COUNT(*) FROM passportdetails WHERE userid = :userId";
+        var checkParams = new MapSqlParameterSource();
+        checkParams.addValue("userId", userId);
+        Integer count = _jdbcTemplate.queryForObject(checkSql, checkParams, Integer.class);
+
+        if (count != null && count > 0)
+        {
+            throw new IllegalArgumentException("Passport data for this user already exists");
+        }
+
         var sqlForPassportDetails = "INSERT INTO passportdetails (userid, series, number)" +
                 "VALUES (:userId, :series, :number)";
 
         var paramsForPassportDetails = new MapSqlParameterSource();
+        paramsForPassportDetails.addValue("userId", userId);
+        paramsForPassportDetails.addValue("series", series);
+        paramsForPassportDetails.addValue("number", number);
 
+        _jdbcTemplate.update(sqlForPassportDetails, paramsForPassportDetails);
+    }
+
+    @Transactional
+    public void UpdatePassportDetails(int series, int number, Integer userId)
+    {
+        var sqlForPassportDetails = "UPDATE passportdetails SET series = :series, number = :number WHERE userid = :userId";
+
+        var paramsForPassportDetails = new MapSqlParameterSource();
         paramsForPassportDetails.addValue("userId", userId);
         paramsForPassportDetails.addValue("series", series);
         paramsForPassportDetails.addValue("number", number);
@@ -43,11 +66,20 @@ public class AdminRepository
             int numberOfApartment,
             Integer userId)
     {
+        String checkSql = "SELECT COUNT(*) FROM address WHERE UserId = :userId";
+        var checkParams = new MapSqlParameterSource();
+        checkParams.addValue("userId", userId);
+        Integer count = _jdbcTemplate.queryForObject(checkSql, checkParams, Integer.class);
+
+        if (count != null && count > 0)
+        {
+            throw new IllegalArgumentException("The address for this user already exists");
+        }
+
         var sqlForAddress = "INSERT INTO address (UserId, Street, House, Flore, NumberOfApartment)" +
                 "VALUES (:userid, :street, :house, :flore, :numberOfApartment)";
 
         var paramsForAddress = new MapSqlParameterSource();
-
         paramsForAddress.addValue("userid", userId);
         paramsForAddress.addValue("street", street);
         paramsForAddress.addValue("house", house);
@@ -58,22 +90,38 @@ public class AdminRepository
     }
 
     @Transactional
-    public void AddUser(String name, String surname, String password)
+    public void UpdateAddress(
+            String street,
+            String house,
+            int flore,
+            int numberOfApartment,
+            Integer userId)
     {
-        String sql = "INSERT INTO Users (name, surname, password) VALUES (:name, :surname, :password)";
+        var sqlForAddress = "UPDATE address SET Street = :street, House = :house, Flore = :flore, NumberOfApartment = :numberOfApartment WHERE UserId = :userid";
 
-        var params = new MapSqlParameterSource();
+        var paramsForAddress = new MapSqlParameterSource();
+        paramsForAddress.addValue("userid", userId);
+        paramsForAddress.addValue("street", street);
+        paramsForAddress.addValue("house", house);
+        paramsForAddress.addValue("flore", flore);
+        paramsForAddress.addValue("numberOfApartment", numberOfApartment);
 
-        params.addValue("name", name);
-        params.addValue("surname", surname);
-        params.addValue("password", password);
-
-        _jdbcTemplate.update(sql, params);
+        _jdbcTemplate.update(sqlForAddress, paramsForAddress);
     }
 
     @Transactional
     public void AddBank(String name, BigDecimal reserveFund, BigDecimal commission)
     {
+        String checkSql = "SELECT COUNT(*) FROM banks WHERE name = :name";
+        var checkParams = new MapSqlParameterSource();
+        checkParams.addValue("name", name);
+        Integer count = _jdbcTemplate.queryForObject(checkSql, checkParams, Integer.class);
+
+        if (count != null && count > 0)
+        {
+            throw new IllegalArgumentException("A bank with this name already exists");
+        }
+
         String sql = "INSERT INTO banks (name, reservefund, commission) VALUES (:name, :reserveFund, :commission)";
         var params = new MapSqlParameterSource();
 
@@ -83,6 +131,50 @@ public class AdminRepository
 
         _jdbcTemplate.update(sql, params);
     }
+
+    @Transactional
+    public boolean CheckAdmin(String name, String password)
+    {
+        String sql = "select name from admins where name = :name and password = :password";
+        var params = new MapSqlParameterSource();
+        params.addValue("name", name);
+        params.addValue("password", password);
+
+        List<String> result = _jdbcTemplate.query(sql, params, (rs, rowNum) -> rs.getString("name"));
+
+        if (result.isEmpty())
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Transactional
+    public void AddUser(String name, String surname, String password)
+    {
+        String checkSql = "SELECT COUNT(*) FROM Users WHERE name = :name AND surname = :surname AND password = :password";
+        var checkParams = new MapSqlParameterSource();
+        checkParams.addValue("name", name);
+        checkParams.addValue("surname", surname);
+        checkParams.addValue("password", password);
+        Integer count = _jdbcTemplate.queryForObject(checkSql, checkParams, Integer.class);
+
+        if (count != null && count > 0)
+        {
+            throw new IllegalArgumentException("incorrect  user information");
+        }
+
+        String sql = "INSERT INTO Users (name, surname, password) VALUES (:name, :surname, :password)";
+        var params = new MapSqlParameterSource();
+
+        params.addValue("name", name);
+        params.addValue("surname", surname);
+        params.addValue("password", password);
+
+        _jdbcTemplate.update(sql, params);
+    }
+
 
     @Transactional
     public void AddCreditAccount(Integer id, BigDecimal balance, BigDecimal creditLimit, BigDecimal commission, String bankName)

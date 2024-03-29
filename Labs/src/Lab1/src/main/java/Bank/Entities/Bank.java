@@ -92,6 +92,7 @@ public class Bank implements AutoCloseable
             {
 
                 info += "Account type: " + accounts.get(i).getClass().getSimpleName() + "\n";
+                info += "Name of bank: " + _name + "\n";
                 info += "Account id: " + accounts.get(i).get_id().toString() + "\n";
                 info += "Balance: " + accounts.get(i).get_balance().toString() + "\n";
 

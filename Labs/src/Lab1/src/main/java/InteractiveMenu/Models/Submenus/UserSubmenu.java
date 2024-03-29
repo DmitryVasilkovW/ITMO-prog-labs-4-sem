@@ -83,7 +83,7 @@ public class UserSubmenu
     }
 
 
-    public BigDecimal Withdrawal()
+    public void Withdrawal()
     {
         String bankName = JOptionPane.showInputDialog(_frame, "Enter bank");
         String accountIdStr = JOptionPane.showInputDialog(_frame, "Enter account id");
@@ -93,7 +93,14 @@ public class UserSubmenu
 
         try
         {
-            _centralBank.Withdraw(bankName, accountId, amount);
+            BigDecimal chek = _centralBank.Withdraw(bankName, accountId, amount);
+
+            if (chek == null)
+            {
+                JOptionPane.showMessageDialog(_frame, "incorrect user information!");
+
+                return;
+            }
         }
         catch (ShortageOfFundsException ex)
         {
@@ -101,8 +108,6 @@ public class UserSubmenu
         }
 
         JOptionPane.showMessageDialog(_frame, "Balance: " + _centralBank.GetBalance(bankName, accountId).toString());
-
-        return null;
     }
 
     public void Deposit()
@@ -117,7 +122,7 @@ public class UserSubmenu
         JOptionPane.showMessageDialog(_frame, "Balance: " + _centralBank.GetBalance(bankName, accountId).toString());
     }
 
-    public void TransferFunds() throws ShortageOfFundsException
+    public void TransferFunds()
     {
         String fromBankName = JOptionPane.showInputDialog(_frame, "Enter name of the bank from which to transfer");
         String fromAccountIdStr = JOptionPane.showInputDialog(_frame, "Enter account id from which to transfer");
@@ -128,7 +133,17 @@ public class UserSubmenu
         Integer toAccountId = Integer.parseInt(toAccountIdStr);
         var amount = new BigDecimal(amountStr);
 
-        _centralBank.TransferFunds(fromBankName, fromAccountId, toBankName, toAccountId, amount);
+        try
+        {
+            _centralBank.TransferFunds(fromBankName, fromAccountId, toBankName, toAccountId, amount);
+        }
+        catch (ShortageOfFundsException | RuntimeException e)
+        {
+            JOptionPane.showMessageDialog(_frame, "incorrect user information!");
+
+            return;
+        }
+
         JOptionPane.showMessageDialog(
                 _frame, "Bank: " + fromBankName
                         + "\nAccount ID: " + fromAccountId
@@ -141,23 +156,34 @@ public class UserSubmenu
     }
 
 
-    public void RegisterUser()
+    public boolean RegisterUser()
     {
         _username = JOptionPane.showInputDialog(_frame, "Enter your username");
         _surname = JOptionPane.showInputDialog(_frame, "Enter your surname");
         _password = JOptionPane.showInputDialog(_frame, "Enter your password");
         _centralBank = new CentralBank();
 
-        var banks = _bankRepository.GetAllBanks(_password);
-
-        for (Bank bank : banks)
+        if (_bankRepository.CheckPassword(_username, _surname, _password))
         {
-            _centralBank.AddBank(bank);
+            var banks = _bankRepository.GetAllBanks(_password);
+
+            for (Bank bank : banks)
+            {
+                _centralBank.AddBank(bank);
+            }
+
+
+            _userPasswords.put(_username, _password);
+            JOptionPane.showMessageDialog(_frame, "User registered successfully!");
+
+            return true;
         }
+        else
+        {
+            JOptionPane.showMessageDialog(_frame, "incorrect user information!");
 
-
-        _userPasswords.put(_username, _password);
-        JOptionPane.showMessageDialog(_frame, "User registered successfully!");
+            return false;
+        }
     }
 
     public JButton GetUserSubmenu()
@@ -167,7 +193,7 @@ public class UserSubmenu
         userRegistrationButton.setFont(new Font("Times New Roman", Font.PLAIN, 13));
         userRegistrationButton.addActionListener(e ->
         {
-            RegisterUser();
+            boolean check = RegisterUser();
 
             var postRegistrationFrame = new JFrame("User Menu");
             postRegistrationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -234,7 +260,7 @@ public class UserSubmenu
                     {
                         TransferFunds();
                     }
-                    catch (ShortageOfFundsException ex)
+                    catch (RuntimeException ex)
                     {
                         throw new RuntimeException(ex);
                     }
@@ -260,6 +286,11 @@ public class UserSubmenu
             postRegistrationFrame.add(panel, BorderLayout.CENTER);
 
             postRegistrationFrame.setVisible(true);
+
+            if (!check)
+            {
+                postRegistrationFrame.dispose();
+            }
         });
 
         return userRegistrationButton;

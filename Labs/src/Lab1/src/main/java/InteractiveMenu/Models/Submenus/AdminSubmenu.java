@@ -9,18 +9,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 import java.time.LocalDate;
 
 
 public class AdminSubmenu
 {
-    private static Map<String, String> _userPasswords = new HashMap<>();
     private AdminRepository _adminRepository;
     private JFrame _frame;
-    private String _username;
-    private String _password;
 
     public AdminSubmenu()
     {
@@ -48,7 +43,14 @@ public class AdminSubmenu
         int number = Integer.parseInt(numberStr);
         Integer userId = Integer.parseInt(userIdStr);
 
-        _adminRepository.AddPassportDetails(series, number, userId);
+        try
+        {
+            _adminRepository.AddPassportDetails(series, number, userId);
+        }
+        catch (IllegalArgumentException e)
+        {
+            JOptionPane.showMessageDialog(_frame, e.getMessage());
+        }
     }
 
     public void AddBank()
@@ -59,7 +61,14 @@ public class AdminSubmenu
         var reserveFund = new BigDecimal(reserveFundStr);
         var commission = new BigDecimal(commissionStr);
 
-        _adminRepository.AddBank(name, reserveFund, commission);
+        try
+        {
+            _adminRepository.AddBank(name, reserveFund, commission);
+        }
+        catch (IllegalArgumentException e)
+        {
+            JOptionPane.showMessageDialog(_frame, e.getMessage());
+        }
     }
 
     public void AddUser()
@@ -68,7 +77,14 @@ public class AdminSubmenu
         String surname = JOptionPane.showInputDialog(_frame, "Enter surname");
         String password = JOptionPane.showInputDialog(_frame, "Enter password");
 
-        _adminRepository.AddUser(name, surname, password);
+        try
+        {
+            _adminRepository.AddUser(name, surname, password);
+        }
+        catch (IllegalArgumentException e)
+        {
+            JOptionPane.showMessageDialog(_frame, e.getMessage());
+        }
     }
 
     public void AddAddress()
@@ -82,7 +98,14 @@ public class AdminSubmenu
         int flore = Integer.parseInt(floreStr);
         int numberOfApartment = Integer.parseInt(numberOfApartmentStr);
 
-        _adminRepository.AddAddress(street, house, flore, numberOfApartment, userId);
+        try
+        {
+            _adminRepository.AddAddress(street, house, flore, numberOfApartment, userId);
+        }
+        catch (IllegalArgumentException e)
+        {
+            JOptionPane.showMessageDialog(_frame, e.getMessage());
+        }
     }
 
     public void AddCreditAccount()
@@ -124,14 +147,21 @@ public class AdminSubmenu
         _adminRepository.AddDepositAccount(id, balance, depositEndDate, bankName);
     }
 
-    public void RegisterAdmin()
+    public boolean RegisterAdmin()
     {
-        _username = JOptionPane.showInputDialog(_frame, "Enter your username");
-        _password = JOptionPane.showInputDialog(_frame, "Enter your password");
+        String adminName = JOptionPane.showInputDialog(_frame, "Enter your username");
+        String adminPassword = JOptionPane.showInputDialog(_frame, "Enter your password");
 
+        if (_adminRepository.CheckAdmin(adminName, adminPassword))
+        {
+            JOptionPane.showMessageDialog(_frame, "Admin registered successfully!");
 
-        _userPasswords.put(_username, _password);
-        JOptionPane.showMessageDialog(_frame, "User registered successfully!");
+            return true;
+        }
+
+        JOptionPane.showMessageDialog(_frame, "Admin unconfirmed!");
+
+        return false;
     }
 
     public JButton GetAdminSubmenu()
@@ -141,7 +171,7 @@ public class AdminSubmenu
         adminRegistrationButton.setFont(new Font("Times New Roman", Font.PLAIN, 13));
         adminRegistrationButton.addActionListener(e ->
         {
-            RegisterAdmin();
+            boolean check = RegisterAdmin();
 
             var postRegistrationFrame = new JFrame("Admin Menu");
             postRegistrationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -237,6 +267,11 @@ public class AdminSubmenu
             postRegistrationFrame.add(panel, BorderLayout.CENTER);
 
             postRegistrationFrame.setVisible(true);
+
+            if (!check)
+            {
+                postRegistrationFrame.dispose();
+            }
         });
 
         return adminRegistrationButton;
