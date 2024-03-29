@@ -12,8 +12,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public class AccountRepository
@@ -115,6 +115,20 @@ public class AccountRepository
     }
 
     @Transactional
+    public List<AccountBase> getAccountsByUserAndBank(@NotNull User user, String password, Integer bankId)
+    {
+        var userId = GetUserIdByPassword(password, user.get_name(), user.get_surname());
+        String sql = "SELECT * FROM accounts WHERE userid = :userId and bankid = :bankId";
+        var params = new MapSqlParameterSource();
+
+        params.addValue("userId", userId);
+        params.addValue("bankId", bankId);
+
+        return _jdbcTemplate.query(sql, params, new AccountBaseRowMapper());
+    }
+
+
+    @Transactional
     public AccountBase GetAccount(@NotNull User user, String password)
     {
         var userId = GetUserIdByPassword(password, user.get_name(), user.get_surname());
@@ -123,6 +137,16 @@ public class AccountRepository
         params.addValue("userId", userId);
 
         return _jdbcTemplate.queryForObject(sql, params, new AccountBaseRowMapper());
+    }
+
+    @Transactional
+    public BigDecimal GetAccountBalance(Integer accountId)
+    {
+        String sql = "SELECT balance FROM accounts WHERE id = :accountId";
+        var params = new MapSqlParameterSource();
+        params.addValue("accountId", accountId);
+
+        return _jdbcTemplate.queryForObject(sql, params, BigDecimal.class);
     }
 
     @Transactional

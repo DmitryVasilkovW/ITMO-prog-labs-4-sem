@@ -2,7 +2,6 @@ package Bank.Entities;
 
 import Accounts.Models.AccountBase;
 import Accounts.Models.IInterestBearingAccount;
-import Database.Repositories.AccountRepository;
 import MyExceptions.ShortageOfFundsException;
 import Users.Entites.User;
 
@@ -40,6 +39,31 @@ public class CentralBank implements AutoCloseable
         }
     }
 
+    public String GetInfoAboutAccounts(String name, String surname, String password)
+    {
+        String info = "";
+
+        for (Bank bank : _banks.values())
+        {
+            info += bank.GetInfoAboutAccounts(name, surname, password);
+        }
+
+        return info;
+    }
+
+    public User GetUserByPasswordAndFullName(String name, String surname, String password)
+    {
+        for (Bank bank : _banks.values())
+        {
+            if (bank.GetUserByPasswordAndFullName(name, surname, password) != null)
+            {
+                return bank.GetUserByPasswordAndFullName(name, surname, password);
+            }
+        }
+
+        return null;
+    }
+
     public void ApplyDailyInterest(String bankName, Integer accountId)
     {
         Bank bank = _banks.get(bankName);
@@ -59,16 +83,9 @@ public class CentralBank implements AutoCloseable
         _banks.put(bank.get_name(), bank);
     }
 
-    public void RegistrationNewBank(
-            String name,
-            BigDecimal interestRate,
-            BigDecimal commission,
-            AccountRepository repository,
-            Map<String, User> users)
+    public BigDecimal GetBalance(String bankName , Integer id)
     {
-        var newBank = new Bank(name, interestRate, commission, users, repository);
-
-        AddBank(newBank);
+        return _banks.get(bankName).GetBalance(id);
     }
 
     public void TransferFunds(
@@ -76,12 +93,18 @@ public class CentralBank implements AutoCloseable
             Integer fromAccountId,
             String toBankName,
             Integer toAccountId,
-            BigDecimal amount) throws ShortageOfFundsException
+            BigDecimal amount) throws ShortageOfFundsException, RuntimeException
     {
         Bank fromBank = _banks.get(fromBankName);
         Bank toBank = _banks.get(toBankName);
 
         amount = fromBank.Withdraw(fromAccountId, amount);
+
+        if (amount == null)
+        {
+            throw new RuntimeException("Attempted debit from another person's card!");
+        }
+
         toBank.Deposit(toAccountId, amount);
     }
 

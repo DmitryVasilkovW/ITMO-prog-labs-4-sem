@@ -9,6 +9,7 @@ Users/Services/Builder/IWithSurname.class
 MyExceptions/IncorrectArgumentException.class
 Users/Services/RowMappers/AddressRowMapper.class
 MyExceptions/ThePassedArgumentIsNullException.class
+Main.class
 Users/Services/Builder/IWithName.class
 Accounts/Services/AccountBaseRowMapper.class
 Accounts/Models/IInterestBearingAccount.class

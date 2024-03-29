@@ -7,10 +7,14 @@ import Users.Services.RowMappers.AddressRowMapper;
 import Users.Services.RowMappers.PassportDetailsRowMapper;
 import Users.Services.RowMappers.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 
 @Repository
@@ -35,6 +39,79 @@ public class UserRepository
 
         return _jdbcTemplate.queryForObject(sql, params, Integer.class);
     }
+
+    @Transactional
+    public boolean CheckPassword(String name, String surname, String password)
+    {
+        String sqlForPassword = "select password from users where name = :name and surname = :surname and password = :password";
+
+        var params = new MapSqlParameterSource();
+        params.addValue("name", name);
+        params.addValue("surname", surname);
+        params.addValue("password", password);
+
+        List<String> passwords = _jdbcTemplate.query(sqlForPassword, params, (rs, rowNum) -> rs.getString("password"));
+
+        return !passwords.isEmpty();
+    }
+
+    @Transactional
+    public boolean CheckIfUserCanWithdraw(String name, String surname, String password, Integer accountId, BigDecimal amount)
+    {
+        String sql = "SELECT balance FROM accounts WHERE id = :accountId AND UserId = (SELECT Id FROM users WHERE name = :name AND surname = :surname AND password = :password)";
+
+        var params = new MapSqlParameterSource();
+        params.addValue("name", name);
+        params.addValue("surname", surname);
+        params.addValue("password", password);
+        params.addValue("accountId", accountId);
+
+        try
+        {
+            BigDecimal balance = _jdbcTemplate.queryForObject(sql, params, BigDecimal.class);
+
+            if (balance != null && balance.subtract(amount).compareTo(BigDecimal.ZERO) >= 0)
+            {
+                return true;
+            }
+        }
+        catch (EmptyResultDataAccessException e)
+        {
+            return false;
+        }
+
+        return false;
+    }
+
+    @Transactional
+    public boolean CheckIfUserCanUseThisAccount(String name, String surname, String password, Integer accountId)
+    {
+        String sql = "SELECT balance FROM accounts WHERE id = :accountId AND UserId = (SELECT Id FROM users WHERE name = :name AND surname = :surname AND password = :password)";
+
+        var params = new MapSqlParameterSource();
+        params.addValue("name", name);
+        params.addValue("surname", surname);
+        params.addValue("password", password);
+        params.addValue("accountId", accountId);
+
+        try
+        {
+            BigDecimal balance = _jdbcTemplate.queryForObject(sql, params, BigDecimal.class);
+
+            if (balance != null)
+            {
+                return true;
+            }
+        }
+        catch (EmptyResultDataAccessException e)
+        {
+            return false;
+        }
+
+        return false;
+    }
+
+
 
     @Transactional
     public void AddUser(String name, String surname, String password)

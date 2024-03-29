@@ -22,6 +22,34 @@ public class User
         _passportDetails = passportDetails;
     }
 
+    public PassportDetails GetPassportDetails()
+    {
+        String callingClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+
+        if (callingClassName.equals("InteractiveMenu.Models.Submenus.UserSubmenu"))
+        {
+            return _passportDetails;
+        }
+        else
+        {
+            throw new SecurityException("Access denied");
+        }
+    }
+
+    public Address GetAddress()
+    {
+        String callingClassName = Thread.currentThread().getStackTrace()[2].getClassName();
+
+        if (callingClassName.equals("InteractiveMenu.Models.Submenus.UserSubmenu"))
+        {
+            return _address;
+        }
+        else
+        {
+            throw new SecurityException("Access denied");
+        }
+    }
+
     public void InitAddress(Address address)
     {
         if (_address == null)
