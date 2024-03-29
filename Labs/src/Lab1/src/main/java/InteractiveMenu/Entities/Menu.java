@@ -1,6 +1,7 @@
 package InteractiveMenu.Entities;
 
 import InteractiveMenu.Models.Buttons.AccountButtons;
+import InteractiveMenu.Models.Submenus.AdminSubmenu;
 import InteractiveMenu.Models.Submenus.UserSubmenu;
 
 import javax.swing.*;
@@ -58,40 +59,10 @@ public class Menu
         var userRegistrationButton = userSubmenu.GetUserSubmenu();
         frame.add(userRegistrationButton);
 
+        var adminSubmenu = new AdminSubmenu();
+        var adminRegistrationButton = adminSubmenu.GetAdminSubmenu();
+        frame.add(adminRegistrationButton);
 
-
-        var adminRegistrationButton = new JButton("Register as Admin");
-        adminRegistrationButton.setFont(new Font("Times New Roman", Font.PLAIN, 13));
-        adminRegistrationButton.addActionListener(e ->
-        {
-            String username = JOptionPane.showInputDialog(frame, "Enter username");
-            String password = JOptionPane.showInputDialog(frame, "Enter password");
-            _userPasswords.put(username, password);
-            JOptionPane.showMessageDialog(frame, "Admin registered successfully!");
-
-
-            var postRegistrationFrame = new JFrame("Admin Menu");
-            postRegistrationFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-            postRegistrationFrame.setSize(600, 400);
-            postRegistrationFrame.setLayout(new BorderLayout());
-
-            var showUsernameButton = new JButton("Show Username");
-            showUsernameButton.addActionListener(e1 -> JOptionPane.showMessageDialog(postRegistrationFrame, "Username: " + username));
-
-            var showPasswordButton = new JButton("Show Password");
-            showPasswordButton.addActionListener(e1 -> JOptionPane.showMessageDialog(postRegistrationFrame, "Password: " + password));
-
-            var closeButton = new JButton("Close Menu");
-            closeButton.addActionListener(e1 -> postRegistrationFrame.dispose());
-
-            var panel = new JPanel();
-            panel.add(showUsernameButton);
-            panel.add(showPasswordButton);
-            panel.add(closeButton);
-            postRegistrationFrame.add(panel, BorderLayout.CENTER);
-
-            postRegistrationFrame.setVisible(true);
-        });
 
         var panel = new JPanel();
         panel.add(optionsButton);

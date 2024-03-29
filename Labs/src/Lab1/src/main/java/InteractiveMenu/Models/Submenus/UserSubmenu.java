@@ -47,7 +47,12 @@ public class UserSubmenu
         _bankRepository = context.getBean(BankRepository.class);
     }
 
-    public void displayUserInfo()
+    public void ShowAccountInfo()
+    {
+        JOptionPane.showMessageDialog(_frame, _centralBank.GetInfoAboutAccounts(_username, _surname, _password));
+    }
+
+    public void DisplayUserInfo()
     {
         User user = _centralBank.GetUserByPasswordAndFullName(_username, _surname, _password);
 
@@ -143,7 +148,7 @@ public class UserSubmenu
         _password = JOptionPane.showInputDialog(_frame, "Enter your password");
         _centralBank = new CentralBank();
 
-        var banks = _bankRepository.GetAllBanks();
+        var banks = _bankRepository.GetAllBanks(_password);
 
         for (Bank bank : banks)
         {
@@ -199,13 +204,23 @@ public class UserSubmenu
                 }
             });
 
+            var accountInfoButton = new JButton("Show info about accounts");
+            accountInfoButton.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    ShowAccountInfo();
+                }
+            });
+
             var userInfoButton = new JButton("Show info about user");
             userInfoButton.addActionListener(new ActionListener()
             {
                 @Override
                 public void actionPerformed(ActionEvent e)
                 {
-                    displayUserInfo();
+                    DisplayUserInfo();
                 }
             });
 
@@ -240,6 +255,7 @@ public class UserSubmenu
             panel.add(transferFundsButton);
             panel.add(userInfoButton);
             panel.add(passwordButton);
+            panel.add(accountInfoButton);
             panel.add(closeButton);
             postRegistrationFrame.add(panel, BorderLayout.CENTER);
 

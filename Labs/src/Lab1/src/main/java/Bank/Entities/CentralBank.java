@@ -39,6 +39,18 @@ public class CentralBank implements AutoCloseable
         }
     }
 
+    public String GetInfoAboutAccounts(String name, String surname, String password)
+    {
+        String info = "";
+
+        for (Bank bank : _banks.values())
+        {
+            info += bank.GetInfoAboutAccounts(name, surname, password);
+        }
+
+        return info;
+    }
+
     public User GetUserByPasswordAndFullName(String name, String surname, String password)
     {
         for (Bank bank : _banks.values())
@@ -87,6 +99,12 @@ public class CentralBank implements AutoCloseable
         Bank toBank = _banks.get(toBankName);
 
         amount = fromBank.Withdraw(fromAccountId, amount);
+
+        if (amount == null)
+        {
+            throw new RuntimeException("Attempted debit from another person's card!");
+        }
+
         toBank.Deposit(toAccountId, amount);
     }
 

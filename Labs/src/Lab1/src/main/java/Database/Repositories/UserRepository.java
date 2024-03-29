@@ -106,6 +106,21 @@ public class UserRepository
     }
 
     @Transactional
+    public boolean CheckPassword(String name, String surname, String password)
+    {
+        String sqlForPassword = "select password from users where name = :name and surname = :surname and password = :password";
+
+        var params = new MapSqlParameterSource();
+        params.addValue("name", name);
+        params.addValue("surname", surname);
+        params.addValue("password", password);
+
+        String tmpPassword = _jdbcTemplate.queryForObject(sqlForPassword, params, String.class);
+
+        return tmpPassword != null;
+    }
+
+    @Transactional
     public User GetUserByPassword(String password)
     {
         var userId = GetUserIdByPassword(password);

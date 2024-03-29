@@ -31,32 +31,117 @@ public class BankRepository
     }
 
     @Transactional
-    public List<Bank> GetAllBanks()
+    public List<Bank> GetAllBanks(String password)
     {
         String sql = "SELECT * FROM banks";
         List<Bank> banks = jdbcTemplate.query(sql, new BankRowMapper());
 
         for (Bank bank : banks)
         {
-            Map<String, User> users = getUsersForBank(bank.get_id());
+            Map<String, User> users = GetUsersForBank(bank.get_id());
+            var userToAccountRatio = new HashMap<String, List<Integer>>();
 
-            bank.ActivateBank((HashMap<String, User>) users);
+            for (User user : users.values())
+            {
+                if (CheckPassword(user.get_name(), user.get_surname(), password))
+                {
+                    HashMap<String, List<Integer>> tmpRatio = GetUserToAccountRatio(user.get_name(), user.get_surname(), password);
+                    userToAccountRatio.put(user.get_name() + user.get_surname() + password, tmpRatio.get(user.get_name() + user.get_surname() + password));
+                }
+            }
+
+            bank.ActivateBank((HashMap<String, User>) users, userToAccountRatio);
         }
 
         return banks;
     }
 
     @Transactional
-    public Map<String, User> getUsersForBank(int bankId)
+    public List<Bank> GetAllBanks(List<String> passwords)
     {
-        String sql = "SELECT * FROM users WHERE BankId = :bankId";
-        String sqlForPasswords = "SELECT password FROM users WHERE BankId = :bankId";
+        String sql = "SELECT * FROM banks";
+        List<Bank> banks = jdbcTemplate.query(sql, new BankRowMapper());
+
+        for (Bank bank : banks)
+        {
+            Map<String, User> users = GetUsersForBank(bank.get_id());
+            var userToAccountRatio = new HashMap<String, List<Integer>>();
+
+            assert (passwords.size() == users.size()) != false;
+            for (int i = 0; i < passwords.size(); i++)
+            {
+                if (CheckPassword(users.get(i).get_name(), users.get(i).get_surname(), passwords.get(i)))
+                {
+                    HashMap<String, List<Integer>> tmpRatio = GetUserToAccountRatio(users.get(i).get_name(), users.get(i).get_surname(), passwords.get(i));
+                    userToAccountRatio.put(
+                            users.get(i).get_name() + users.get(i).get_surname() + passwords.get(i),
+                            tmpRatio.get(users.get(i).get_name() + users.get(i).get_surname() + passwords.get(i)));
+                }
+            }
+
+            bank.ActivateBank((HashMap<String, User>) users, userToAccountRatio);
+        }
+
+        return banks;
+    }
+
+    @Transactional
+    public HashMap<String, List<Integer>> GetUserToAccountRatio(String name, String surname, String password)
+    {
+        if (CheckPassword(name, surname, password))
+        {
+            String sqlForUserId = "select id from users where name = :name and surname = :surname and password = :password";
+            String sqlForAccountIds = "select id from accounts where userid = :userId";
+
+            var params = new MapSqlParameterSource();
+            params.addValue("name", name);
+            params.addValue("surname", surname);
+            params.addValue("password", password);
+
+            Integer userId = jdbcTemplate.queryForObject(sqlForUserId, params, Integer.class);
+
+            params.addValue("userId", userId);
+
+            List<Integer> accounts = jdbcTemplate.query(sqlForAccountIds, params, (rs, rowNum) -> rs.getInt("id"));
+
+            var userToAccountRatio = new HashMap<String, List<Integer>>();
+
+            userToAccountRatio.put(name + surname + password, accounts);
+
+            return userToAccountRatio;
+        }
+
+        return null;
+    }
+
+    @Transactional
+    public boolean CheckPassword(String name, String surname, String password)
+    {
+        String sqlForPassword = "select password from users where name = :name and surname = :surname and password = :password";
+
+        var params = new MapSqlParameterSource();
+        params.addValue("name", name);
+        params.addValue("surname", surname);
+        params.addValue("password", password);
+
+        List<String> passwords = jdbcTemplate.query(sqlForPassword, params, (rs, rowNum) -> rs.getString("password"));
+
+        return !passwords.isEmpty();
+    }
+
+
+    public Map<String, User> GetUsersForBank(int bankId)
+    {
+        String sqlForUserId = "SELECT userid FROM bank_clients WHERE BankId = :bankId";
+        String sql = "SELECT * FROM users WHERE Id IN (SELECT UserId FROM bank_clients WHERE BankId = :bankId)";
+        String sqlForPasswords = "SELECT password FROM users WHERE Id IN (SELECT UserId FROM bank_clients WHERE BankId = :bankId)";
         String sqlForAddress = "SELECT * FROM address WHERE UserId = :userId";
         String sqlForPassportDetails = "SELECT * FROM passportdetails WHERE UserId = :userId";
-        String sqlForUserId = "SELECT id FROM USERS WHERE BankId = :bankId";
 
         var params = new MapSqlParameterSource();
         params.addValue("bankId", bankId);
+
+        List<Integer> userIds = jdbcTemplate.query(sqlForUserId, params, (rs, rowNum) -> rs.getInt("userid"));
 
         List<User> users = jdbcTemplate.query(sql, params, new UserRowMapper());
         List<String> passwords = jdbcTemplate.query(sqlForPasswords, params, (rs, rowNum) -> rs.getString("password"));
@@ -66,8 +151,7 @@ public class BankRepository
         for (int i = 0; i < users.size(); i++)
         {
             User user = users.get(i);
-
-            Integer userId = jdbcTemplate.queryForObject(sqlForUserId, params, Integer.class);
+            Integer userId = userIds.get(i);
 
             params.addValue("userId", userId);
 
@@ -82,5 +166,6 @@ public class BankRepository
 
         return userMap;
     }
+
 
 }

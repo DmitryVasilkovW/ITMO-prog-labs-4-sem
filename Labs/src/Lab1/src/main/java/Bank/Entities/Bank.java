@@ -35,6 +35,7 @@ public class Bank implements AutoCloseable
     private HashMap<Integer, AccountBase> _accounts;
     @Nullable
     public HashMap<String, User> _users;
+    public HashMap<String, List<Integer>> _usersAccounts;
 
     public Bank(Integer id, String name, BigDecimal interestRate, BigDecimal commission, @Nullable HashMap<String, User> users)
     {
@@ -51,6 +52,57 @@ public class Bank implements AutoCloseable
         context.refresh();
 
         _accountRepository = context.getBean(AccountRepository.class);
+    }
+
+    public String GetInfoAboutAccounts(String name, String surname, String password)
+    {
+        String info = "";
+        var accounts = new ArrayList<AccountBase>();
+        var accountIds = new ArrayList<Integer>();
+        int i = 0;
+
+        if (_usersAccounts != null)
+        {
+            accountIds = (ArrayList<Integer>)_usersAccounts.get(name + surname + password);
+        }
+
+        if (accountIds == null)
+        {
+            return "";
+        }
+
+        for (Integer id : accountIds)
+        {
+            accounts.add(_accounts.get(id));
+        }
+
+        for (; i < accounts.size(); i++)
+        {
+
+            info += "Account type: " + accounts.get(i).getClass().getSimpleName() + "\n";
+            info += "Account id: " + accounts.get(i).get_id().toString() + "\n";
+            info += "Balance: " + accounts.get(i).get_balance().toString() + "\n";
+
+            if (accounts.get(i) instanceof CreditAccount)
+            {
+                info += "Credit limit: " + ((CreditAccount)accounts.get(i)).get_creditLimit().toString() + "\n";
+                info += "Commission: " + ((CreditAccount)accounts.get(i)).get_commission().toString() + "\n";
+            }
+
+            else if (accounts.get(i) instanceof DebitAccount)
+            {
+                info += "Interest timer: " + ((DebitAccount)accounts.get(i)).get_interestTimer() != null ? "Timer is active" : "Timer is not active" + "\n";
+            }
+
+            else if (accounts.get(i) instanceof DepositAccount)
+            {
+                info += "Deposit end date: " + ((DepositAccount)accounts.get(i)).get_depositEndDate().toString() + "\n";
+            }
+
+            info += "\n" + "\n";
+        }
+
+        return info;
     }
 
     public User GetUserByPasswordAndFullName(String name, String surname, String password)
@@ -79,9 +131,10 @@ public class Bank implements AutoCloseable
         return null;
     }
 
-    public void ActivateBank(HashMap<String, User> users)
+    public void ActivateBank(HashMap<String, User> users, HashMap<String, List<Integer>> usersAccounts)
     {
         _users = users;
+        _usersAccounts = usersAccounts;
 
         for (Map.Entry<String, User> entry : users.entrySet())
         {
@@ -137,7 +190,18 @@ public class Bank implements AutoCloseable
     {
         AccountBase account = _accounts.get(accountId);
 
-        return account.Withdrawal(amount);
+        for (List<Integer> accounts : _usersAccounts.values())
+        {
+            for (Integer tmpAccountId : accounts)
+            {
+                if (tmpAccountId.equals(accountId))
+                {
+                    return account.Withdrawal(amount);
+                }
+            }
+        }
+
+        return null;
     }
 
     public void ApplyInterestOrCommission()

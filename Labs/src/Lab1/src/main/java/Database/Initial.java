@@ -37,11 +37,16 @@ public class Initial
                 + "CREATE TABLE "
                 + "users" + "("
                 + "Id SERIAL PRIMARY KEY NOT NULL,"
-                + "BankId INT,"
-                + "FOREIGN KEY (BankId) REFERENCES banks(Id),"
                 + "Name TEXT NOT NULL,"
                 + "Surname TEXT NOT NULL,"
                 + "Password TEXT NOT NULL);"
+
+                + "CREATE TABLE "
+                + "bank_clients" + "("
+                + "userid INT,"
+                + "FOREIGN KEY (UserId) REFERENCES users(Id),"
+                + "BankId INT,"
+                + "FOREIGN KEY (BankId) REFERENCES banks(Id));"
 
                 + "CREATE TABLE "
                 + "address" + "("
@@ -92,7 +97,8 @@ public class Initial
                 "drop table if exists address;" +
                 "drop table if exists PassportDetails;" +
                 "drop table if exists users;" +
-                "drop table if exists banks";
+                "drop table if exists banks;" +
+                "drop table bank_clients";
 
         try
         {

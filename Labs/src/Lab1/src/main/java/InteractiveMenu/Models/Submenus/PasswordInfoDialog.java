@@ -7,9 +7,9 @@ import java.awt.event.ActionListener;
 
 public class PasswordInfoDialog extends JDialog
 {
-    private JPanel contentPane = new JPanel();
-    private JButton buttonOK = new JButton("OK");
-    private JButton showPasswordButton = new JButton("Show Password");
+    private JPanel _contentPane = new JPanel();
+    private JButton _buttonOK = new JButton("OK");
+    private JButton _showPasswordButton = new JButton("Show Password");
     private JFrame _frame;
 
     public PasswordInfoDialog(String password)
@@ -20,11 +20,11 @@ public class PasswordInfoDialog extends JDialog
         _frame.setSize(600, 400);
         _frame.setLayout(new BorderLayout());
 
-        setContentPane(contentPane);
+        setContentPane(_contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
+        getRootPane().setDefaultButton(_buttonOK);
 
-        showPasswordButton.addActionListener(new ActionListener()
+        _showPasswordButton.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -33,7 +33,7 @@ public class PasswordInfoDialog extends JDialog
             }
         });
 
-        buttonOK.addActionListener(new ActionListener()
+        _buttonOK.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e)
             {
@@ -41,8 +41,8 @@ public class PasswordInfoDialog extends JDialog
             }
         });
 
-        contentPane.add(showPasswordButton);
-        contentPane.add(buttonOK);
+        _contentPane.add(_showPasswordButton);
+        _contentPane.add(_buttonOK);
     }
 
 
