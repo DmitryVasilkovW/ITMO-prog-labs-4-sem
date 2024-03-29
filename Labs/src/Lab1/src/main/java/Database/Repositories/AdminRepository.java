@@ -98,9 +98,10 @@ public class AdminRepository
         paramsForBankClients.addValue("bankId", bankId);
         _jdbcTemplate.update(sqlForBankClients, paramsForBankClients);
 
-        String sql = "INSERT INTO accounts (UserId, balance, creditLimit, commission, type) VALUES (:userId, :balance, :creditLimit, :commission, :type)";
+        String sql = "INSERT INTO accounts (UserId, bankid, balance, creditLimit, commission, type) VALUES (:userId, :bankId, :balance, :creditLimit, :commission, :type)";
         var params = new MapSqlParameterSource();
         params.addValue("userId", id);
+        params.addValue("bankId", bankId);
         params.addValue("balance", balance);
         params.addValue("creditLimit", creditLimit);
         params.addValue("commission", commission);
@@ -122,9 +123,10 @@ public class AdminRepository
         paramsForBankClients.addValue("bankId", bankId);
         _jdbcTemplate.update(sqlForBankClients, paramsForBankClients);
 
-        String sql = "INSERT INTO accounts (UserId, balance, type) VALUES (:userId, :balance, :type)";
+        String sql = "INSERT INTO accounts (UserId, bankid, balance, type) VALUES (:userId, :bankId, :balance, :type)";
         var params = new MapSqlParameterSource();
         params.addValue("userId", id);
+        params.addValue("bankId", bankId);
         params.addValue("balance", balance);
         params.addValue("type", "DebitAccount");
         _jdbcTemplate.update(sql, params);
@@ -144,9 +146,10 @@ public class AdminRepository
         paramsForBankClients.addValue("bankId", bankId);
         _jdbcTemplate.update(sqlForBankClients, paramsForBankClients);
 
-        String sql = "INSERT INTO accounts (UserId, balance, depositEndDate, type) VALUES (:userId, :balance, :depositEndDate, :type)";
+        String sql = "INSERT INTO accounts (UserId, bankid, balance, depositEndDate, type) VALUES (:userId, :bankId, :balance, :depositEndDate, :type)";
         var params = new MapSqlParameterSource();
         params.addValue("userId", id);
+        params.addValue("bankId", bankId);
         params.addValue("balance", balance);
         params.addValue("depositEndDate", depositEndDate);
         params.addValue("type", "DepositAccount");

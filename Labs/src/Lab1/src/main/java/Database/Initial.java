@@ -70,11 +70,13 @@ public class Initial
                 + "accounts" + "("
                 + "id SERIAL PRIMARY KEY NOT NULL,"
                 + "UserId INT,"
+                + "BankId INT,"
                 + "Type TEXT NOT NULL,"
                 + "creditLimit NUMERIC, "
                 + "commission NUMERIC,"
                 + "depositEndDate DATE,"
                 + "FOREIGN KEY (UserId) REFERENCES users(Id),"
+                + "FOREIGN KEY (BankId) REFERENCES banks(Id),"
                 + "balance NUMERIC NOT NULL DEFAULT 0);";
 
         try
@@ -96,9 +98,9 @@ public class Initial
                 "drop table if exists accounts;" +
                 "drop table if exists address;" +
                 "drop table if exists PassportDetails;" +
+                "drop table if exists bank_clients;" +
                 "drop table if exists users;" +
-                "drop table if exists banks;" +
-                "drop table bank_clients";
+                "drop table if exists banks;";
 
         try
         {

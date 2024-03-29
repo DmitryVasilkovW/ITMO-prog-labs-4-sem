@@ -115,6 +115,20 @@ public class AccountRepository
     }
 
     @Transactional
+    public List<AccountBase> getAccountsByUserAndBank(@NotNull User user, String password, Integer bankId)
+    {
+        var userId = GetUserIdByPassword(password, user.get_name(), user.get_surname());
+        String sql = "SELECT * FROM accounts WHERE userid = :userId and bankid = :bankId";
+        var params = new MapSqlParameterSource();
+
+        params.addValue("userId", userId);
+        params.addValue("bankId", bankId);
+
+        return _jdbcTemplate.query(sql, params, new AccountBaseRowMapper());
+    }
+
+
+    @Transactional
     public AccountBase GetAccount(@NotNull User user, String password)
     {
         var userId = GetUserIdByPassword(password, user.get_name(), user.get_surname());

@@ -45,7 +45,7 @@ public class BankRepository
             {
                 if (CheckPassword(user.get_name(), user.get_surname(), password))
                 {
-                    HashMap<String, List<Integer>> tmpRatio = GetUserToAccountRatio(user.get_name(), user.get_surname(), password);
+                    HashMap<String, List<Integer>> tmpRatio = GetUserToAccountRatio(user.get_name(), user.get_surname(), password, bank.get_id());
                     userToAccountRatio.put(user.get_name() + user.get_surname() + password, tmpRatio.get(user.get_name() + user.get_surname() + password));
                 }
             }
@@ -72,7 +72,7 @@ public class BankRepository
             {
                 if (CheckPassword(users.get(i).get_name(), users.get(i).get_surname(), passwords.get(i)))
                 {
-                    HashMap<String, List<Integer>> tmpRatio = GetUserToAccountRatio(users.get(i).get_name(), users.get(i).get_surname(), passwords.get(i));
+                    HashMap<String, List<Integer>> tmpRatio = GetUserToAccountRatio(users.get(i).get_name(), users.get(i).get_surname(), passwords.get(i), bank.get_id());
                     userToAccountRatio.put(
                             users.get(i).get_name() + users.get(i).get_surname() + passwords.get(i),
                             tmpRatio.get(users.get(i).get_name() + users.get(i).get_surname() + passwords.get(i)));
@@ -86,17 +86,18 @@ public class BankRepository
     }
 
     @Transactional
-    public HashMap<String, List<Integer>> GetUserToAccountRatio(String name, String surname, String password)
+    public HashMap<String, List<Integer>> GetUserToAccountRatio(String name, String surname, String password, Integer bankId)
     {
         if (CheckPassword(name, surname, password))
         {
-            String sqlForUserId = "select id from users where name = :name and surname = :surname and password = :password";
-            String sqlForAccountIds = "select id from accounts where userid = :userId";
+            String sqlForUserId = "SELECT id FROM users WHERE name = :name AND surname = :surname AND password = :password";
+            String sqlForAccountIds = "SELECT id FROM accounts WHERE UserId = :userId AND bankid = :bankId";
 
             var params = new MapSqlParameterSource();
             params.addValue("name", name);
             params.addValue("surname", surname);
             params.addValue("password", password);
+            params.addValue("bankId", bankId);
 
             Integer userId = jdbcTemplate.queryForObject(sqlForUserId, params, Integer.class);
 
@@ -105,7 +106,6 @@ public class BankRepository
             List<Integer> accounts = jdbcTemplate.query(sqlForAccountIds, params, (rs, rowNum) -> rs.getInt("id"));
 
             var userToAccountRatio = new HashMap<String, List<Integer>>();
-
             userToAccountRatio.put(name + surname + password, accounts);
 
             return userToAccountRatio;
@@ -113,6 +113,7 @@ public class BankRepository
 
         return null;
     }
+
 
     @Transactional
     public boolean CheckPassword(String name, String surname, String password)
@@ -130,6 +131,7 @@ public class BankRepository
     }
 
 
+    @Transactional
     public Map<String, User> GetUsersForBank(int bankId)
     {
         String sqlForUserId = "SELECT userid FROM bank_clients WHERE BankId = :bankId";

@@ -76,30 +76,43 @@ public class Bank implements AutoCloseable
             accounts.add(_accounts.get(id));
         }
 
-        for (; i < accounts.size(); i++)
+        boolean chek = true;
+
+        for (var id : accounts)
         {
-
-            info += "Account type: " + accounts.get(i).getClass().getSimpleName() + "\n";
-            info += "Account id: " + accounts.get(i).get_id().toString() + "\n";
-            info += "Balance: " + accounts.get(i).get_balance().toString() + "\n";
-
-            if (accounts.get(i) instanceof CreditAccount)
+            if (id == null)
             {
-                info += "Credit limit: " + ((CreditAccount)accounts.get(i)).get_creditLimit().toString() + "\n";
-                info += "Commission: " + ((CreditAccount)accounts.get(i)).get_commission().toString() + "\n";
+                chek = false;
             }
+        }
 
-            else if (accounts.get(i) instanceof DebitAccount)
+        if (chek)
+        {
+            for (; i < accounts.size(); i++)
             {
-                info += "Interest timer: " + ((DebitAccount)accounts.get(i)).get_interestTimer() != null ? "Timer is active" : "Timer is not active" + "\n";
-            }
 
-            else if (accounts.get(i) instanceof DepositAccount)
-            {
-                info += "Deposit end date: " + ((DepositAccount)accounts.get(i)).get_depositEndDate().toString() + "\n";
-            }
+                info += "Account type: " + accounts.get(i).getClass().getSimpleName() + "\n";
+                info += "Account id: " + accounts.get(i).get_id().toString() + "\n";
+                info += "Balance: " + accounts.get(i).get_balance().toString() + "\n";
 
-            info += "\n" + "\n";
+                if (accounts.get(i) instanceof CreditAccount)
+                {
+                    info += "Credit limit: " + ((CreditAccount)accounts.get(i)).get_creditLimit().toString() + "\n";
+                    info += "Commission: " + ((CreditAccount)accounts.get(i)).get_commission().toString() + "\n";
+                }
+
+                else if (accounts.get(i) instanceof DebitAccount)
+                {
+                    info += "Interest timer: " + ((DebitAccount)accounts.get(i)).get_interestTimer() != null ? "Timer is active" : "Timer is not active" + "\n";
+                }
+
+                else if (accounts.get(i) instanceof DepositAccount)
+                {
+                    info += "Deposit end date: " + ((DepositAccount)accounts.get(i)).get_depositEndDate().toString() + "\n";
+                }
+
+                info += "\n" + "\n";
+            }
         }
 
         return info;
@@ -140,7 +153,7 @@ public class Bank implements AutoCloseable
         {
             String password = entry.getKey();
             User user = entry.getValue();
-            var accounts = _accountRepository.GetAccountsByUser(user, password);
+            var accounts = _accountRepository.getAccountsByUserAndBank(user, password, _id);
 
             for (AccountBase acc : accounts)
             {
