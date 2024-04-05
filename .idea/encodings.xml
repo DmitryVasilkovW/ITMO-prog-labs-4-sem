@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/Labs/src/Lab1/InteractiveMenu/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Labs/src/Lab1/InteractiveMenu/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Labs/src/Lab1/src/InteractiveMenu/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Labs/src/Lab1/src/InteractiveMenu/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Labs/src/Lab1/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Labs/src/Lab1/src/main/java/InteractiveMenu/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Labs/src/Lab1/src/main/java/InteractiveMenu/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Labs/src/Lab1/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/Lab1/InteractiveMenu/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/Lab1/InteractiveMenu/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/Lab1/src/InteractiveMenu/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/Lab1/src/InteractiveMenu/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/Lab1/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/Lab1/src/main/java/InteractiveMenu/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/Lab1/src/main/java/InteractiveMenu/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/Lab1/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/Lab2/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/Lab2/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/src/Lab2/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/src/Lab2/src/main/java/Controller/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/src/Lab2/src/main/java/Controller/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/src/Lab2/src/main/java/DataAccessObject/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/src/Lab2/src/main/java/DataAccessObject/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/src/Lab2/src/main/java/Service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/src/Lab2/src/main/java/Service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Labs/src/Lab2/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tmp/resources" charset="UTF-8" />
