@@ -8,13 +8,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Lab1" />
-        <module name="Lab2" />
         <module name="InteractiveMenu" />
+        <module name="DataAccessObject" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="19">
       <module name="Controller" target="17" />
-      <module name="DataAccessObject" target="19" />
       <module name="DatabasePractice" target="17" />
       <module name="Service" target="17" />
     </bytecodeTargetLevel>
