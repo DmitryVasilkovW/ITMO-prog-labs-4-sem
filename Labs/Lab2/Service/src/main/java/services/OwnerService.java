@@ -44,4 +44,9 @@ public class OwnerService
     {
         _repository.deleteOwner(ownerId);
     }
+
+    public void addOwner(String name, LocalDate birthDate)
+    {
+        _repository.addOwner(name, birthDate);
+    }
 }

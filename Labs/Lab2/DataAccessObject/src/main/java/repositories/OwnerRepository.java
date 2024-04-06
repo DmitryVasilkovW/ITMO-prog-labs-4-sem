@@ -96,4 +96,20 @@ public class OwnerRepository implements IOwnerRepository
             transaction.commit();
         }
     }
+
+    public void addOwner(String name, LocalDate birthDate)
+    {
+        try (Session session = _sessionFactory.openSession())
+        {
+            Transaction transaction = session.beginTransaction();
+
+            String sql = "INSERT INTO owners (name, birthdate) VALUES (:name, :birthdate)";
+            session.createNativeQuery(sql)
+                    .setParameter("name", name)
+                    .setParameter("birthdate", birthDate)
+                    .executeUpdate();
+
+            transaction.commit();
+        }
+    }
 }

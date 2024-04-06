@@ -138,4 +138,49 @@ public class CatRepository implements ICatRepository
             transaction.commit();
         }
     }
+
+    public void addCat(String name, LocalDate birthDate, String breed, String color, int ownerId)
+    {
+        try (Session session = _sessionFactory.openSession())
+        {
+            Transaction transaction = session.beginTransaction();
+
+            String sql = "INSERT INTO cats (name, birthdate, breed, color, owner_id) VALUES (:name, :birthdate, :breed, :color, :ownerId)";
+            session.createNativeQuery(sql)
+                    .setParameter("name", name)
+                    .setParameter("birthdate", birthDate)
+                    .setParameter("breed", breed)
+                    .setParameter("color", color)
+                    .setParameter("ownerId", ownerId)
+                    .executeUpdate();
+
+            sql = "SELECT currval(pg_get_serial_sequence('cats','id'))";
+            var catId = session.createNativeQuery(sql).getSingleResult();
+
+            sql = "INSERT INTO owners_cats (cat_id, owner_id) VALUES (:catId, :ownerId)";
+            session.createNativeQuery(sql)
+                    .setParameter("catId", catId)
+                    .setParameter("ownerId", ownerId)
+                    .executeUpdate();
+
+            transaction.commit();
+        }
+    }
+
+
+    public void addFriendship(int catId1, int catId2)
+    {
+        try (Session session = _sessionFactory.openSession())
+        {
+            Transaction transaction = session.beginTransaction();
+
+            String sql = "INSERT INTO cats_friends (cat_id, friend_id) VALUES (:catId1, :catId2), (:catId2, :catId1)";
+            session.createNativeQuery(sql)
+                    .setParameter("catId1", catId1)
+                    .setParameter("catId2", catId2)
+                    .executeUpdate();
+
+            transaction.commit();
+        }
+    }
 }

@@ -64,4 +64,14 @@ public class CatController
     {
         _service.deleteCat(id);
     }
+
+    public void addCat(String name, LocalDate birthDate, String breed, String color, int ownerId)
+    {
+        _service.addCat(name, birthDate, breed, color, ownerId);
+    }
+
+    public void addFriendship(int catId1, int catId2)
+    {
+        _service.addFriendship(catId1, catId2);
+    }
 }

@@ -40,6 +40,30 @@ public class SetterSubmenu
         _catController.updateCatName(id, name);
     }
 
+    public void addCat()
+    {
+        String name = JOptionPane.showInputDialog(_frame, "Enter cat name");
+        String birthDateStr = JOptionPane.showInputDialog(_frame, "Enter cat birth date (format: yyyy-mm-dd)");
+        LocalDate birthDate = LocalDate.parse(birthDateStr);
+        String breed = JOptionPane.showInputDialog(_frame, "Enter cat breed");
+        String color = JOptionPane.showInputDialog(_frame, "Enter cat color");
+        String ownerIdStr = JOptionPane.showInputDialog(_frame, "Enter owner_id for the cat");
+        int ownerId = Integer.parseInt(ownerIdStr);
+
+        _catController.addCat(name, birthDate, breed, color, ownerId);
+    }
+
+    public void addFriendship()
+    {
+        String catId1Str = JOptionPane.showInputDialog(_frame, "Enter cat_id for the first cat");
+        int catId1 = Integer.parseInt(catId1Str);
+        String catId2Str = JOptionPane.showInputDialog(_frame, "Enter cat_id for the second cat");
+        int catId2 = Integer.parseInt(catId2Str);
+
+        _catController.addFriendship(catId1, catId2);
+    }
+
+
     public void updateCatBirthDate()
     {
         String idStr = JOptionPane.showInputDialog(_frame, "Enter cat_id");
@@ -196,6 +220,26 @@ public class SetterSubmenu
                 }
             });
 
+            var addCatButton = new JButton("Add сat");
+            addCatButton.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    addCat();
+                }
+            });
+
+            var addFriendshipButton = new JButton("Add friendship");
+            addFriendshipButton.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent e)
+                {
+                    addFriendship();
+                }
+            });
+
             var closeButton = new JButton("Close Menu");
             closeButton.addActionListener(e1 ->
             {
@@ -211,6 +255,8 @@ public class SetterSubmenu
             panel.add(updateOwnerNameButton);
             panel.add(updateOwnerBirthDateButton);
             panel.add(deleteOwnerButton);
+            panel.add(addCatButton);
+            panel.add(addFriendshipButton);
             panel.add(closeButton);
             postRegistrationFrame.add(panel, BorderLayout.CENTER);
 

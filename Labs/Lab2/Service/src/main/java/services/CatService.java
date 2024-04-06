@@ -64,4 +64,14 @@ public class CatService
     {
         _repository.deleteCat(id);
     }
+
+    public void addCat(String name, LocalDate birthDate, String breed, String color, int ownerId)
+    {
+        _repository.addCat(name, birthDate, breed, color, ownerId);
+    }
+
+    public void addFriendship(int catId1, int catId2)
+    {
+        _repository.addFriendship(catId1, catId2);
+    }
 }

@@ -44,4 +44,9 @@ public class OwnerController
     {
         _service.deleteOwner(ownerId);
     }
+
+    public void addOwner(String name, LocalDate birthDate)
+    {
+        _service.addOwner(name, birthDate);
+    }
 }

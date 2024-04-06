@@ -262,6 +262,16 @@ public class GetInfoSubmenu
         JOptionPane.showMessageDialog(_frame, info.toString());
     }
 
+    public void addOwner()
+    {
+        String name = JOptionPane.showInputDialog(_frame, "Enter owner name");
+        String birthDateStr = JOptionPane.showInputDialog(_frame, "Enter owner birth date (format: yyyy-mm-dd)");
+        LocalDate birthDate = LocalDate.parse(birthDateStr);
+
+        _ownerController.addOwner(name, birthDate);
+    }
+
+
     public JButton GetInfoButton()
     {
         var InfoButton = new JButton("Info");
@@ -354,6 +364,16 @@ public class GetInfoSubmenu
                 }
             });
 
+            var addOwnerButton = new JButton("Add owner");
+            addOwnerButton.addActionListener(new ActionListener()
+            {
+                @Override
+                public void actionPerformed(ActionEvent actionEvent)
+                {
+                    addOwner();
+                }
+            });
+
             var closeButton = new JButton("Close Menu");
             closeButton.addActionListener(e1 ->
             {
@@ -369,6 +389,7 @@ public class GetInfoSubmenu
             panel.add(showOwnerByIdButton);
             panel.add(showOwnersByBirthDateButton);
             panel.add(showOwnersByNameButton);
+            panel.add(addOwnerButton);
             panel.add(closeButton);
             postRegistrationFrame.add(panel, BorderLayout.CENTER);
 
