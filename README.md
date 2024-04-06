@@ -1,1 +1,1 @@
-# [Labs](https://github.com/DmitryVasilkovW/ITMO-prog-labs-4-semm/md/Labs.md)
+# [Labs](https://github.com/DmitryVasilkovW/ITMO-prog-labs-4-sem/blob/main/md/Labs.md)
