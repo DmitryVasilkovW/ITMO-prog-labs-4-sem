@@ -7,17 +7,18 @@ import org.hibernate.cfg.Configuration;
 
 public class Initial
 {
-    private SessionFactory sessionFactory;
+    private SessionFactory _sessionFactory;
 
     public Initial()
     {
-        Configuration configuration = new Configuration();
+        var configuration = new Configuration();
         configuration.configure("hibernate.cfg.xml");
-        sessionFactory = configuration.buildSessionFactory();
+        _sessionFactory = configuration.buildSessionFactory();
     }
 
-    public void getUpSql() {
-        try (Session session = sessionFactory.openSession())
+    public void getUpSql()
+    {
+        try (Session session = _sessionFactory.openSession())
         {
             Transaction transaction = session.beginTransaction();
 
@@ -57,12 +58,12 @@ public class Initial
 
     public void getDownSql()
     {
-        try (Session session = sessionFactory.openSession())
+        try (Session session = _sessionFactory.openSession())
         {
             Transaction transaction = session.beginTransaction();
 
             String dropTablesSQL =
-                    "drop table if exists cats_owners;" +
+                    "drop table if exists owners_cats;" +
                             "drop table if exists cats_friends;" +
                             "drop table if exists cats;" +
                             "drop table if exists owners;";
