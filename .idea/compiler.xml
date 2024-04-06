@@ -8,14 +8,15 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Lab1" />
+        <module name="Service" />
         <module name="InteractiveMenu" />
+        <module name="Controller" />
         <module name="DataAccessObject" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="19">
-      <module name="Controller" target="17" />
       <module name="DatabasePractice" target="17" />
-      <module name="Service" target="17" />
+      <module name="Models" target="19" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
