@@ -34,22 +34,25 @@ public class GetInfoSubmenu
         _ownerController = new OwnerController(new OwnerService(new OwnerRepository()));
     }
 
-    public void showInfoAboutCat(Cat cat)
+    public String showInfoAboutCat(Cat cat)
     {
+        var info = new StringBuilder();
+
         if (cat != null)
         {
-            JOptionPane.showMessageDialog(_frame, "Cat ID: " + cat.getId() + "\n" +
+            info.append( "Cat ID: " + cat.getId() + "\n" +
                     "Name: " + cat.getName() + "\n" +
                     "Birth Date: " + cat.getBirthDate() + "\n" +
                     "Breed: " + cat.getBreed() + "\n" +
                     "Color: " + cat.getColor() + "\n" +
-                    "Owner: " + cat.getOwner().getName());
+                    "Owner: " + cat.getOwner().getName() + "\n\n");
 
             List<Cat> friends = cat.getFriends();
 
             if (friends != null && !friends.isEmpty())
             {
                 StringBuilder friendsInfo = new StringBuilder("Friends:\n");
+
                 for (Cat friend : friends)
                 {
                     friendsInfo.append("Friend ID: ").append(friend.getId()).append("\n")
@@ -59,13 +62,11 @@ public class GetInfoSubmenu
                             .append("Color: ").append(friend.getColor()).append("\n")
                             .append("Owner: ").append(friend.getOwner().getName()).append("\n\n");
                 }
-                JOptionPane.showMessageDialog(_frame, friendsInfo.toString());
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(_frame, "This cat has no friends.");
+                info.append(friendsInfo.toString());
             }
         }
+
+        return info.toString();
     }
 
     public void showInfoAboutCat()
@@ -113,6 +114,7 @@ public class GetInfoSubmenu
 
     public void getCatsByName()
     {
+        var info = new StringBuilder();
         String name = JOptionPane.showInputDialog(_frame, "Enter cat name");
         List<Cat> cats = _catController.getCatsByName(name);
 
@@ -120,17 +122,20 @@ public class GetInfoSubmenu
         {
             for (Cat cat : cats)
             {
-                showInfoAboutCat(cat);
+                info.append(showInfoAboutCat(cat));
             }
         }
         else
         {
             JOptionPane.showMessageDialog(_frame, "No cats found with name: " + name);
         }
+
+        JOptionPane.showMessageDialog(_frame, info.toString());
     }
 
     public void getCatsByBirthDate()
     {
+        var info = new StringBuilder();
         String birthDateStr = JOptionPane.showInputDialog(_frame, "Enter cat birth date (format: yyyy-mm-dd)");
         LocalDate birthDate = LocalDate.parse(birthDateStr);
         List<Cat> cats = _catController.getCatsByBirthDate(birthDate);
@@ -139,17 +144,20 @@ public class GetInfoSubmenu
         {
             for (Cat cat : cats)
             {
-                showInfoAboutCat(cat);
+                info.append(showInfoAboutCat(cat));
             }
         }
         else
         {
             JOptionPane.showMessageDialog(_frame, "No cats found with birth date: " + birthDate);
         }
+
+        JOptionPane.showMessageDialog(_frame, info.toString());
     }
 
     public void getCatsByBreed()
     {
+        var info = new StringBuilder();
         String breed = JOptionPane.showInputDialog(_frame, "Enter cat breed");
         List<Cat> cats = _catController.getCatsByBreed(breed);
 
@@ -157,17 +165,20 @@ public class GetInfoSubmenu
         {
             for (Cat cat : cats)
             {
-                showInfoAboutCat(cat);
+               info.append(showInfoAboutCat(cat));
             }
         }
         else
         {
             JOptionPane.showMessageDialog(_frame, "No cats found with breed: " + breed);
         }
+
+        JOptionPane.showMessageDialog(_frame, info.toString());
     }
 
     public void getCatsByColor()
     {
+        var info = new StringBuilder();
         String color = JOptionPane.showInputDialog(_frame, "Enter cat color");
         List<Cat> cats = _catController.getCatsByColor(color);
 
@@ -175,13 +186,15 @@ public class GetInfoSubmenu
         {
             for (Cat cat : cats)
             {
-                showInfoAboutCat(cat);
+                info.append(showInfoAboutCat(cat));
             }
         }
         else
         {
             JOptionPane.showMessageDialog(_frame, "No cats found with color: " + color);
         }
+
+        JOptionPane.showMessageDialog(_frame, info.toString());
     }
 
     public void showOwnerById()
@@ -204,6 +217,7 @@ public class GetInfoSubmenu
 
     public void showOwnersByName()
     {
+        var info = new StringBuilder();
         String name = JOptionPane.showInputDialog(_frame, "Enter owner name");
         List<Owner> owners = _ownerController.getOwnersByName(name);
 
@@ -211,19 +225,22 @@ public class GetInfoSubmenu
         {
             for (Owner owner : owners)
             {
-                JOptionPane.showMessageDialog(_frame, "Owner ID: " + owner.getId() + "\n" +
+                info.append("Owner ID: " + owner.getId() + "\n" +
                         "Name: " + owner.getName() + "\n" +
-                        "Birth Date: " + owner.getBirthDate());
+                        "Birth Date: " + owner.getBirthDate() + "\n\n");
             }
         }
         else
         {
             JOptionPane.showMessageDialog(_frame, "No owners found with name: " + name);
         }
+
+        JOptionPane.showMessageDialog(_frame, info.toString());
     }
 
     public void showOwnersByBirthDate()
     {
+        var info = new StringBuilder();
         String birthDateStr = JOptionPane.showInputDialog(_frame, "Enter owner birth date (format: yyyy-mm-dd)");
         LocalDate birthDate = LocalDate.parse(birthDateStr);
         List<Owner> owners = _ownerController.getOwnersByBirthDate(birthDate);
@@ -232,15 +249,17 @@ public class GetInfoSubmenu
         {
             for (Owner owner : owners)
             {
-                JOptionPane.showMessageDialog(_frame, "Owner ID: " + owner.getId() + "\n" +
+                info.append("Owner ID: " + owner.getId() + "\n" +
                         "Name: " + owner.getName() + "\n" +
-                        "Birth Date: " + owner.getBirthDate());
+                        "Birth Date: " + owner.getBirthDate() + "\n\n");
             }
         }
         else
         {
             JOptionPane.showMessageDialog(_frame, "No owners found with birth date: " + birthDate);
         }
+
+        JOptionPane.showMessageDialog(_frame, info.toString());
     }
 
     public JButton GetInfoButton()
