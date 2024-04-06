@@ -1,8 +1,8 @@
-# [Lab1](#lab1)
-# [Lab2](#lab2)
-# [Lab3](#lab3)
-# [Lab4](#lab4)
-# [Lab5](#lab5)
+# [Lab1](#lab-1)
+# [Lab2](#lab-2)
+# [Lab3](#lab-3)
+# [Lab4](#lab-4)
+# [Lab5](#lab-5)
 
 ## Lab1
 
