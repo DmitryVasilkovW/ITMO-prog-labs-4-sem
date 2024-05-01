@@ -8,9 +8,6 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Lab1" />
-        <module name="controller (1) (org.lab3)" />
-        <module name="data" />
-        <module name="service (1) (org.lab3)" />
         <module name="Service" />
         <module name="InteractiveMenu" />
         <module name="Controller" />
@@ -25,9 +22,9 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="InteractiveMenu" options="" />
-      <module name="controller (1) (org.lab3)" options="-parameters" />
-      <module name="data" options="-parameters" />
-      <module name="service (1) (org.lab3)" options="-parameters" />
+      <module name="controller (1) (org.lab3)" options="" />
+      <module name="data" options="" />
+      <module name="service (1) (org.lab3)" options="" />
     </option>
   </component>
 </project>
