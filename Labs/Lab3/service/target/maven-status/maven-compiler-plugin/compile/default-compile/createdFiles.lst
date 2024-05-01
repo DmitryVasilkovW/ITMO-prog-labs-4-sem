@@ -1,0 +1,4 @@
+org/lab3/abstractions/ICatRepository.class
+org/lab3/abstractions/IOwnerRepository.class
+org/lab3/models/Owner.class
+org/lab3/models/Cat.class
