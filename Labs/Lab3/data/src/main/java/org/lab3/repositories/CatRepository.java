@@ -1,6 +1,7 @@
 package org.lab3.repositories;
 
 import org.lab3.abstractions.ICatRepository;
+import org.lab3.dao.CatDao;
 import org.lab3.mappers.CatMapper;
 import org.lab3.models.Cat;
 import org.lab3.rowDataMappers.CatRowMapper;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class CatRepository implements ICatRepository
@@ -31,8 +34,34 @@ public class CatRepository implements ICatRepository
     {
         String sql = "SELECT cats.id AS cat_id, cats.name AS cat_name, cats.birthdate AS cat_birthdate, cats.breed AS cat_breed, cats.color AS cat_color, owners.id AS owner_id, owners.name AS owner_name, owners.birthdate AS owner_birthdate FROM cats INNER JOIN owners ON cats.owner_id = owners.id";
 
-        return catMapper.fromCatDaoToCat(jdbcTemplate.query(sql, new CatRowMapper()));
+        List<CatDao> cats = jdbcTemplate.query(sql, new CatRowMapper());
+
+        for (CatDao cat : cats)
+        {
+            String friendsSql = "SELECT friend_id FROM cats_friends WHERE cat_id = :id";
+            var params = new MapSqlParameterSource();
+
+            params.addValue("id", cat.getId());
+
+            List<Integer> friendIds = jdbcTemplate.queryForList(friendsSql, params, Integer.class);
+
+            var friends = new ArrayList<CatDao>();
+
+            if (friendIds != null && !friendIds.isEmpty())
+            {
+                for (Integer friendId : friendIds)
+                {
+                    friends.add(catMapper.fromCatToCatDao(getCatById(friendId)));
+                }
+            }
+
+            cat.setFriends(friends);
+        }
+
+        return cats.stream().map(catMapper::fromCatDaoToCat).collect(Collectors.toList());
     }
+
+
 
     @Override
     @Transactional
@@ -63,10 +92,28 @@ public class CatRepository implements ICatRepository
             String sql = "SELECT cats.id AS cat_id, cats.name AS cat_name, cats.birthdate AS cat_birthdate, cats.breed AS cat_breed, cats.color AS cat_color, owners.id AS owner_id, owners.name AS owner_name, owners.birthdate AS owner_birthdate FROM cats INNER JOIN owners ON cats.owner_id = owners.id WHERE cats.id = :id";
 
             var params = new MapSqlParameterSource();
-
             params.addValue("id", id);
 
-            return catMapper.fromCatDaoToCat(jdbcTemplate.queryForObject(sql, params, new CatRowMapper()));
+            CatDao cat = jdbcTemplate.queryForObject(sql, params, new CatRowMapper());
+
+            String friendsSql = "SELECT friend_id FROM cats_friends WHERE cat_id = :id";
+            List<Integer> friendIds = jdbcTemplate.queryForList(friendsSql, params, Integer.class);
+
+            var friends = new ArrayList<CatDao>();
+
+            if (friendIds != null && !friendIds.isEmpty())
+            {
+                for (Integer friendId : friendIds)
+                {
+                    params.addValue("id", friendId);
+                    CatDao friend = jdbcTemplate.queryForObject(sql, params, new CatRowMapper());
+                    friends.add(friend);
+                }
+            }
+
+            cat.setFriends(friends);
+
+            return catMapper.fromCatDaoToCat(cat);
         }
         catch (Exception e)
         {
