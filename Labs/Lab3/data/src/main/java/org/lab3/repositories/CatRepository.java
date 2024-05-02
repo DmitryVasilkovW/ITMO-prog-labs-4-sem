@@ -25,14 +25,51 @@ public class CatRepository implements ICatRepository
 
     @Override
     @Transactional
-    public Cat getCatById(int id)
+    public List<Cat> getAllCats()
     {
-        String sql = "SELECT * FROM cats WHERE id = :id";
+        String sql = "SELECT * FROM cats";
+
+        return jdbcTemplate.query(sql, new CatRowMapper());
+    }
+
+    @Override
+    @Transactional
+    public Cat updateCat(int id, String name, LocalDate birthday, String breed, String color, int owner_id)
+    {
+        String sql = "UPDATE cats SET name = :name, birthdate = :birthdate, breed = :breed, color = :color, owner_id = :owner_id WHERE id = :id";
         var params = new MapSqlParameterSource();
 
         params.addValue("id", id);
+        params.addValue("name", name);
+        params.addValue("birthdate", birthday);
+        params.addValue("breed", breed);
+        params.addValue("color", color);
+        params.addValue("owner_id", owner_id);
 
-        return jdbcTemplate.queryForObject(sql, params, new CatRowMapper());
+        jdbcTemplate.update(sql, params);
+
+        return getCatById(id);
+    }
+
+
+    @Override
+    @Transactional
+    public Cat getCatById(int id)
+    {
+        try
+        {
+            String sql = "SELECT * FROM cats WHERE id = :id";
+            var params = new MapSqlParameterSource();
+
+            params.addValue("id", id);
+
+            return jdbcTemplate.queryForObject(sql, params, new CatRowMapper());
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     @Override
@@ -113,13 +150,20 @@ public class CatRepository implements ICatRepository
     @Transactional
     public void updateCatBreed(int id, String breed)
     {
-        String sql = "UPDATE cats SET breed = :breed WHERE id = :id";
-        var params = new MapSqlParameterSource();
+        try
+        {
+            String sql = "UPDATE cats SET breed = :breed WHERE id = :id";
+            var params = new MapSqlParameterSource();
 
-        params.addValue("breed", breed);
-        params.addValue("id", id);
+            params.addValue("breed", breed);
+            params.addValue("id", id);
 
-        jdbcTemplate.update(sql, params);
+            jdbcTemplate.update(sql, params);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -139,19 +183,29 @@ public class CatRepository implements ICatRepository
     @Transactional
     public void deleteCat(int id)
     {
-        String sql = "DELETE FROM cats WHERE id = :id";
-        var params = new MapSqlParameterSource();
+        try
+        {
+            String sql = "DELETE FROM cats WHERE id = :id";
+            String sqlForDeleteRelation = "DELETE FROM owners_cats WHERE cat_id = :id";
+            var params = new MapSqlParameterSource();
 
-        params.addValue("id", id);
+            params.addValue("id", id);
 
-        jdbcTemplate.update(sql, params);
+            jdbcTemplate.update(sqlForDeleteRelation, params);
+            jdbcTemplate.update(sql, params);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
+
 
     @Override
     @Transactional
     public void addCat(String name, LocalDate birthDate, String breed, String color, int ownerId)
     {
-        String sql = "INSERT INTO cats (name, birthdate, breed, color, owner_id) VALUES (:name, :birthdate, :breed, :color, :ownerId)";
+        String sql = "INSERT INTO cats (name, birthdate, breed, color, owner_id) VALUES (:name, :birthdate, :breed, :color, :ownerId) RETURNING id";
         var params = new MapSqlParameterSource();
 
         params.addValue("name", name);
@@ -160,7 +214,15 @@ public class CatRepository implements ICatRepository
         params.addValue("color", color);
         params.addValue("ownerId", ownerId);
 
-        jdbcTemplate.update(sql, params);
+        int catId = jdbcTemplate.queryForObject(sql, params, Integer.class);
+
+        String sqlUpdateOwnersCats = "INSERT INTO owners_cats (cat_id, owner_id) VALUES (:catId, :ownerId)";
+        var paramsUpdateOwnersCats = new MapSqlParameterSource();
+
+        paramsUpdateOwnersCats.addValue("catId", catId);
+        paramsUpdateOwnersCats.addValue("ownerId", ownerId);
+
+        jdbcTemplate.update(sqlUpdateOwnersCats, paramsUpdateOwnersCats);
     }
 
     @Override

@@ -19,5 +19,7 @@ public interface ICatRepository
     void deleteCat(int id);
     void addCat(String name, LocalDate birthDate, String breed, String color, int ownerId);
     void addFriendship(int catId1, int catId2);
+    List<Cat> getAllCats();
+    Cat updateCat(int id, String name, LocalDate birthday, String breed, String color, int owner_id);
 }
 

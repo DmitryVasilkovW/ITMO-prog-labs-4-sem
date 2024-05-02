@@ -1,7 +1,7 @@
 package org.lab3.interactiveMenu.submenu;
 
-import org.lab3.controllers.CatController;
-import org.lab3.controllers.OwnerController;
+import org.lab3.controllers.DatabaseCatController;
+import org.lab3.controllers.DatabaseOwnerController;
 import org.lab3.models.Cat;
 import org.lab3.models.Owner;
 
@@ -14,8 +14,8 @@ import java.util.List;
 
 public class GetInfoSubmenu
 {
-    private final OwnerController _ownerController;
-    private final CatController _catController;
+    private final DatabaseOwnerController _ownerController;
+    private final DatabaseCatController _catController;
     private final JFrame _frame;
 
     public GetInfoSubmenu()
@@ -26,8 +26,8 @@ public class GetInfoSubmenu
         _frame.setSize(600, 400);
         _frame.setLayout(new BorderLayout());
 
-        _catController = new CatController();
-        _ownerController = new OwnerController();
+        _catController = new DatabaseCatController();
+        _ownerController = new DatabaseOwnerController();
     }
 
     public String showInfoAboutCat(Cat cat)
