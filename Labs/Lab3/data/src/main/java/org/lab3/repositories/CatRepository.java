@@ -27,7 +27,7 @@ public class CatRepository implements ICatRepository
     @Transactional
     public List<Cat> getAllCats()
     {
-        String sql = "SELECT * FROM cats";
+        String sql = "SELECT cats.id AS cat_id, cats.name AS cat_name, cats.birthdate AS cat_birthdate, cats.breed AS cat_breed, cats.color AS cat_color, owners.id AS owner_id, owners.name AS owner_name, owners.birthdate AS owner_birthdate FROM cats INNER JOIN owners ON cats.owner_id = owners.id";
 
         return jdbcTemplate.query(sql, new CatRowMapper());
     }
@@ -58,7 +58,8 @@ public class CatRepository implements ICatRepository
     {
         try
         {
-            String sql = "SELECT * FROM cats WHERE id = :id";
+            String sql = "SELECT cats.id AS cat_id, cats.name AS cat_name, cats.birthdate AS cat_birthdate, cats.breed AS cat_breed, cats.color AS cat_color, owners.id AS owner_id, owners.name AS owner_name, owners.birthdate AS owner_birthdate FROM cats INNER JOIN owners ON cats.owner_id = owners.id WHERE cats.id = :id";
+
             var params = new MapSqlParameterSource();
 
             params.addValue("id", id);
@@ -72,11 +73,13 @@ public class CatRepository implements ICatRepository
         }
     }
 
+
     @Override
     @Transactional
     public List<Cat> getCatsByName(String name)
     {
-        String sql = "SELECT * FROM cats WHERE name = :name";
+        String sql = "SELECT cats.id AS cat_id, cats.name AS cat_name, cats.birthdate AS cat_birthdate, cats.breed AS cat_breed, cats.color AS cat_color, owners.id AS owner_id, owners.name AS owner_name, owners.birthdate AS owner_birthdate FROM cats INNER JOIN owners ON cats.owner_id = owners.id WHERE cats.name = :name";
+
         var params = new MapSqlParameterSource();
 
         params.addValue("name", name);
@@ -88,7 +91,8 @@ public class CatRepository implements ICatRepository
     @Transactional
     public List<Cat> getCatsByBirthDate(LocalDate birthDate)
     {
-        String sql = "SELECT * FROM cats WHERE birthDate = :birthDate";
+        String sql = "SELECT cats.id AS cat_id, cats.name AS cat_name, cats.birthdate AS cat_birthdate, cats.breed AS cat_breed, cats.color AS cat_color, owners.id AS owner_id, owners.name AS owner_name, owners.birthdate AS owner_birthdate FROM cats INNER JOIN owners ON cats.owner_id = owners.id WHERE cats.birthdate = :birthDate";
+
         var params = new MapSqlParameterSource();
 
         params.addValue("birthDate", birthDate);
@@ -100,7 +104,8 @@ public class CatRepository implements ICatRepository
     @Transactional
     public List<Cat> getCatsByBreed(String breed)
     {
-        String sql = "SELECT * FROM cats WHERE breed = :breed";
+        String sql = "SELECT cats.id AS cat_id, cats.name AS cat_name, cats.birthdate AS cat_birthdate, cats.breed AS cat_breed, cats.color AS cat_color, owners.id AS owner_id, owners.name AS owner_name, owners.birthdate AS owner_birthdate FROM cats INNER JOIN owners ON cats.owner_id = owners.id WHERE cats.breed = :breed";
+
         var params = new MapSqlParameterSource();
 
         params.addValue("breed", breed);
@@ -108,11 +113,12 @@ public class CatRepository implements ICatRepository
         return jdbcTemplate.query(sql, params, new CatRowMapper());
     }
 
+
     @Override
     @Transactional
     public List<Cat> getCatsByColor(String color)
     {
-        String sql = "SELECT * FROM cats WHERE color = :color";
+        String sql = "SELECT cats.id AS cat_id, cats.name AS cat_name, cats.birthdate AS cat_birthdate, cats.breed AS cat_breed, cats.color AS cat_color, owners.id AS owner_id, owners.name AS owner_name, owners.birthdate AS owner_birthdate FROM cats INNER JOIN owners ON cats.owner_id = owners.id WHERE cats.color = :color";
         var params = new MapSqlParameterSource();
 
         params.addValue("color", color);
