@@ -10,16 +10,13 @@
         <option value="$PROJECT_DIR$/Labs/src/Lab1/interactivemenu/pom.xml" />
         <option value="$PROJECT_DIR$/Labs/InteractiveMenu/pom.xml" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/Labs/Lab3/data/pom.xml" />
+        <option value="$PROJECT_DIR$/Labs/Lab3/controller/pom.xml" />
+        <option value="$PROJECT_DIR$/Labs/Lab3/service/pom.xml" />
       </list>
     </option>
-    <option name="ignoredFiles">
-      <set>
-        <option value="$PROJECT_DIR$/Labs/Lab2/Models/pom.xml" />
-        <option value="$PROJECT_DIR$/Labs/src/Lab2/pom.xml" />
-      </set>
-    </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" default="true" project-jdk-name="openjdk-19" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="corretto-21" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

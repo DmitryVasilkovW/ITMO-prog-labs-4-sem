@@ -2,7 +2,6 @@ models/Owner.class
 repositories/CatRepository.class
 abstractions/IOwnerRepository.class
 models/Cat.class
-TMP.class
 repositories/OwnerRepository.class
 abstractions/ICatRepository.class
 databaseMenegment/Initial.class
