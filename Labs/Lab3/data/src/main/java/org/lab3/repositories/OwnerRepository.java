@@ -1,6 +1,7 @@
 package org.lab3.repositories;
 
 import org.lab3.abstractions.IOwnerRepository;
+import org.lab3.mappers.OwnerMapper;
 import org.lab3.models.Owner;
 import org.lab3.rowDataMappers.OwnerRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ import java.util.List;
 @Repository
 public class OwnerRepository implements IOwnerRepository
 {
-
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final OwnerMapper ownerMapper = new OwnerMapper();
 
     @Autowired
     public OwnerRepository(NamedParameterJdbcTemplate jdbcTemplate)
@@ -34,7 +35,7 @@ public class OwnerRepository implements IOwnerRepository
 
         params.addValue("id", id);
 
-        return jdbcTemplate.queryForObject(sql, params, new OwnerRowMapper());
+        return ownerMapper.fromOwnerDaoToOwner(jdbcTemplate.queryForObject(sql, params, new OwnerRowMapper()));
     }
 
     @Override
@@ -43,7 +44,7 @@ public class OwnerRepository implements IOwnerRepository
     {
         String sql = "SELECT * FROM owners";
 
-        return jdbcTemplate.query(sql, new OwnerRowMapper());
+        return ownerMapper.fromOwnerDaoToOwner(jdbcTemplate.query(sql, new OwnerRowMapper()));
     }
 
     @Override
@@ -55,7 +56,7 @@ public class OwnerRepository implements IOwnerRepository
 
         params.addValue("name", name);
 
-        return jdbcTemplate.query(sql, params, new OwnerRowMapper());
+        return ownerMapper.fromOwnerDaoToOwner(jdbcTemplate.query(sql, params, new OwnerRowMapper()));
     }
 
     @Override
@@ -67,7 +68,7 @@ public class OwnerRepository implements IOwnerRepository
 
         params.addValue("birthDate", birthDate);
 
-        return jdbcTemplate.query(sql, params, new OwnerRowMapper());
+        return ownerMapper.fromOwnerDaoToOwner(jdbcTemplate.query(sql, params, new OwnerRowMapper()));
     }
 
     @Override

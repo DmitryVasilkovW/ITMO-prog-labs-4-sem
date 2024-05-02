@@ -1,17 +1,17 @@
 package org.lab3.rowDataMappers;
 
-import org.lab3.models.Owner;
+import org.lab3.dao.OwnerDao;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class OwnerRowMapper implements RowMapper<Owner>
+public class OwnerRowMapper implements RowMapper<OwnerDao>
 {
     @Override
-    public Owner mapRow(ResultSet rs, int rowNum) throws SQLException
+    public OwnerDao mapRow(ResultSet rs, int rowNum) throws SQLException
     {
-        var owner = new Owner();
+        var owner = new OwnerDao();
 
         owner.setId(rs.getInt("id"));
         owner.setName(rs.getString("name"));

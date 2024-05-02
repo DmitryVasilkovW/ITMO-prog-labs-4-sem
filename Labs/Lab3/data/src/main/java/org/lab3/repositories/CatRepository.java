@@ -1,6 +1,7 @@
 package org.lab3.repositories;
 
 import org.lab3.abstractions.ICatRepository;
+import org.lab3.mappers.CatMapper;
 import org.lab3.models.Cat;
 import org.lab3.rowDataMappers.CatRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.List;
 public class CatRepository implements ICatRepository
 {
     private final NamedParameterJdbcTemplate jdbcTemplate;
+    private final CatMapper catMapper = new CatMapper();
 
     @Autowired
     public CatRepository(NamedParameterJdbcTemplate jdbcTemplate)
@@ -29,7 +31,7 @@ public class CatRepository implements ICatRepository
     {
         String sql = "SELECT cats.id AS cat_id, cats.name AS cat_name, cats.birthdate AS cat_birthdate, cats.breed AS cat_breed, cats.color AS cat_color, owners.id AS owner_id, owners.name AS owner_name, owners.birthdate AS owner_birthdate FROM cats INNER JOIN owners ON cats.owner_id = owners.id";
 
-        return jdbcTemplate.query(sql, new CatRowMapper());
+        return catMapper.fromCatDaoToCat(jdbcTemplate.query(sql, new CatRowMapper()));
     }
 
     @Override
@@ -64,7 +66,7 @@ public class CatRepository implements ICatRepository
 
             params.addValue("id", id);
 
-            return jdbcTemplate.queryForObject(sql, params, new CatRowMapper());
+            return catMapper.fromCatDaoToCat(jdbcTemplate.queryForObject(sql, params, new CatRowMapper()));
         }
         catch (Exception e)
         {
@@ -84,7 +86,7 @@ public class CatRepository implements ICatRepository
 
         params.addValue("name", name);
 
-        return jdbcTemplate.query(sql, params, new CatRowMapper());
+        return catMapper.fromCatDaoToCat(jdbcTemplate.query(sql, params, new CatRowMapper()));
     }
 
     @Override
@@ -97,7 +99,7 @@ public class CatRepository implements ICatRepository
 
         params.addValue("birthDate", birthDate);
 
-        return jdbcTemplate.query(sql, params, new CatRowMapper());
+        return catMapper.fromCatDaoToCat(jdbcTemplate.query(sql, params, new CatRowMapper()));
     }
 
     @Override
@@ -110,7 +112,7 @@ public class CatRepository implements ICatRepository
 
         params.addValue("breed", breed);
 
-        return jdbcTemplate.query(sql, params, new CatRowMapper());
+        return catMapper.fromCatDaoToCat(jdbcTemplate.query(sql, params, new CatRowMapper()));
     }
 
 
@@ -123,7 +125,7 @@ public class CatRepository implements ICatRepository
 
         params.addValue("color", color);
 
-        return jdbcTemplate.query(sql, params, new CatRowMapper());
+        return catMapper.fromCatDaoToCat(jdbcTemplate.query(sql, params, new CatRowMapper()));
     }
 
     @Override

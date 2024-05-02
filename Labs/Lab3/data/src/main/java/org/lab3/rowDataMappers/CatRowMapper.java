@@ -1,19 +1,19 @@
 package org.lab3.rowDataMappers;
 
-import org.lab3.models.Cat;
-import org.lab3.models.Owner;
+import org.lab3.dao.CatDao;
+import org.lab3.dao.OwnerDao;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CatRowMapper implements RowMapper<Cat>
+public class CatRowMapper implements RowMapper<CatDao>
 {
     @Override
-    public Cat mapRow(ResultSet rs, int rowNum) throws SQLException
+    public CatDao mapRow(ResultSet rs, int rowNum) throws SQLException
     {
-        var cat = new Cat();
-        var owner = new Owner();
+        var cat = new CatDao();
+        var owner = new OwnerDao();
 
         cat.setId(rs.getInt("cat_id"));
         cat.setName(rs.getString("cat_name"));

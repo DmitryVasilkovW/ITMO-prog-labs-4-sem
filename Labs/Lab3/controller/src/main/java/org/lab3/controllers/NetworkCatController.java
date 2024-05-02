@@ -64,7 +64,7 @@ public class NetworkCatController
     {
         try
         {
-            Cat newCat = repository.addCat(cat.getName(), cat.getBirthDate(), cat.getBreed(), cat.getColor(), cat.getOwner().getId());
+            Cat newCat = repository.addCat(cat.name(), cat.birthDate(), cat.breed(), cat.color(), cat.owner().id());
 
             if (newCat == null)
             {
@@ -84,7 +84,7 @@ public class NetworkCatController
     {
         try
         {
-            Cat updatedCat = repository.updateCat(id, cat.getName(), cat.getBirthDate(), cat.getBreed(), cat.getColor(), cat.getOwner().getId());
+            Cat updatedCat = repository.updateCat(id, cat.name(), cat.birthDate(), cat.breed(), cat.color(), cat.owner().id());
 
             if (updatedCat == null)
             {

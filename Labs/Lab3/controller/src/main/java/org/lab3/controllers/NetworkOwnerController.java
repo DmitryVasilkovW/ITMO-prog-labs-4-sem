@@ -64,7 +64,7 @@ public class NetworkOwnerController
     {
         try
         {
-            Owner newOwner = repository.addOwner(owner.getName(), owner.getBirthDate());
+            Owner newOwner = repository.addOwner(owner.name(), owner.birthDate());
 
             if (newOwner == null)
             {
@@ -84,7 +84,7 @@ public class NetworkOwnerController
     {
         try
         {
-            Owner newOwner = repository.updateOwner(id, owner.getName(), owner.getBirthDate());
+            Owner newOwner = repository.updateOwner(id, owner.name(), owner.birthDate());
 
             if (newOwner == null)
             {
