@@ -14,4 +14,6 @@ public interface IOwnerRepository
     void updateOwnerBirthDate(int id, LocalDate newBirthDate);
     void deleteOwner(int ownerId);
     void addOwner(String name, LocalDate birthDate);
+    void updateOwner(int id, String newName, LocalDate birthDate);
+    List<Owner> getAllOwners();
 }

@@ -39,6 +39,15 @@ public class OwnerRepository implements IOwnerRepository
 
     @Override
     @Transactional
+    public List<Owner> getAllOwners()
+    {
+        String sql = "SELECT * FROM owners";
+
+        return jdbcTemplate.query(sql, new OwnerRowMapper());
+    }
+
+    @Override
+    @Transactional
     public List<Owner> getOwnersByName(String name)
     {
         String sql = "SELECT * FROM owners WHERE name = :name";
@@ -69,6 +78,20 @@ public class OwnerRepository implements IOwnerRepository
         var params = new MapSqlParameterSource();
 
         params.addValue("newName", newName);
+        params.addValue("id", id);
+
+        jdbcTemplate.update(sql, params);
+    }
+
+    @Override
+    @Transactional
+    public void updateOwner(int id, String newName, LocalDate birthDate)
+    {
+        String sql = "UPDATE owners SET name = :newName, birthdate = :birthDate WHERE id = :id";
+        var params = new MapSqlParameterSource();
+
+        params.addValue("newName", newName);
+        params.addValue("birthDate", birthDate);
         params.addValue("id", id);
 
         jdbcTemplate.update(sql, params);
