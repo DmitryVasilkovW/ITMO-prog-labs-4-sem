@@ -26,6 +26,11 @@ public class NetworkCatController
         {
             Cat cat = repository.getCatById(id);
 
+            if (cat == null)
+            {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
             return ResponseEntity.ok(cat);
         }
         catch (Exception e)
@@ -41,6 +46,11 @@ public class NetworkCatController
         {
             List<Cat> cats = repository.getAllCats();
 
+            if (cats.isEmpty())
+            {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
             return ResponseEntity.ok(cats);
         }
         catch (Exception e)
@@ -54,9 +64,14 @@ public class NetworkCatController
     {
         try
         {
-            repository.addCat(cat.getName(), cat.getBirthDate(), cat.getBreed(), cat.getColor(), cat.getOwner().getId());
+            Cat newCat = repository.addCat(cat.name(), cat.birthDate(), cat.breed(), cat.color(), cat.owner().id());
 
-            return ResponseEntity.ok(cat);
+            if (newCat == null)
+            {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+            return ResponseEntity.ok(newCat);
         }
         catch (Exception e)
         {
@@ -69,7 +84,12 @@ public class NetworkCatController
     {
         try
         {
-            Cat updatedCat = repository.updateCat(id, cat.getName(), cat.getBirthDate(), cat.getBreed(), cat.getColor(), cat.getOwner().getId());
+            Cat updatedCat = repository.updateCat(id, cat.name(), cat.birthDate(), cat.breed(), cat.color(), cat.owner().id());
+
+            if (updatedCat == null)
+            {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
 
             return ResponseEntity.ok(updatedCat);
         }

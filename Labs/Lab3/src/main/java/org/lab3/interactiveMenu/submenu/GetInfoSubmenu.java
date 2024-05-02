@@ -36,14 +36,14 @@ public class GetInfoSubmenu
 
         if (cat != null)
         {
-            info.append( "Cat ID: " + cat.getId() + "\n" +
-                    "Name: " + cat.getName() + "\n" +
-                    "Birth Date: " + cat.getBirthDate() + "\n" +
-                    "Breed: " + cat.getBreed() + "\n" +
-                    "Color: " + cat.getColor() + "\n" +
-                    "Owner: " + cat.getOwner().getName() + "\n\n");
+            info.append( "Cat ID: " + cat.id() + "\n" +
+                    "Name: " + cat.name() + "\n" +
+                    "Birth Date: " + cat.birthDate() + "\n" +
+                    "Breed: " + cat.breed() + "\n" +
+                    "Color: " + cat.color() + "\n" +
+                    "Owner: " + cat.owner().name() + "\n\n");
 
-            List<Cat> friends = cat.getFriends();
+            List<Cat> friends = cat.friends();
 
             if (friends != null && !friends.isEmpty())
             {
@@ -51,12 +51,12 @@ public class GetInfoSubmenu
 
                 for (Cat friend : friends)
                 {
-                    friendsInfo.append("Friend ID: ").append(friend.getId()).append("\n")
-                            .append("Name: ").append(friend.getName()).append("\n")
-                            .append("Birth Date: ").append(friend.getBirthDate()).append("\n")
-                            .append("Breed: ").append(friend.getBreed()).append("\n")
-                            .append("Color: ").append(friend.getColor()).append("\n")
-                            .append("Owner: ").append(friend.getOwner().getName()).append("\n\n");
+                    friendsInfo.append("Friend ID: ").append(friend.id()).append("\n")
+                            .append("Name: ").append(friend.name()).append("\n")
+                            .append("Birth Date: ").append(friend.birthDate()).append("\n")
+                            .append("Breed: ").append(friend.breed()).append("\n")
+                            .append("Color: ").append(friend.color()).append("\n")
+                            .append("Owner: ").append(friend.owner().name()).append("\n\n");
                 }
                 info.append(friendsInfo.toString());
             }
@@ -74,26 +74,26 @@ public class GetInfoSubmenu
 
         if (cat != null)
         {
-            JOptionPane.showMessageDialog(_frame, "Cat ID: " + cat.getId() + "\n" +
-                    "Name: " + cat.getName() + "\n" +
-                    "Birth Date: " + cat.getBirthDate() + "\n" +
-                    "Breed: " + cat.getBreed() + "\n" +
-                    "Color: " + cat.getColor() + "\n" +
-                    "Owner: " + cat.getOwner().getName());
+            JOptionPane.showMessageDialog(_frame, "Cat ID: " + cat.id() + "\n" +
+                    "Name: " + cat.name() + "\n" +
+                    "Birth Date: " + cat.birthDate() + "\n" +
+                    "Breed: " + cat.breed() + "\n" +
+                    "Color: " + cat.color() + "\n" +
+                    "Owner: " + cat.owner().name());
 
-            List<Cat> friends = cat.getFriends();
+            List<Cat> friends = cat.friends();
 
             if (friends != null && !friends.isEmpty())
             {
                 StringBuilder friendsInfo = new StringBuilder("Friends:\n");
                 for (Cat friend : friends)
                 {
-                    friendsInfo.append("Friend ID: ").append(friend.getId()).append("\n")
-                            .append("Name: ").append(friend.getName()).append("\n")
-                            .append("Birth Date: ").append(friend.getBirthDate()).append("\n")
-                            .append("Breed: ").append(friend.getBreed()).append("\n")
-                            .append("Color: ").append(friend.getColor()).append("\n")
-                            .append("Owner: ").append(friend.getOwner().getName()).append("\n\n");
+                    friendsInfo.append("Friend ID: ").append(friend.id()).append("\n")
+                            .append("Name: ").append(friend.name()).append("\n")
+                            .append("Birth Date: ").append(friend.birthDate()).append("\n")
+                            .append("Breed: ").append(friend.breed()).append("\n")
+                            .append("Color: ").append(friend.color()).append("\n")
+                            .append("Owner: ").append(friend.owner().name()).append("\n\n");
                 }
                 JOptionPane.showMessageDialog(_frame, friendsInfo.toString());
             }
@@ -201,9 +201,9 @@ public class GetInfoSubmenu
 
         if (owner != null)
         {
-            JOptionPane.showMessageDialog(_frame, "Owner ID: " + owner.getId() + "\n" +
-                    "Name: " + owner.getName() + "\n" +
-                    "Birth Date: " + owner.getBirthDate());
+            JOptionPane.showMessageDialog(_frame, "Owner ID: " + owner.id() + "\n" +
+                    "Name: " + owner.name() + "\n" +
+                    "Birth Date: " + owner.birthDate());
         }
         else
         {
@@ -221,9 +221,9 @@ public class GetInfoSubmenu
         {
             for (Owner owner : owners)
             {
-                info.append("Owner ID: " + owner.getId() + "\n" +
-                        "Name: " + owner.getName() + "\n" +
-                        "Birth Date: " + owner.getBirthDate() + "\n\n");
+                info.append("Owner ID: " + owner.id() + "\n" +
+                        "Name: " + owner.name() + "\n" +
+                        "Birth Date: " + owner.birthDate() + "\n\n");
             }
         }
         else
@@ -245,9 +245,9 @@ public class GetInfoSubmenu
         {
             for (Owner owner : owners)
             {
-                info.append("Owner ID: " + owner.getId() + "\n" +
-                        "Name: " + owner.getName() + "\n" +
-                        "Birth Date: " + owner.getBirthDate() + "\n\n");
+                info.append("Owner ID: " + owner.id() + "\n" +
+                        "Name: " + owner.name() + "\n" +
+                        "Birth Date: " + owner.birthDate() + "\n\n");
             }
         }
         else
