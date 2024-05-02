@@ -85,7 +85,7 @@ public class OwnerRepository implements IOwnerRepository
 
     @Override
     @Transactional
-    public void updateOwner(int id, String newName, LocalDate birthDate)
+    public Owner updateOwner(int id, String newName, LocalDate birthDate)
     {
         String sql = "UPDATE owners SET name = :newName, birthdate = :birthDate WHERE id = :id";
         var params = new MapSqlParameterSource();
@@ -95,6 +95,8 @@ public class OwnerRepository implements IOwnerRepository
         params.addValue("id", id);
 
         jdbcTemplate.update(sql, params);
+
+        return getOwnerById(id);
     }
 
     @Override
@@ -128,14 +130,16 @@ public class OwnerRepository implements IOwnerRepository
 
     @Override
     @Transactional
-    public void addOwner(String name, LocalDate birthDate)
+    public Owner addOwner(String name, LocalDate birthDate)
     {
-        String sql = "INSERT INTO owners (name, birthdate) VALUES (:name, :birthdate)";
+        String sql = "INSERT INTO owners (name, birthdate) VALUES (:name, :birthdate) RETURNING id";
         var params = new MapSqlParameterSource();
 
         params.addValue("name", name);
         params.addValue("birthdate", birthDate);
 
-        jdbcTemplate.update(sql, params);
+        int id = jdbcTemplate.queryForObject(sql, params, Integer.class);
+
+        return getOwnerById(id);
     }
 }

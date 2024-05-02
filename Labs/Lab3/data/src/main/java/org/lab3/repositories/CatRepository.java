@@ -209,7 +209,7 @@ public class CatRepository implements ICatRepository
 
     @Override
     @Transactional
-    public void addCat(String name, LocalDate birthDate, String breed, String color, int ownerId)
+    public Cat addCat(String name, LocalDate birthDate, String breed, String color, int ownerId)
     {
         String sql = "INSERT INTO cats (name, birthdate, breed, color, owner_id) VALUES (:name, :birthdate, :breed, :color, :ownerId) RETURNING id";
         var params = new MapSqlParameterSource();
@@ -229,6 +229,8 @@ public class CatRepository implements ICatRepository
         paramsUpdateOwnersCats.addValue("ownerId", ownerId);
 
         jdbcTemplate.update(sqlUpdateOwnersCats, paramsUpdateOwnersCats);
+
+        return getCatById(catId);
     }
 
     @Override

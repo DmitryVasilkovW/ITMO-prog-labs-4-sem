@@ -26,6 +26,11 @@ public class NetworkOwnerController
         {
             Owner owner = repository.getOwnerById(id);
 
+            if (owner == null)
+            {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
             return ResponseEntity.ok(owner);
         }
         catch (Exception e)
@@ -41,6 +46,11 @@ public class NetworkOwnerController
         {
             List<Owner> owners = repository.getAllOwners();
 
+            if (owners.isEmpty())
+            {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
             return ResponseEntity.ok(owners);
         }
         catch (Exception e)
@@ -54,9 +64,14 @@ public class NetworkOwnerController
     {
         try
         {
-            repository.addOwner(owner.getName(), owner.getBirthDate());
+            Owner newOwner = repository.addOwner(owner.getName(), owner.getBirthDate());
 
-            return ResponseEntity.ok(owner);
+            if (newOwner == null)
+            {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+            return ResponseEntity.ok(newOwner);
         }
         catch (Exception e)
         {
@@ -69,9 +84,14 @@ public class NetworkOwnerController
     {
         try
         {
-            repository.updateOwner(id, owner.getName(), owner.getBirthDate());
+            Owner newOwner = repository.updateOwner(id, owner.getName(), owner.getBirthDate());
 
-            return ResponseEntity.ok(owner);
+            if (newOwner == null)
+            {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+
+            return ResponseEntity.ok(newOwner);
         }
         catch (Exception e)
         {
@@ -80,10 +100,12 @@ public class NetworkOwnerController
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOwner(@PathVariable int id) {
+    public ResponseEntity<Void> deleteOwner(@PathVariable int id)
+    {
         try
         {
             repository.deleteOwner(id);
+
             return ResponseEntity.ok().build();
         }
         catch (Exception e)
