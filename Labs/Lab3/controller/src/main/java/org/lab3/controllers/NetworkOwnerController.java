@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -45,6 +46,46 @@ public class NetworkOwnerController
         try
         {
             List<Owner> owners = repository.getAllOwners();
+
+            if (owners.isEmpty())
+            {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            return ResponseEntity.ok(owners);
+        }
+        catch (Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<Owner>> getOwnersByName(@PathVariable String name)
+    {
+        try
+        {
+            List<Owner> owners = repository.getOwnersByName(name);
+
+            if (owners.isEmpty())
+            {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            return ResponseEntity.ok(owners);
+        }
+        catch (Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/birthDate/{birthDate}")
+    public ResponseEntity<List<Owner>> getOwnersByBirthDate(@PathVariable LocalDate birthDate)
+    {
+        try
+        {
+            List<Owner> owners = repository.getOwnersByBirthDate(birthDate);
 
             if (owners.isEmpty())
             {
