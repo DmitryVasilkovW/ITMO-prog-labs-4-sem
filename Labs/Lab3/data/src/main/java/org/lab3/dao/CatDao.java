@@ -15,6 +15,6 @@ public class CatDao
     private LocalDate birthDate;
     private String breed;
     private String color;
-    private OwnerDao owner;
+    private Integer ownerId;
     private List<CatDao> friends;
 }

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -39,6 +40,87 @@ public class NetworkCatController
         }
     }
 
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<Cat>> getCatsByName(@PathVariable String name)
+    {
+        try
+        {
+            List<Cat> cats = repository.getCatsByName(name);
+
+            if (cats.isEmpty())
+            {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            return ResponseEntity.ok(cats);
+        }
+        catch (Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/breed/{breed}")
+    public ResponseEntity<List<Cat>> getCatsByBreed(@PathVariable String breed)
+    {
+        try
+        {
+            List<Cat> cats = repository.getCatsByBreed(breed);
+
+            if (cats.isEmpty())
+            {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            return ResponseEntity.ok(cats);
+        }
+        catch (Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/birthDate/{birthDate}")
+    public ResponseEntity<List<Cat>> getCatsByBirthDate(@PathVariable LocalDate birthDate)
+    {
+        try
+        {
+            List<Cat> cats = repository.getCatsByBirthDate(birthDate);
+
+            if (cats.isEmpty())
+            {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            return ResponseEntity.ok(cats);
+        }
+        catch (Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/color/{color}")
+    public ResponseEntity<List<Cat>> getCatsByColor(@PathVariable String color)
+    {
+        try
+        {
+            List<Cat> cats = repository.getCatsByColor(color);
+
+            if (cats.isEmpty())
+            {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            return ResponseEntity.ok(cats);
+        }
+        catch (Exception e)
+        {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     @GetMapping
     public ResponseEntity<List<Cat>> getAllCats()
     {
@@ -64,7 +146,7 @@ public class NetworkCatController
     {
         try
         {
-            Cat newCat = repository.addCat(cat.name(), cat.birthDate(), cat.breed(), cat.color(), cat.owner().id());
+            Cat newCat = repository.addCat(cat.name(), cat.birthDate(), cat.breed(), cat.color(), cat.ownerId());
 
             if (newCat == null)
             {
@@ -84,7 +166,7 @@ public class NetworkCatController
     {
         try
         {
-            Cat updatedCat = repository.updateCat(id, cat.name(), cat.birthDate(), cat.breed(), cat.color(), cat.owner().id());
+            Cat updatedCat = repository.updateCat(id, cat.name(), cat.birthDate(), cat.breed(), cat.color(), cat.ownerId());
 
             if (updatedCat == null)
             {

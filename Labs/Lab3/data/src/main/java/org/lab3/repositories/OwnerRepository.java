@@ -1,17 +1,25 @@
 package org.lab3.repositories;
 
 import org.lab3.abstractions.IOwnerRepository;
+import org.lab3.dao.CatDao;
+import org.lab3.dao.OwnerDao;
+import org.lab3.databaseMenegment.AppConfig;
+import org.lab3.mappers.CatMapper;
 import org.lab3.mappers.OwnerMapper;
 import org.lab3.models.Owner;
+import org.lab3.rowDataMappers.CatRowMapper;
 import org.lab3.rowDataMappers.OwnerRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
 
 
 @Repository
@@ -26,6 +34,53 @@ public class OwnerRepository implements IOwnerRepository
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Transactional
+    protected List<CatDao> getCatsByOwnerId(int ownerId)
+    {
+        var context = new AnnotationConfigApplicationContext();
+        var catMapper = new CatMapper();
+
+        context.register(CatRepository.class);
+        context.register(AppConfig.class);
+        context.refresh();
+
+        var catRepository = context.getBean(CatRepository.class);
+        String sql = "SELECT * FROM cats WHERE owner_id =:ownerId";
+        var params = new MapSqlParameterSource();
+
+        params.addValue("ownerId", ownerId);
+
+        List<CatDao> cats = jdbcTemplate.query(sql, params, new CatRowMapper());
+
+        if (cats != null && !cats.isEmpty())
+        {
+            for (CatDao cat : cats)
+            {
+                String friendsSql = "SELECT friend_id FROM cats_friends WHERE cat_id = :id";
+
+                var friendsParams = new MapSqlParameterSource(); // Создаем новый экземпляр MapSqlParameterSource
+                friendsParams.addValue("id", cat.getId());
+
+                List<Integer> friendIds = jdbcTemplate.queryForList(friendsSql, friendsParams, Integer.class);
+
+                var friends = new ArrayList<CatDao>();
+
+                if (friendIds != null && !friendIds.isEmpty())
+                {
+                    for (Integer friendId : friendIds)
+                    {
+                        friends.add(catMapper.fromCatToCatDao(catRepository.getCatById(friendId)));
+                    }
+                }
+
+                cat.setFriends(friends);
+            }
+        }
+
+        return cats;
+    }
+
+
     @Override
     @Transactional
     public Owner getOwnerById(int id)
@@ -35,7 +90,11 @@ public class OwnerRepository implements IOwnerRepository
 
         params.addValue("id", id);
 
-        return ownerMapper.fromOwnerDaoToOwner(jdbcTemplate.queryForObject(sql, params, new OwnerRowMapper()));
+        OwnerDao ownerDao = jdbcTemplate.queryForObject(sql, params, new OwnerRowMapper());
+
+        ownerDao.setCats(getCatsByOwnerId(id));
+
+        return ownerMapper.fromOwnerDaoToOwner(ownerDao);
     }
 
     @Override
@@ -44,7 +103,17 @@ public class OwnerRepository implements IOwnerRepository
     {
         String sql = "SELECT * FROM owners";
 
-        return ownerMapper.fromOwnerDaoToOwner(jdbcTemplate.query(sql, new OwnerRowMapper()));
+        List<OwnerDao> owners = jdbcTemplate.query(sql, new OwnerRowMapper());
+
+        if (owners != null && !owners.isEmpty())
+        {
+            for (OwnerDao owner : owners)
+            {
+                owner.setCats(getCatsByOwnerId(owner.getId()));
+            }
+        }
+
+        return ownerMapper.fromOwnerDaoToOwner(owners);
     }
 
     @Override
@@ -56,19 +125,39 @@ public class OwnerRepository implements IOwnerRepository
 
         params.addValue("name", name);
 
-        return ownerMapper.fromOwnerDaoToOwner(jdbcTemplate.query(sql, params, new OwnerRowMapper()));
+        List<OwnerDao> owners = jdbcTemplate.query(sql, params, new OwnerRowMapper());
+
+        if (owners != null && !owners.isEmpty())
+        {
+            for (OwnerDao owner : owners)
+            {
+                owner.setCats(getCatsByOwnerId(owner.getId()));
+            }
+        }
+
+        return ownerMapper.fromOwnerDaoToOwner(owners);
     }
 
     @Override
     @Transactional
     public List<Owner> getOwnersByBirthDate(LocalDate birthDate)
     {
-        String sql = "SELECT * FROM owners WHERE birthDate = :birthDate";
+        String sql = "SELECT * FROM owners WHERE birthdate = :birthDate";
         var params = new MapSqlParameterSource();
 
         params.addValue("birthDate", birthDate);
 
-        return ownerMapper.fromOwnerDaoToOwner(jdbcTemplate.query(sql, params, new OwnerRowMapper()));
+        List<OwnerDao> owners = jdbcTemplate.query(sql, params, new OwnerRowMapper());
+
+        if (owners != null && !owners.isEmpty())
+        {
+            for (OwnerDao owner : owners)
+            {
+                owner.setCats(getCatsByOwnerId(owner.getId()));
+            }
+        }
+
+        return ownerMapper.fromOwnerDaoToOwner(owners);
     }
 
     @Override

@@ -32,7 +32,7 @@ public class CatRepository implements ICatRepository
     @Transactional
     public List<Cat> getAllCats()
     {
-        String sql = "SELECT cats.id AS cat_id, cats.name AS cat_name, cats.birthdate AS cat_birthdate, cats.breed AS cat_breed, cats.color AS cat_color, owners.id AS owner_id, owners.name AS owner_name, owners.birthdate AS owner_birthdate FROM cats INNER JOIN owners ON cats.owner_id = owners.id";
+        String sql = "SELECT * FROM cats";
 
         List<CatDao> cats = jdbcTemplate.query(sql, new CatRowMapper());
 
@@ -61,8 +61,6 @@ public class CatRepository implements ICatRepository
         return cats.stream().map(catMapper::fromCatDaoToCat).collect(Collectors.toList());
     }
 
-
-
     @Override
     @Transactional
     public Cat updateCat(int id, String name, LocalDate birthday, String breed, String color, int owner_id)
@@ -82,14 +80,13 @@ public class CatRepository implements ICatRepository
         return getCatById(id);
     }
 
-
     @Override
     @Transactional
     public Cat getCatById(int id)
     {
         try
         {
-            String sql = "SELECT cats.id AS cat_id, cats.name AS cat_name, cats.birthdate AS cat_birthdate, cats.breed AS cat_breed, cats.color AS cat_color, owners.id AS owner_id, owners.name AS owner_name, owners.birthdate AS owner_birthdate FROM cats INNER JOIN owners ON cats.owner_id = owners.id WHERE cats.id = :id";
+            String sql = "SELECT * FROM cats WHERE id = :id";
 
             var params = new MapSqlParameterSource();
             params.addValue("id", id);
@@ -122,44 +119,111 @@ public class CatRepository implements ICatRepository
         }
     }
 
-
     @Override
     @Transactional
     public List<Cat> getCatsByName(String name)
     {
-        String sql = "SELECT cats.id AS cat_id, cats.name AS cat_name, cats.birthdate AS cat_birthdate, cats.breed AS cat_breed, cats.color AS cat_color, owners.id AS owner_id, owners.name AS owner_name, owners.birthdate AS owner_birthdate FROM cats INNER JOIN owners ON cats.owner_id = owners.id WHERE cats.name = :name";
+        String sql = "SELECT * FROM cats WHERE name = :name";
 
         var params = new MapSqlParameterSource();
-
         params.addValue("name", name);
 
-        return catMapper.fromCatDaoToCat(jdbcTemplate.query(sql, params, new CatRowMapper()));
+        List<CatDao> cats = jdbcTemplate.query(sql, params, new CatRowMapper());
+
+        for (CatDao cat : cats)
+        {
+            String friendsSql = "SELECT friend_id FROM cats_friends WHERE cat_id = :id";
+            params = new MapSqlParameterSource();
+            params.addValue("id", cat.getId());
+
+            List<Integer> friendIds = jdbcTemplate.queryForList(friendsSql, params, Integer.class);
+
+            var friends = new ArrayList<CatDao>();
+
+            if (friendIds != null && !friendIds.isEmpty())
+            {
+                for (Integer friendId : friendIds)
+                {
+                    friends.add(catMapper.fromCatToCatDao(getCatById(friendId)));
+                }
+            }
+
+            cat.setFriends(friends);
+        }
+
+        return cats.stream().map(catMapper::fromCatDaoToCat).collect(Collectors.toList());
     }
 
     @Override
     @Transactional
     public List<Cat> getCatsByBirthDate(LocalDate birthDate)
     {
-        String sql = "SELECT cats.id AS cat_id, cats.name AS cat_name, cats.birthdate AS cat_birthdate, cats.breed AS cat_breed, cats.color AS cat_color, owners.id AS owner_id, owners.name AS owner_name, owners.birthdate AS owner_birthdate FROM cats INNER JOIN owners ON cats.owner_id = owners.id WHERE cats.birthdate = :birthDate";
+        String sql = "SELECT * FROM cats WHERE birthdate = :birthdate";
 
         var params = new MapSqlParameterSource();
 
-        params.addValue("birthDate", birthDate);
+        params.addValue("birthdate", birthDate);
 
-        return catMapper.fromCatDaoToCat(jdbcTemplate.query(sql, params, new CatRowMapper()));
+        List<CatDao> cats = jdbcTemplate.query(sql, params, new CatRowMapper());
+
+        for (CatDao cat : cats)
+        {
+            String friendsSql = "SELECT friend_id FROM cats_friends WHERE cat_id = :id";
+            params = new MapSqlParameterSource();
+            params.addValue("id", cat.getId());
+
+            List<Integer> friendIds = jdbcTemplate.queryForList(friendsSql, params, Integer.class);
+
+            var friends = new ArrayList<CatDao>();
+
+            if (friendIds != null && !friendIds.isEmpty())
+            {
+                for (Integer friendId : friendIds)
+                {
+                    friends.add(catMapper.fromCatToCatDao(getCatById(friendId)));
+                }
+            }
+
+            cat.setFriends(friends);
+        }
+
+        return cats.stream().map(catMapper::fromCatDaoToCat).collect(Collectors.toList());
     }
 
     @Override
     @Transactional
     public List<Cat> getCatsByBreed(String breed)
     {
-        String sql = "SELECT cats.id AS cat_id, cats.name AS cat_name, cats.birthdate AS cat_birthdate, cats.breed AS cat_breed, cats.color AS cat_color, owners.id AS owner_id, owners.name AS owner_name, owners.birthdate AS owner_birthdate FROM cats INNER JOIN owners ON cats.owner_id = owners.id WHERE cats.breed = :breed";
+        String sql = "SELECT * FROM cats WHERE breed = :breed";
 
         var params = new MapSqlParameterSource();
 
         params.addValue("breed", breed);
 
-        return catMapper.fromCatDaoToCat(jdbcTemplate.query(sql, params, new CatRowMapper()));
+        List<CatDao> cats = jdbcTemplate.query(sql, params, new CatRowMapper());
+
+        for (CatDao cat : cats)
+        {
+            String friendsSql = "SELECT friend_id FROM cats_friends WHERE cat_id = :id";
+            params = new MapSqlParameterSource();
+            params.addValue("id", cat.getId());
+
+            List<Integer> friendIds = jdbcTemplate.queryForList(friendsSql, params, Integer.class);
+
+            var friends = new ArrayList<CatDao>();
+
+            if (friendIds != null && !friendIds.isEmpty())
+            {
+                for (Integer friendId : friendIds)
+                {
+                    friends.add(catMapper.fromCatToCatDao(getCatById(friendId)));
+                }
+            }
+
+            cat.setFriends(friends);
+        }
+
+        return cats.stream().map(catMapper::fromCatDaoToCat).collect(Collectors.toList());
     }
 
 
@@ -167,12 +231,35 @@ public class CatRepository implements ICatRepository
     @Transactional
     public List<Cat> getCatsByColor(String color)
     {
-        String sql = "SELECT cats.id AS cat_id, cats.name AS cat_name, cats.birthdate AS cat_birthdate, cats.breed AS cat_breed, cats.color AS cat_color, owners.id AS owner_id, owners.name AS owner_name, owners.birthdate AS owner_birthdate FROM cats INNER JOIN owners ON cats.owner_id = owners.id WHERE cats.color = :color";
+        String sql = "SELECT * FROM cats WHERE color = :color";
         var params = new MapSqlParameterSource();
 
         params.addValue("color", color);
 
-        return catMapper.fromCatDaoToCat(jdbcTemplate.query(sql, params, new CatRowMapper()));
+        List<CatDao> cats = jdbcTemplate.query(sql, params, new CatRowMapper());
+
+        for (CatDao cat : cats)
+        {
+            String friendsSql = "SELECT friend_id FROM cats_friends WHERE cat_id = :id";
+
+            params.addValue("id", cat.getId());
+
+            List<Integer> friendIds = jdbcTemplate.queryForList(friendsSql, params, Integer.class);
+
+            var friends = new ArrayList<CatDao>();
+
+            if (friendIds != null && !friendIds.isEmpty())
+            {
+                for (Integer friendId : friendIds)
+                {
+                    friends.add(catMapper.fromCatToCatDao(getCatById(friendId)));
+                }
+            }
+
+            cat.setFriends(friends);
+        }
+
+        return cats.stream().map(catMapper::fromCatDaoToCat).collect(Collectors.toList());
     }
 
     @Override
@@ -254,7 +341,6 @@ public class CatRepository implements ICatRepository
             e.printStackTrace();
         }
     }
-
 
     @Override
     @Transactional

@@ -41,7 +41,7 @@ public class GetInfoSubmenu
                     "Birth Date: " + cat.birthDate() + "\n" +
                     "Breed: " + cat.breed() + "\n" +
                     "Color: " + cat.color() + "\n" +
-                    "Owner: " + cat.owner().name() + "\n\n");
+                    "\n\n");
 
             List<Cat> friends = cat.friends();
 
@@ -56,7 +56,7 @@ public class GetInfoSubmenu
                             .append("Birth Date: ").append(friend.birthDate()).append("\n")
                             .append("Breed: ").append(friend.breed()).append("\n")
                             .append("Color: ").append(friend.color()).append("\n")
-                            .append("Owner: ").append(friend.owner().name()).append("\n\n");
+                            .append("\n\n");
                 }
                 info.append(friendsInfo.toString());
             }
@@ -78,8 +78,7 @@ public class GetInfoSubmenu
                     "Name: " + cat.name() + "\n" +
                     "Birth Date: " + cat.birthDate() + "\n" +
                     "Breed: " + cat.breed() + "\n" +
-                    "Color: " + cat.color() + "\n" +
-                    "Owner: " + cat.owner().name());
+                    "Color: " + cat.color() + "\n" );
 
             List<Cat> friends = cat.friends();
 
@@ -93,7 +92,7 @@ public class GetInfoSubmenu
                             .append("Birth Date: ").append(friend.birthDate()).append("\n")
                             .append("Breed: ").append(friend.breed()).append("\n")
                             .append("Color: ").append(friend.color()).append("\n")
-                            .append("Owner: ").append(friend.owner().name()).append("\n\n");
+                            .append("\n\n");
                 }
                 JOptionPane.showMessageDialog(_frame, friendsInfo.toString());
             }

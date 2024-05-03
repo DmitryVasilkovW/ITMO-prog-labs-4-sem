@@ -26,7 +26,7 @@ public class CatMapper
                 catDao.getBirthDate(),
                 catDao.getBreed(),
                 catDao.getColor(),
-                new OwnerMapper().fromOwnerDaoToOwner(catDao.getOwner()),
+                catDao.getOwnerId(),
                 friends);
     }
 
@@ -60,7 +60,7 @@ public class CatMapper
         catDao.setBirthDate(cat.birthDate());
         catDao.setBreed(cat.breed());
         catDao.setColor(cat.color());
-        catDao.setOwner(new OwnerMapper().fromOwnerToOwnerDao(cat.owner()));
+        catDao.setOwnerId(cat.ownerId());
         catDao.setFriends(friends);
 
         return catDao;
