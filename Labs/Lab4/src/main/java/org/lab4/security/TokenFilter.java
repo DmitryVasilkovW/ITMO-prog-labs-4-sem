@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,8 +18,9 @@ import java.io.IOException;
 @Component
 public class TokenFilter extends OncePerRequestFilter
 {
-
+    @Autowired
     private JwtCore jwtCore;
+    @Autowired
     private UserDetailsService userDetailsService;
 
     @Override
@@ -52,7 +54,9 @@ public class TokenFilter extends OncePerRequestFilter
                     userDetails = userDetailsService.loadUserByUsername(username);
                     authentication = new UsernamePasswordAuthenticationToken(
                             userDetails,
-                            null);
+                            null,
+                            userDetails.getAuthorities());
+
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
             }
@@ -62,6 +66,13 @@ public class TokenFilter extends OncePerRequestFilter
             e.printStackTrace();
         }
 
-        filterChain.doFilter(request, response);
+        try
+        {
+            filterChain.doFilter(request, response);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

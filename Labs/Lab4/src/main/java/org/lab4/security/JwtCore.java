@@ -20,10 +20,11 @@ public class JwtCore
     public String generateToken(Authentication authentication)
     {
         UserDetailsIml userDetails = (UserDetailsIml) authentication.getPrincipal();
+        String token = null;
 
         try
         {
-            Jwts.builder().setSubject(userDetails.getUsername()).setIssuedAt(new Date())
+            token = Jwts.builder().setSubject(userDetails.getUsername()).setIssuedAt(new Date())
                     .setExpiration(new Date((new Date()).getTime() + lifetime))
                     .signWith(SignatureAlgorithm.HS256, secret).compact();
         }
@@ -32,12 +33,11 @@ public class JwtCore
             e.printStackTrace();
         }
 
-        return Jwts.builder().setSubject(userDetails.getUsername()).setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + lifetime))
-                .signWith(SignatureAlgorithm.HS256, secret).compact();
+        return token;
     }
 
-    public String getNameFromJwt(String token) {
+    public String getNameFromJwt(String token)
+    {
         return Jwts.parser()
                 .setSigningKey(secret)
                 .build()
