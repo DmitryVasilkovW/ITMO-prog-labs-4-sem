@@ -20,7 +20,6 @@ public class SecurityController
 {
     private UserRepository userRepository;
     private PasswordEncoder passwordEncoder;
-    @Autowired
     private AuthenticationManager authenticationManager;
     private JwtCore jwtCore;
 
