@@ -11,4 +11,5 @@ public class SignupRequest
     private String email;
     private LocalDate birthdate;
     private String password;
+    private Roles role;
 }

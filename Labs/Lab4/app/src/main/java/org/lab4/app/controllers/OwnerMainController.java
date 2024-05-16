@@ -1,14 +1,19 @@
 package org.lab4.app.controllers;
 
 import org.lab4.app.models.OwnerDao;
+import org.lab4.app.myExceptions.RoleNotSuitableException;
 import org.lab4.app.repositories.OwnerRepository;
 import org.lab4.app.services.UserDetailsIml;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/owner")
@@ -43,4 +48,34 @@ public class OwnerMainController
             return null;
         }
     }
+
+    @PreAuthorize("hasRole('Admin')")
+    @GetMapping("/owners")
+    public List<OwnerDao> adminAccess(Authentication authentication)
+    {
+        try
+        {
+            UserDetailsIml userDetails = (UserDetailsIml) authentication.getPrincipal();
+            if (!userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Admin")))
+            {
+                throw new RoleNotSuitableException("You don't have sufficient rights");
+            }
+
+            List<OwnerDao> owners = ownerRepository.findAll();
+
+            if(owners.isEmpty())
+            {
+                throw new UsernameNotFoundException("Users not found");
+            }
+
+            return owners;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+
+            return null;
+        }
+    }
+
 }

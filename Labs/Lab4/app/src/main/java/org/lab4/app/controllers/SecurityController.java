@@ -65,6 +65,7 @@ public class SecurityController
         owner.setEmail(signupRequest.getEmail());
         owner.setBirthDate(signupRequest.getBirthdate());
         owner.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+        owner.setRole(signupRequest.getRole());
         ownerRepository.save(owner);
 
         return ResponseEntity.ok("Successfully signed up");

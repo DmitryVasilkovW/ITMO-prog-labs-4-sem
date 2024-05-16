@@ -78,6 +78,7 @@ public class SecurityConfigurator
                 )
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/owner/owners").hasRole("Admin")
                         .requestMatchers("/owner/**").fullyAuthenticated()
                         .anyRequest().permitAll()
                 )

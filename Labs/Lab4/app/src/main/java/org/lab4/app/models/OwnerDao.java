@@ -3,6 +3,7 @@ package org.lab4.app.models;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnTransformer;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -28,6 +29,13 @@ public class OwnerDao
 
     @Column(name = "birthdate")
     private LocalDate birthDate;
+
+    @Column(name = "roles")
+    @ColumnTransformer(
+            write = "?::int"
+    )
+    private Roles role;
+
 
     @OneToMany(mappedBy = "ownerId")
     private List<CatDao> cats;

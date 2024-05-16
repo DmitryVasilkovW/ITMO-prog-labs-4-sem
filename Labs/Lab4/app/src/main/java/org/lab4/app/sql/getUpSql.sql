@@ -4,7 +4,8 @@ create table owners
     name text not null,
     birthdate date not null,
     email text not null,
-    password text not null
+    password text not null,
+    roles int not null
 );
 
 create table cats
