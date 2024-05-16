@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/Labs/Lab4/app/src/main/java/org/lab4/app/sql/getUpSql.sql" dialect="PostgreSQL" />
     <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/6d4da4ab-6ea1-4011-8a7f-935bc2d40c88/console_5.sql" dialect="PostgreSQL" />
     <file url="PROJECT" dialect="PostgreSQL" />
   </component>

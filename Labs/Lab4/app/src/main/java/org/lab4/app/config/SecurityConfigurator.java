@@ -1,6 +1,8 @@
-package org.lab4.security;
+package org.lab4.app.config;
 
 import lombok.NoArgsConstructor;
+import org.lab4.app.services.UserService;
+import org.lab4.app.tokenManager.TokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -76,7 +78,7 @@ public class SecurityConfigurator
                 )
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/secured/user").fullyAuthenticated()
+                        .requestMatchers("/owner/**").fullyAuthenticated()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);

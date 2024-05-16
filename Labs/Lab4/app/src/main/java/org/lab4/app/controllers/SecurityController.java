@@ -1,5 +1,10 @@
-package org.lab4.security;
+package org.lab4.app.controllers;
 
+import org.lab4.app.models.OwnerDao;
+import org.lab4.app.models.SigninRequest;
+import org.lab4.app.models.SignupRequest;
+import org.lab4.app.repositories.OwnerRepository;
+import org.lab4.app.tokenManager.JwtCore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +23,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class SecurityController
 {
-    private UserRepository userRepository;
+    private OwnerRepository ownerRepository;
     private PasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
     private JwtCore jwtCore;
 
     @Autowired
-    public void setUserRepository(UserRepository userRepository)
+    public void setUserRepository(OwnerRepository ownerRepository)
     {
-        this.userRepository = userRepository;
+        this.ownerRepository = ownerRepository;
     }
 
     @Autowired
@@ -50,16 +55,17 @@ public class SecurityController
     @PostMapping("/signup")
     ResponseEntity<?> signup(@RequestBody SignupRequest signupRequest)
     {
-        if (userRepository.existsByUsername(signupRequest.getUsername()))
+        if (ownerRepository.existsOwnerByEmail(signupRequest.getEmail()))
         {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username already exists");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("email already exists");
         }
 
-        var user = new User();
-        user.setUsername(signupRequest.getUsername());
-        user.setEmail(signupRequest.getEmail());
-        user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
-        userRepository.save(user);
+        var owner = new OwnerDao();
+        owner.setName(signupRequest.getOwnerName());
+        owner.setEmail(signupRequest.getEmail());
+        owner.setBirthDate(signupRequest.getBirthdate());
+        owner.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
+        ownerRepository.save(owner);
 
         return ResponseEntity.ok("Successfully signed up");
     }
@@ -71,7 +77,7 @@ public class SecurityController
 
         try
         {
-            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.getUsername(), signinRequest.getPassword()));
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.getOwnerName(), signinRequest.getPassword()));
         }
         catch (BadCredentialsException e)
         {

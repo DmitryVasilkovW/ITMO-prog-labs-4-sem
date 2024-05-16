@@ -1,10 +1,12 @@
-package org.lab4.security;
+package org.lab4.app.services;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.lab4.app.models.OwnerDao;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 @Data
@@ -15,14 +17,16 @@ public class UserDetailsIml implements UserDetails
     private String username;
     private String email;
     private String password;
+    private LocalDate birthdate;
 
-    public static UserDetailsIml build(User user)
+    public static UserDetailsIml build(OwnerDao owner)
     {
         return new UserDetailsIml(
-                user.getId(),
-                user.getUsername(),
-                user.getEmail(),
-                user.getPassword());
+                owner.getId(),
+                owner.getName(),
+                owner.getEmail(),
+                owner.getPassword(),
+                owner.getBirthDate());
     }
 
     @Override

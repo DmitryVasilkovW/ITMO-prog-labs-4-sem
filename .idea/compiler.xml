@@ -8,26 +8,34 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="Lab1" />
+        <module name="app" />
+        <module name="security" />
         <module name="Service" />
         <module name="InteractiveMenu" />
-        <module name="security" />
         <module name="Controller" />
         <module name="DataAccessObject" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="19">
+      <module name="controller (1) (org.lab4)" target="21" />
       <module name="DatabasePractice" target="17" />
+      <module name="dataJpa" target="21" />
       <module name="Models" target="19" />
+      <module name="service (1) (org.lab4)" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="InteractiveMenu" options="" />
       <module name="Lab3" options="-parameters -parameters" />
+      <module name="app" options="-parameters" />
       <module name="controller (1) (org.lab3)" options="-parameters -parameters" />
+      <module name="controller (1) (org.lab4)" options="-parameters" />
       <module name="data" options="-parameters -parameters" />
+      <module name="dataJpa" options="-parameters" />
       <module name="security" options="-parameters" />
       <module name="service (1) (org.lab3)" options="-parameters -parameters" />
+      <module name="service (1) (org.lab4)" options="-parameters" />
     </option>
   </component>
 </project>

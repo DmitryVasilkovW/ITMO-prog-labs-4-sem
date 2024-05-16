@@ -1,7 +1,8 @@
-package org.lab4.security;
+package org.lab4.app.tokenManager;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.lab4.app.services.UserDetailsIml;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
