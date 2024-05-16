@@ -1,4 +1,4 @@
-package org.lab4.security;
+package org.lab4.app.tokenManager;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;

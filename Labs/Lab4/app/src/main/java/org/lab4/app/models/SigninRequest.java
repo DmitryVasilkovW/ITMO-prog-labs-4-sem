@@ -1,10 +1,10 @@
-package org.lab4.security;
+package org.lab4.app.models;
 
 import lombok.Data;
 
 @Data
 public class SigninRequest
 {
-    private String username;
+    private String ownerName;
     private String password;
 }
