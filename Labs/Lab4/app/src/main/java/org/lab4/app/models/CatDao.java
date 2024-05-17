@@ -17,16 +17,16 @@ public class CatDao
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column
+    @Column(name = "name")
     private String name;
 
     @Column(name = "birthdate")
     private LocalDate birthDate;
 
-    @Column
+    @Column(name = "breed")
     private String breed;
 
-    @Column
+    @Column(name = "color")
     private String color;
 
     @Column(name = "owner_id")
