@@ -103,7 +103,7 @@ public class SecurityConfigurator
                         .requestMatchers("/cats/color/{color}/id/{id}").hasAnyRole("Owner", "Admin")
                         .requestMatchers("/cats/id/{id}").hasAnyRole("Owner", "Admin")
                         .requestMatchers("/owner/**").fullyAuthenticated()
-                        .requestMatchers("cats/**").fullyAuthenticated()
+                        .requestMatchers("/cats/**").fullyAuthenticated()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
