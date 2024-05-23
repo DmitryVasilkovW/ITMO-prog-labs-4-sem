@@ -1,4 +1,4 @@
-FROM gradle:7.3.3-jdk11 as build
+FROM gradle:8.5.0-jdk21 as build
 
 COPY . /app
 
