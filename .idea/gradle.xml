@@ -4,10 +4,35 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/Labs/Lab4/controller" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/Labs/Lab5" />
+        <option name="gradleHome" value="" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/Labs/Lab4/controller" />
+            <option value="$PROJECT_DIR$/Labs/Lab5" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/Labs/Lab5/catDomain" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/Labs/Lab5/catDomain" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/Labs/Lab5/dataAccess" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/Labs/Lab5/dataAccess" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/Labs/Lab5/ownerDomain" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/Labs/Lab5/ownerDomain" />
           </set>
         </option>
       </GradleProjectSettings>
