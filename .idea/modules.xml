@@ -9,7 +9,6 @@
       <module fileurl="file://$PROJECT_DIR$/Practitioners/Practitioners.iml" filepath="$PROJECT_DIR$/Practitioners/Practitioners.iml" />
       <module fileurl="file://$PROJECT_DIR$/Labs/Lab3/controller/controller (1) (org.lab3).iml" filepath="$PROJECT_DIR$/Labs/Lab3/controller/controller (1) (org.lab3).iml" />
       <module fileurl="file://$PROJECT_DIR$/Labs/Lab3/data/data.iml" filepath="$PROJECT_DIR$/Labs/Lab3/data/data.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ownerDomain.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ownerDomain.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/Labs/Lab3/service/service (1) (org.lab3).iml" filepath="$PROJECT_DIR$/Labs/Lab3/service/service (1) (org.lab3).iml" />
     </modules>
   </component>
