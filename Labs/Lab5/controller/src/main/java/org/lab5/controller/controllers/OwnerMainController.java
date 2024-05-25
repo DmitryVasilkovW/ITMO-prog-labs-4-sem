@@ -1,15 +1,13 @@
 package org.lab5.controller.controllers;
 
-import org.lab4.app.models.OwnerDao;
-import org.lab4.app.myExceptions.RoleNotSuitableException;
-import org.lab4.app.repositories.OwnerRepository;
-import org.lab4.app.services.UserDetailsIml;
+import org.lab5.dataAccess.dao.OwnerDao;
+import org.lab5.dataAccess.repositories.OwnerRepository;
+import org.lab5.service.services.UserDetailsIml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,10 +55,6 @@ public class OwnerMainController
         try
         {
             UserDetailsIml userDetails = (UserDetailsIml) authentication.getPrincipal();
-            if (!userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_Admin")))
-            {
-                throw new RoleNotSuitableException("You don't have sufficient rights");
-            }
 
             List<OwnerDao> owners = ownerRepository.findAll();
 
