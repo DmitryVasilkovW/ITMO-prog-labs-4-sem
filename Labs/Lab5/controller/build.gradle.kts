@@ -33,6 +33,11 @@ dependencies {
 
     implementation(project(":dataAccess"))
     implementation(project(":service"))
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.mockito:mockito-core:4.2.0")
+    testImplementation("org.mockito:mockito-junit-jupiter:4.2.0")
+    testImplementation("org.springframework.security:spring-security-test")
 }
 
 tasks.test {
