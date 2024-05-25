@@ -5,8 +5,7 @@ import org.lab5.dataAccess.dto.OwnerDto;
 public interface OwnerService
 {
     OwnerDto createOwner(OwnerDto ownerDto);
-    void getOwnerById(int id);
-    void findAllKitties(int id);
+    void getOwnerById(long id);
     void findAllOwners(int trash);
-    void removeOwner(int id);
+    void removeOwner(long id);
 }

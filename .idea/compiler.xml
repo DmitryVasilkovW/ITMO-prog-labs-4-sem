@@ -22,6 +22,8 @@
         </processorPath>
         <module name="Lab5.catDomain.main" />
         <module name="Lab5.dataAccess.main" />
+        <module name="Lab5.ownerDomain.main" />
+        <module name="Lab5.service.main" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="19">
@@ -43,9 +45,6 @@
       <module name="Lab5.domain" target="21" />
       <module name="Lab5.domain.main" target="21" />
       <module name="Lab5.domain.test" target="21" />
-      <module name="Lab5.ownerDomain" target="21" />
-      <module name="Lab5.ownerDomain.main" target="21" />
-      <module name="Lab5.ownerDomain.test" target="21" />
       <module name="Lab5.tmp" target="21" />
       <module name="Lab5.tmp.main" target="21" />
       <module name="Lab5.tmp.test" target="21" />
@@ -53,6 +52,7 @@
       <module name="Lab5.tmp1.main" target="21" />
       <module name="Lab5.tmp1.test" target="21" />
       <module name="Models" target="19" />
+      <module name="ownerDomain" target="21" />
       <module name="ownerDomain.main" target="21" />
       <module name="ownerDomain.test" target="21" />
       <module name="service (1) (org.lab4)" target="21" />

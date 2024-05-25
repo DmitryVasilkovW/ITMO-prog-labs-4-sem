@@ -10,6 +10,8 @@
             <option value="$PROJECT_DIR$/Labs/Lab5" />
             <option value="$PROJECT_DIR$/Labs/Lab5/catDomain" />
             <option value="$PROJECT_DIR$/Labs/Lab5/dataAccess" />
+            <option value="$PROJECT_DIR$/Labs/Lab5/ownerDomain" />
+            <option value="$PROJECT_DIR$/Labs/Lab5/service" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -2,7 +2,6 @@ package org.lab5.ownerDomain.services;
 
 import lombok.experimental.ExtensionMethod;
 import org.lab5.dataAccess.dao.OwnerDao;
-import org.lab5.dataAccess.dto.CatDto;
 import org.lab5.dataAccess.dto.CatList;
 import org.lab5.dataAccess.dto.OwnerDto;
 import org.lab5.dataAccess.dto.OwnerListDto;
@@ -16,7 +15,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @ExtensionMethod({OwnerMapper.class, CatMapper.class})
@@ -65,12 +63,8 @@ public class OwnerServiceImpl implements OwnerService
     }
 
     @KafkaListener(topics = "remove_owner", groupId = "groupIdRO", containerFactory = "byIdOwnerFactory")
-    public void removeOwner(int id)
+    public void removeOwner(long id)
     {
-        if (!ownerRepository.existsById(id))
-        {
-            throw OwnerServiceException.noSuchOwner(id);
-        }
         ownerRepository.deleteById(id);
     }
 }
