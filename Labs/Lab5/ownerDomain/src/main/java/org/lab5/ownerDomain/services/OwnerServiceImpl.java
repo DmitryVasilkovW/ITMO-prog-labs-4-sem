@@ -9,6 +9,7 @@ import org.lab5.dataAccess.repositories.OwnerRepository;
 import org.lab5.ownerDomain.mappers.CatMapper;
 import org.lab5.ownerDomain.mappers.OwnerMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 
 @Service
 @ExtensionMethod({OwnerMapper.class, CatMapper.class})
+@ComponentScan(basePackages = "org.lab5")
 public class OwnerServiceImpl implements OwnerService
 {
     private final OwnerRepository ownerRepository;

@@ -2,14 +2,18 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Labs/Lab2/Controller/Controller.iml" filepath="$PROJECT_DIR$/Labs/Lab2/Controller/Controller.iml" />
       <module fileurl="file://$PROJECT_DIR$/Practitioners/DatabasePractice/DatabasePractice.iml" filepath="$PROJECT_DIR$/Practitioners/DatabasePractice/DatabasePractice.iml" />
       <module fileurl="file://$PROJECT_DIR$/Labs/Lab3/Lab3.iml" filepath="$PROJECT_DIR$/Labs/Lab3/Lab3.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/catDomain/Lab5.catDomain.main.iml" filepath="$PROJECT_DIR$/.idea/modules/catDomain/Lab5.catDomain.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/controller/Lab5.controller.main.iml" filepath="$PROJECT_DIR$/.idea/modules/controller/Lab5.controller.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/dataAccess/Lab5.dataAccess.main.iml" filepath="$PROJECT_DIR$/.idea/modules/dataAccess/Lab5.dataAccess.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/ownerDomain/Lab5.ownerDomain.main.iml" filepath="$PROJECT_DIR$/.idea/modules/ownerDomain/Lab5.ownerDomain.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/service/Lab5.service.main.iml" filepath="$PROJECT_DIR$/.idea/modules/service/Lab5.service.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/Labs/Labs.iml" filepath="$PROJECT_DIR$/Labs/Labs.iml" />
       <module fileurl="file://$PROJECT_DIR$/Practitioners/Practice5/Practice5.iml" filepath="$PROJECT_DIR$/Practitioners/Practice5/Practice5.iml" />
       <module fileurl="file://$PROJECT_DIR$/Practitioners/Practitioners.iml" filepath="$PROJECT_DIR$/Practitioners/Practitioners.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Labs/Lab2/Service/Service.iml" filepath="$PROJECT_DIR$/Labs/Lab2/Service/Service.iml" />
       <module fileurl="file://$PROJECT_DIR$/Labs/Lab3/controller/controller (1) (org.lab3).iml" filepath="$PROJECT_DIR$/Labs/Lab3/controller/controller (1) (org.lab3).iml" />
       <module fileurl="file://$PROJECT_DIR$/Labs/Lab3/data/data.iml" filepath="$PROJECT_DIR$/Labs/Lab3/data/data.iml" />
       <module fileurl="file://$PROJECT_DIR$/Labs/Lab3/service/service (1) (org.lab3).iml" filepath="$PROJECT_DIR$/Labs/Lab3/service/service (1) (org.lab3).iml" />

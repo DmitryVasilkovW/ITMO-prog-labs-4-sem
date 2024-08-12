@@ -9,17 +9,10 @@
           <set>
             <option value="$PROJECT_DIR$/Labs/Lab5" />
             <option value="$PROJECT_DIR$/Labs/Lab5/catDomain" />
+            <option value="$PROJECT_DIR$/Labs/Lab5/controller" />
             <option value="$PROJECT_DIR$/Labs/Lab5/dataAccess" />
             <option value="$PROJECT_DIR$/Labs/Lab5/ownerDomain" />
             <option value="$PROJECT_DIR$/Labs/Lab5/service" />
-          </set>
-        </option>
-      </GradleProjectSettings>
-      <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/Labs/Lab5/tmp" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/Labs/Lab5/tmp" />
           </set>
         </option>
       </GradleProjectSettings>

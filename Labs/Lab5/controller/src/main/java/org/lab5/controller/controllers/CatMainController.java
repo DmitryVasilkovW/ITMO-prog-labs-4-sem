@@ -1,46 +1,78 @@
 package org.lab5.controller.controllers;
 
+import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.lab5.controller.creators.CatCreate;
 import org.lab5.dataAccess.dao.CatDao;
+import org.lab5.dataAccess.dto.CatDto;
+import org.lab5.dataAccess.dto.CatList;
+import org.lab5.dataAccess.dto.FilterDto;
+import org.lab5.dataAccess.dto.FriendsDto;
 import org.lab5.dataAccess.repositories.CatRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/cats")
 public class CatMainController
 {
     private final CatRepository catRepository;
+    private final KafkaTemplate<String, CatCreate> createCat;
+    private final KafkaTemplate<String, Integer> getCat;
+    private final KafkaTemplate<String, FriendsDto> friends;
+    private final KafkaTemplate<String, FilterDto> filters;
+    private final Consumer<String, CatList> consumerCats;
+    private final Consumer<String, CatList> consumerFriends;
+    private final Consumer<String, CatList> consumerFiltered;
+    private final Consumer<String, CatDto> consumer;
 
     @Autowired
-    public CatMainController(CatRepository catRepository)
-    {
+    public CatMainController(CatRepository catRepository,
+                             KafkaTemplate<String, CatCreate> createCat,
+                             KafkaTemplate<String, Integer> getCat,
+                             KafkaTemplate<String, FriendsDto> friends,
+                             KafkaTemplate<String, FilterDto> filters,
+                             @Qualifier("CKF") Consumer<String, CatList> consumerCats,
+                             @Qualifier("CKFF") Consumer<String, CatList> consumerFriends,
+                             @Qualifier("CFF") Consumer<String, CatList> consumerFiltered,
+                             Consumer<String, CatDto> consumer) {
         this.catRepository = catRepository;
+        this.createCat = createCat;
+        this.getCat = getCat;
+        this.friends = friends;
+        this.filters = filters;
+        this.consumerCats = consumerCats;
+        this.consumerFriends = consumerFriends;
+        this.consumerFiltered = consumerFiltered;
+        this.consumer = consumer;
     }
 
+
     @PreAuthorize("hasRole('Admin')")
-    @GetMapping("/{id}")
-    public ResponseEntity<CatDao> getCat(@PathVariable Long id)
-    {
-        try
-        {
-            CatDao cat = catRepository.findById(id).orElseThrow(() -> new NullPointerException("No such cat"));
-
-            if (cat == null)
-            {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-
-            return ResponseEntity.ok(cat);
-        }
-        catch (Exception e)
-        {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    @GetMapping("{id}")
+    public CatDto getCatById(@PathVariable int id) throws InterruptedException {
+        getCat.send("get_by_id_cat", id);
+        TimeUnit.MILLISECONDS.sleep(1000);
+        ConsumerRecords<String, CatDto> consumerRecords = consumer.poll(Duration.ofMillis(2000));
+        Iterator<ConsumerRecord<String, CatDto>> iterator = consumerRecords.iterator();
+        if (iterator.hasNext()) {
+            CatDto value = iterator.next().value();
+            consumer.commitSync();
+            return value;
+        } else {
+            return getCatById(id);
         }
     }
 

@@ -44,7 +44,7 @@ public class OwnerProducerConfig
     }
 
     @Bean
-    public KafkaTemplate<String, CatList> getKitties(ProducerFactory<String, CatList> producerFactoryJson)
+    public KafkaTemplate<String, CatList> getCats(ProducerFactory<String, CatList> producerFactoryJson)
     {
         return new KafkaTemplate<>(producerFactoryJson);
     }
