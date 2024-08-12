@@ -31,13 +31,13 @@ public class CatProducerConfig
     }
 
     @Bean
-    public KafkaTemplate<String, CatDto> getKitty(ProducerFactory<String, CatDto> producerFactoryJson)
+    public KafkaTemplate<String, CatDto> getCat(ProducerFactory<String, CatDto> producerFactoryJson)
     {
         return new KafkaTemplate<>(producerFactoryJson);
     }
 
     @Bean
-    public KafkaTemplate<String, CatDto> getKitties(ProducerFactory<String, CatDto> producerFactoryJson)
+    public KafkaTemplate<String, CatDto> getCats(ProducerFactory<String, CatDto> producerFactoryJson)
     {
         return new KafkaTemplate<>(producerFactoryJson);
     }

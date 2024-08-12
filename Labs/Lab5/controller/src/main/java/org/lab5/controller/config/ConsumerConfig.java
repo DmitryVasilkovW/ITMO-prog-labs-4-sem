@@ -69,7 +69,7 @@ public class ConsumerConfig
     }
 
     @Bean
-    public ConsumerFactory<String, CatList> consumerKittiesFactory() 
+    public ConsumerFactory<String, CatList> consumerCatsFactory()
     {
         Map<String, Object> props = new HashMap<>();
         
@@ -83,40 +83,40 @@ public class ConsumerConfig
     }
 
     @Bean(name = "COsKF")
-    public Consumer<String, CatList> createOwnersKittiesFactory(ConsumerFactory<String, CatList> consumerKittiesFactory)
+    public Consumer<String, CatList> createOwnersCatsFactory(ConsumerFactory<String, CatList> consumerCatsFactory)
     {
-        Consumer<String, CatList> consumer = consumerKittiesFactory.createConsumer("groupIdCOsKF", "clientIdCOsKF");
+        Consumer<String, CatList> consumer = consumerCatsFactory.createConsumer("groupIdCOsKF", "clientIdCOsKF");
         consumer.subscribe(List.of("got_by_id_owners_kitties"));
         
         return consumer;
     }
 
     @Bean(name = "CKFF")
-    public Consumer<String, CatList> createKittiesFriendsFactory(ConsumerFactory<String, CatList> consumerKittiesFactory)
+    public Consumer<String, CatList> createCatsFriendsFactory(ConsumerFactory<String, CatList> consumerCatsFactory)
     {
-        Consumer<String, CatList> consumer = consumerKittiesFactory.createConsumer("groupIdCKFF", "clientIdCKFF");
+        Consumer<String, CatList> consumer = consumerCatsFactory.createConsumer("groupIdCKFF", "clientIdCKFF");
         consumer.subscribe(List.of("got_by_id_friends"));
         return consumer;
     }
 
     @Bean(name = "CKF")
-    public Consumer<String, CatList> createKittiesFactory(ConsumerFactory<String, CatList> consumerKittiesFactory)
+    public Consumer<String, CatList> createCatsFactory(ConsumerFactory<String, CatList> consumerCatsFactory)
     {
-        Consumer<String, CatList> consumer = consumerKittiesFactory.createConsumer("groupIdCKF", "clientIdCKF");
+        Consumer<String, CatList> consumer = consumerCatsFactory.createConsumer("groupIdCKF", "clientIdCKF");
         consumer.subscribe(List.of("got_kitties"));
         return consumer;
     }
 
     @Bean(name = "CFF")
-    public Consumer<String, CatList> createFilteredFactory(ConsumerFactory<String, CatList> consumerKittiesFactory)
+    public Consumer<String, CatList> createFilteredFactory(ConsumerFactory<String, CatList> consumerCatsFactory)
     {
-        Consumer<String, CatList> consumer = consumerKittiesFactory.createConsumer("groupIdCFF", "clientIdCFF");
+        Consumer<String, CatList> consumer = consumerCatsFactory.createConsumer("groupIdCFF", "clientIdCFF");
         consumer.subscribe(List.of("got_kitties_by_filters"));
         return consumer;
     }
 
     @Bean
-    public ConsumerFactory<String, CatDto> consumerKittyFactory()
+    public ConsumerFactory<String, CatDto> consumerCatFactory()
     {
         Map<String, Object> props = new HashMap<>();
 
@@ -130,9 +130,9 @@ public class ConsumerConfig
     }
 
     @Bean
-    public Consumer<String, CatDto> createKittyFactory(ConsumerFactory<String, CatDto> consumerKittyFactory)
+    public Consumer<String, CatDto> createCatFactory(ConsumerFactory<String, CatDto> consumerCatFactory)
     {
-        Consumer<String, CatDto> consumer = consumerKittyFactory.createConsumer("groupId", "clientId");
+        Consumer<String, CatDto> consumer = consumerCatFactory.createConsumer("groupId", "clientId");
         consumer.subscribe(List.of("got_by_id_kitty"));
 
         return consumer;

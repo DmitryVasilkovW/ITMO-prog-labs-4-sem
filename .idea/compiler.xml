@@ -21,6 +21,7 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.32/17d46b3e205515e1e8efd3ee4d57ce8018914163/lombok-1.18.32.jar" />
         </processorPath>
         <module name="Lab5.catDomain.main" />
+        <module name="Lab5.controller.main" />
         <module name="Lab5.dataAccess.main" />
         <module name="Lab5.ownerDomain.main" />
         <module name="Lab5.service.main" />
@@ -33,6 +34,7 @@
       <module name="catDomain" target="21" />
       <module name="catDomain.main" target="21" />
       <module name="catDomain.test" target="21" />
+      <module name="Controller" target="19" />
       <module name="controller (1) (org.lab4)" target="21" />
       <module name="dataAccess" target="21" />
       <module name="dataAccess.main" target="21" />
@@ -55,7 +57,11 @@
       <module name="ownerDomain" target="21" />
       <module name="ownerDomain.main" target="21" />
       <module name="ownerDomain.test" target="21" />
+      <module name="Service" target="19" />
       <module name="service (1) (org.lab4)" target="21" />
+      <module name="tmp" target="21" />
+      <module name="tmp.main" target="21" />
+      <module name="tmp.test" target="21" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

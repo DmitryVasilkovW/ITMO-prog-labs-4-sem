@@ -8,6 +8,7 @@ import org.lab5.dataAccess.dto.CatList;
 import org.lab5.dataAccess.repositories.CatRepository;
 import org.lab5.dataAccess.repositories.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 
 @Service
 @ExtensionMethod(CatMapper.class)
+@ComponentScan(basePackages = "org.lab5")
 public class CatServiceImpl implements CatService
 {
     private final CatRepository catRepository;
@@ -24,17 +26,13 @@ public class CatServiceImpl implements CatService
     private final KafkaTemplate<String, CatList> getCats;
 
     @Autowired
-    public CatServiceImpl(
-            CatRepository catRepository,
-            OwnerRepository ownerRepository,
-            KafkaTemplate<String, CatDto> getCat,
-            KafkaTemplate<String, CatList> getCats)
-    {
+    public CatServiceImpl(CatRepository catRepository, OwnerRepository ownerRepository, KafkaTemplate<String, CatDto> getCat, KafkaTemplate<String, CatList> getCats) {
         this.catRepository = catRepository;
         this.ownerRepository = ownerRepository;
         this.getCat = getCat;
         this.getCats = getCats;
     }
+
 
     @KafkaListener(topics = "create_cat", groupId = "groupIdCK", containerFactory = "createCatFactory")
     public CatDto createCat(CatDto catDto)
